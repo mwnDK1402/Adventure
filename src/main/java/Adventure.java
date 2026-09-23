@@ -5,7 +5,7 @@ public class Adventure
 
     private Room currentRoom;
 
-    public void generateMaps()
+    public Adventure()
     {
 
         Room room1 = new Room("Room 1", "An empty cave");
@@ -39,18 +39,67 @@ public class Adventure
         room9.setNorth(room6);
         room9.setWest(room8);
 
-        Room next = currentRoom.getNorth();
-
-        if (next != null) {
-            currentRoom = next;
-        } else {
-            System.out.println("You cannot go this way.");
-        }
     }
 
     public String look()
     {
         return currentRoom.getDescription();
+    }
+
+    public Room moveNorth()
+    {
+        Room next = currentRoom.getNorth();
+
+        if (next != null)
+        {
+            currentRoom = next;
+            return currentRoom;
+        } else
+        {
+            return null;
+        }
+    }
+
+    public Room moveEast()
+    {
+        Room next = currentRoom.getEast();
+
+        if (next != null)
+        {
+            currentRoom = next;
+            return currentRoom;
+        } else
+        {
+            return null;
+        }
+    }
+
+    public Room moveSouth()
+    {
+        Room next = currentRoom.getSouth();
+
+        if (next != null)
+        {
+            currentRoom = next;
+            return currentRoom;
+        } else
+        {
+            return null;
+        }
+    }
+
+    public Room moveWest()
+    {
+        Room next = currentRoom.getWest();
+
+        if (next != null)
+        {
+            currentRoom = next;
+            return currentRoom;
+        } else
+        {
+            return null;
+        }
     }
 
 }
