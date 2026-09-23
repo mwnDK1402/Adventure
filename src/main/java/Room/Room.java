@@ -12,10 +12,8 @@ public class Room {
 
     public Room(String name, String description) {
         this.name = name;
-        this.name = description;
+        this.description = description;
     }
-
-
 
     public Room getNorth() {
         return north;
