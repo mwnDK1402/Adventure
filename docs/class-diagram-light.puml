@@ -1,0 +1,57 @@
+@startuml
+title Adventure - Class Diagram (light)
+
+skinparam {
+    backgroundColor white
+    ArrowColor #181818
+    ClassBackgroundColor #F1F1F1
+    ClassBorderColor #181818
+    ClassFontColor #000000
+    ClassAttributeFontColor #000000
+    ClassAttributeIconColor #000000
+    ClassStereotypeFontColor #000000
+    TitleFontColor #000000
+    DefaultFontColor #000000
+}
+
+class Room {
+    - name : String
+    - description : String
+    - north : Room
+    - east : Room
+    - south : Room
+    - west : Room
+    + Room(name : String, description : String)
+    + getNorth() : Room
+    + getEast() : Room
+    + getSouth() : Room
+    + getWest() : Room
+    + setNorth(north : Room) : void
+    + setEast(east : Room) : void
+    + setSouth(south : Room) : void
+    + setWest(west : Room) : void
+    + getName() : String
+    + getDescription() : String
+}
+
+class Adventure {
+    - currentRoom : Room
+    + Adventure()
+    + look() : String
+    + getCurrentRoom() : String
+    + moveNorth() : Room
+    + moveEast() : Room
+    + moveSouth() : Room
+    + moveWest() : Room
+}
+
+class UserInterface {
+    + main(args : String[]) : void
+}
+
+Adventure "1" o-- "0..1" Room : currentRoom
+Room "0..*" o-- "0..1" Room : north / east /\nsouth / west
+UserInterface ..> Adventure : <<uses>>
+UserInterface ..> Room : <<uses>>
+
+@enduml
