@@ -1,4 +1,4 @@
-public class Rooms {
+public class Room {
 
     private string name;
     private string description;
