@@ -1,0 +1,46 @@
+graph Rooms {
+    label = "Adventure - Room Layout (dark)";
+    labelloc = t;
+    fontname = "Helvetica";
+    fontsize = 20;
+    fontcolor = "#F0F0F0";
+    bgcolor = "#1E1E1E";
+    rankdir = TB;
+    splines = ortho;
+    node [shape = box, style = "rounded,filled", fontname = "Helvetica", fontsize = 14, fillcolor = "#2B2B2B", color = "#8A8A8A", fontcolor = "#F0F0F0"];
+    edge [color = "#E0E0E0", penwidth = 1.5];
+
+    { rank = same; r1; r2; r3; }
+    { rank = same; r4; r5; r6; }
+    { rank = same; r7; r8; r9; }
+
+    r1 [label = "Room 1", fillcolor = "#4A3D18", color = "#E8C547"];
+    r2 [label = "Room 2"];
+    r3 [label = "Room 3"];
+    r4 [label = "Room 4"];
+    r5 [label = "Room 5"];
+    r6 [label = "Room 6"];
+    r7 [label = "Room 7"];
+    r8 [label = "Room 8"];
+    r9 [label = "Room 9"];
+
+    r1 -- r2;
+    r2 -- r3;
+    r7 -- r8;
+    r8 -- r9;
+    r1 -- r4;
+    r3 -- r6;
+    r4 -- r7;
+    r5 -- r8;
+    r6 -- r9;
+
+    edge [style = invis, color = "white"];
+    r1 -- r4;
+    r4 -- r7;
+    r2 -- r5;
+    r5 -- r8;
+    r3 -- r6;
+    r6 -- r9;
+    r4 -- r5;
+    r5 -- r6;
+}
