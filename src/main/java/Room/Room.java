@@ -46,4 +46,12 @@ public class Room {
     public void setWest(Room west) {
         this.west = west;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }
