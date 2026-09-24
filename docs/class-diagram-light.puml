@@ -49,8 +49,8 @@ class UserInterface {
     + main(args : String[]) : void
 }
 
-Adventure "1" o-- "0..1" Room : currentRoom
-Room "0..*" o-- "0..1" Room : north / east /\nsouth / west
+Adventure "1" o-- "1" Room : currentRoom
+Room "0..4" o-- "0..4" Room : north / east /\nsouth / west
 UserInterface ..> Adventure : <<uses>>
 UserInterface ..> Room : <<uses>>
 
