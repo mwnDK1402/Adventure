@@ -1,6 +1,5 @@
 import Room.Room;
 
-import java.util.Locale;
 import java.util.Scanner;
 
 public class UserInterface
@@ -17,7 +16,7 @@ public class UserInterface
         String input;
 
         do {
-            System.out.println("\nInput: ");
+            System.out.print("\nInput: ");
             input = scanner.nextLine().toLowerCase();
 
             switch (input) {
@@ -27,37 +26,70 @@ public class UserInterface
                     if (nextRoom == null) {
                         System.out.println("You cannot go that way.");
                     } else {
-                        System.out.println("You are in " + nextRoom.getName());
-                        System.out.println(adventure.look());
+                        if(!nextRoom.isVisited()) {
+                            System.out.println("You are in " + nextRoom.getName());
+                            System.out.println(adventure.look());
+                            nextRoom.setVisited();
+                        }
+                        else {
+                            System.out.println("You are in " + nextRoom.getName());
+                        }
                     }
                 }
-                case "east" -> {
+                case "east" ->
+                {
                     Room nextRoom = adventure.moveEast();
 
-                    if (nextRoom == null) {
+                    if (nextRoom == null)
+                    {
                         System.out.println("You cannot go that way.");
-                    } else {
-                        System.out.println("You are in " + nextRoom.getName());
-                        System.out.println(adventure.look());
+                    } else
+                    {
+                        if (!nextRoom.isVisited())
+                        {
+                            System.out.println("You are in " + nextRoom.getName());
+                            System.out.println(adventure.look());
+                            nextRoom.setVisited();
+                        } else
+                        {
+                            System.out.println("You are in " + nextRoom.getName());
+                        }
                     }
                 }
                 case "south" -> {
                     Room nextRoom = adventure.moveSouth();
+
                     if (nextRoom == null) {
                         System.out.println("You cannot go that way.");
                     } else {
-                        System.out.println("You are in " + nextRoom.getName());
-                        System.out.println(adventure.look());
+                        if(!nextRoom.isVisited()) {
+                            System.out.println("You are in " + nextRoom.getName());
+                            System.out.println(adventure.look());
+                            nextRoom.setVisited();
+                        }
+                        else {
+                            System.out.println("You are in " + nextRoom.getName());
+                        }
                     }
                 }
                 case "west" -> {
                     Room nextRoom = adventure.moveWest();
+
                     if (nextRoom == null) {
                         System.out.println("You cannot go that way.");
                     } else {
-                        System.out.println("You are in " + nextRoom.getName());
-                        System.out.println(adventure.look());
+                        if(!nextRoom.isVisited()) {
+                            System.out.println("You are in " + nextRoom.getName());
+                            System.out.println(adventure.look());
+                            nextRoom.setVisited();
+                        }
+                        else {
+                            System.out.println("You are in " + nextRoom.getName());
+                        }
                     }
+                }
+                case "look" -> {
+                    System.out.println(adventure.look());
                 }
             }
         } while (!input.equals("exit")); {

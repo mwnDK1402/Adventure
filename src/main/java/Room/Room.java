@@ -4,6 +4,7 @@ public class Room {
 
     private String name;
     private String description;
+    private boolean visited;
 
     private Room north;
     private Room east;
@@ -13,6 +14,7 @@ public class Room {
     public Room(String name, String description) {
         this.name = name;
         this.description = description;
+        this.visited = false;
     }
 
     public Room getNorth() {
@@ -64,5 +66,13 @@ public class Room {
 
     public String getDescription() {
         return description;
+    }
+
+    public void setVisited() {
+        visited = true;
+    }
+
+    public boolean isVisited() {
+        return visited;
     }
 }
