@@ -1,5 +1,3 @@
-package Room;
-
 public class Room {
 
     private String name;
@@ -20,6 +18,48 @@ public class Room {
         this.name = name;
         this.description = description;
         this.visited = false;
+    }
+
+    public MoveResult moveNorth()
+    {
+        if (northLocked) return MoveResult.DoorLocked;
+
+        Room next = north;
+        if (next == null) return MoveResult.HitWall;
+
+        next.visited = true;
+        return MoveResult.EnteredRoom;
+    }
+
+    public MoveResult moveEast() {
+        if (eastLocked) return MoveResult.DoorLocked;
+
+        Room next = east;
+        if (next == null) return MoveResult.HitWall;
+
+        next.visited = true;
+        return MoveResult.EnteredRoom;
+    }
+
+    public MoveResult moveSouth() {
+        if (southLocked) return MoveResult.DoorLocked;
+
+        Room next = south;
+        if (next == null) return MoveResult.HitWall;
+
+        next.visited = true;
+        return MoveResult.EnteredRoom;
+    }
+
+    public MoveResult moveWest()
+    {
+        if (westLocked) return MoveResult.DoorLocked;
+
+        Room next = west;
+        if (next == null) return MoveResult.HitWall;
+
+        next.visited = true;
+        return MoveResult.EnteredRoom;
     }
 
     public Room getNorth() {
