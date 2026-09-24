@@ -14,14 +14,19 @@ public class Room {
     private boolean southLocked;
     private boolean westLocked;
 
+    private boolean northDoorTried;
+    private boolean eastDoorTried;
+    private boolean southDoorTried;
+    private boolean westDoorTried;
+
     public Room(String name, String description) {
         this.name = name;
         this.description = description;
         this.visited = false;
     }
 
-    public MoveResult moveNorth()
-    {
+    public MoveResult moveNorth() {
+        northDoorTried = true;
         if (northLocked) return MoveResult.DoorLocked;
 
         Room next = north;
@@ -32,6 +37,7 @@ public class Room {
     }
 
     public MoveResult moveEast() {
+        eastDoorTried = true;
         if (eastLocked) return MoveResult.DoorLocked;
 
         Room next = east;
@@ -42,6 +48,7 @@ public class Room {
     }
 
     public MoveResult moveSouth() {
+        southDoorTried = true;
         if (southLocked) return MoveResult.DoorLocked;
 
         Room next = south;
@@ -51,8 +58,8 @@ public class Room {
         return MoveResult.EnteredRoom;
     }
 
-    public MoveResult moveWest()
-    {
+    public MoveResult moveWest() {
+        westDoorTried = true;
         if (westLocked) return MoveResult.DoorLocked;
 
         Room next = west;
