@@ -19,6 +19,7 @@ public class Adventure
         Room room9 = new Room("Room 9","Description 9");
 
         currentRoom = room1;
+        room1.setVisited();
 
         room1.setEast(room2);
         room1.setSouth(room4);
