@@ -37,9 +37,8 @@ public class UserInterface
                     System.out.println("look - Show description of current room");
                     System.out.println("help - Show this list of commands");
                     System.out.println("exit - Exit the game");
-                } default -> {
-                    System.out.printf("%s is not a valid command.", input);
                 }
+                default -> System.out.printf("%s is not a valid command.", input);
             }
         }
 
