@@ -41,6 +41,11 @@ public class UserInterface
                     System.out.println("help - Show this list of commands");
                     System.out.println("exit - Exit the game");
                 }
+                case "xyzzy" -> {
+                    adventure.caseXyzzy();
+                    Room room = adventure.getCurrentRoom();
+                    System.out.println("You are in " + room.getName());
+                }
                 default -> System.out.printf("%s is not a valid command.%n", input);
             }
         }
