@@ -28,6 +28,9 @@ public class UserInterface
                 case "go south", "move south" -> performMove(adventure.moveSouth());
                 case "go west", "move west" -> performMove(adventure.moveWest());
                 case "look" -> System.out.println(adventure.look());
+                default -> {
+                    System.out.printf("%s is not a valid command.", input);
+                }
             }
         }
 
