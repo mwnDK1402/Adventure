@@ -171,32 +171,13 @@ public class Room {
 
     public String getDoorDescription() {
         ArrayList<String> triedDoors = getTriedDoors();
-
         return switch (triedDoors.size()) {
             case 0 -> ""; // This should never happen: every Room we look at has been entered
-            // North
-            case 1 -> "There is a door to the " +
-                    triedDoors.getFirst() +
-                    ".";
-            // North and West
-            // North, South, and West
-            // North, East, South, and West
-            default -> {
-                var sb = new StringBuilder(52) // Max length, no resizing
-                        .append("There are doors to the ")
-                        .append(triedDoors.getFirst());
-                for (int i = 1; i < triedDoors.size() - 1; i++) {
-                    sb
-                            .append(", ")
-                            .append(triedDoors.get(i));
-                }
-                if (triedDoors.size() > 2) sb.append(",");
-                sb
-                        .append(" and ")
-                        .append(triedDoors.getLast())
-                        .append(".");
-                yield sb.toString();
-            }
+            case 1 -> String.format("There is a door to the %s.", triedDoors.getFirst());
+            case 2 -> String.format("There are doors to the %s and %s", triedDoors.toArray());
+            case 3 -> String.format("There are doors to the %s, %s, and %s", triedDoors.toArray());
+            case 4 -> String.format("There are doors to the %s, %s, %s, and %s", triedDoors.toArray());
+            default -> throw new RuntimeException("Too many doors!");
         };
     }
 
