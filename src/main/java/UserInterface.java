@@ -91,9 +91,20 @@ public class UserInterface
                 case "look" -> {
                     System.out.println(adventure.look());
                 }
+                case "help" -> {
+                    System.out.println("Available commands:");
+                    System.out.println("north - Move north");
+                    System.out.println("south - Move south");
+                    System.out.println("east - Move east");
+                    System.out.println("west - Move west");
+                    System.out.println("look - Show description of current room");
+                    System.out.println("help - Show this list of commands");
+                    System.out.println("exit - Exit the game");
+                }
             }
         } while (!input.equals("exit")); {
             System.out.println("You're exiting the maze...");
+            System.out.println("Farewell");
         }
     }
 }
