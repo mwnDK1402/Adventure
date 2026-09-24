@@ -39,6 +39,7 @@ public class Adventure
         room9.setNorth(room6);
         room9.setWest(room8);
 
+        setEastWestLocked(room2, room1, true);
     }
 
     public String look()
@@ -46,60 +47,61 @@ public class Adventure
         return currentRoom.getDescription();
     }
 
-    public String getCurrentRoom() {
-        return currentRoom.getName();
+    public Room getCurrentRoom() {
+        return currentRoom;
     }
 
-    public Room moveNorth()
+    public MoveResult moveNorth()
     {
+        if (currentRoom.isNorthLocked()) return MoveResult.DoorLocked;
+
         Room next = currentRoom.getNorth();
+        if (next == null) return MoveResult.HitWall;
 
-        if (next != null) {
-            currentRoom = next;
-            return currentRoom;
-
-        } else {
-            return null;
-        }
+        currentRoom = next;
+        return MoveResult.EnteredRoom;
     }
 
-    public Room moveEast()
+    public MoveResult moveEast()
     {
+        if (currentRoom.isEastLocked()) return MoveResult.DoorLocked;
+
         Room next = currentRoom.getEast();
+        if (next == null) return MoveResult.HitWall;
 
-        if (next != null) {
-            currentRoom = next;
-            return currentRoom;
-
-        } else {
-            return null;
-        }
+        currentRoom = next;
+        return MoveResult.EnteredRoom;
     }
 
-    public Room moveSouth()
+    public MoveResult moveSouth()
     {
+        if (currentRoom.isSouthLocked()) return MoveResult.DoorLocked;
+
         Room next = currentRoom.getSouth();
+        if (next == null) return MoveResult.HitWall;
 
-        if (next != null) {
-            currentRoom = next;
-            return currentRoom;
-
-        } else {
-            return null;
-        }
+        currentRoom = next;
+        return MoveResult.EnteredRoom;
     }
 
-    public Room moveWest()
+    public MoveResult moveWest()
     {
+        if (currentRoom.isWestLocked()) return MoveResult.DoorLocked;
+
         Room next = currentRoom.getWest();
+        if (next == null) return MoveResult.HitWall;
 
-        if (next != null) {
-            currentRoom = next;
-            return currentRoom;
-
-        } else {
-            return null;
-        }
+        currentRoom = next;
+        return MoveResult.EnteredRoom;
     }
 
+    public void setNorthSouthLocked(Room north, Room south, boolean locked) {
+        north.setSouthLocked(locked);
+        south.setNorthLocked(locked);
+    }
+
+    public void setEastWestLocked(Room east, Room west, boolean locked) {
+        east.setWestLocked(locked);
+        west.setEastLocked(locked);
+    }
 }

@@ -11,57 +11,36 @@ public class UserInterface
         Adventure adventure = new Adventure();
 
         System.out.println("Welcome to the maze!\n");
-        System.out.println("You're currently in " + adventure.getCurrentRoom() + ": " + adventure.look());
+        System.out.println("You're currently in " + adventure.getCurrentRoom().getName() + ": " + adventure.look());
         System.out.print("\nWhere do you want to go?");
 
         String input;
 
-        do {
+        while (true) {
             System.out.println("\nInput: ");
             input = scanner.nextLine().toLowerCase();
 
-            switch (input) {
-                case "north" -> {
-                    Room nextRoom = adventure.moveNorth();
+            if (input.equals("exit")) break;
 
-                    if (nextRoom == null) {
-                        System.out.println("You cannot go that way.");
-                    } else {
-                        System.out.println("You are in " + nextRoom.getName());
-                        System.out.println(adventure.look());
-                    }
-                }
-                case "east" -> {
-                    Room nextRoom = adventure.moveEast();
+            MoveResult moveResult = switch (input) {
+                case "north" -> adventure.moveNorth();
+                case "east" -> adventure.moveEast();
+                case "south" -> adventure.moveSouth();
+                case "west" -> adventure.moveWest();
+                default -> null;
+            };
 
-                    if (nextRoom == null) {
-                        System.out.println("You cannot go that way.");
-                    } else {
-                        System.out.println("You are in " + nextRoom.getName());
-                        System.out.println(adventure.look());
-                    }
+            switch (moveResult) {
+                case EnteredRoom -> {
+                    System.out.println("You are in " + adventure.getCurrentRoom().getName());
+                    System.out.println(adventure.look());
                 }
-                case "south" -> {
-                    Room nextRoom = adventure.moveSouth();
-                    if (nextRoom == null) {
-                        System.out.println("You cannot go that way.");
-                    } else {
-                        System.out.println("You are in " + nextRoom.getName());
-                        System.out.println(adventure.look());
-                    }
-                }
-                case "west" -> {
-                    Room nextRoom = adventure.moveWest();
-                    if (nextRoom == null) {
-                        System.out.println("You cannot go that way.");
-                    } else {
-                        System.out.println("You are in " + nextRoom.getName());
-                        System.out.println(adventure.look());
-                    }
-                }
+                case HitWall -> System.out.println("You cannot go that way.");
+                case DoorLocked -> System.out.println("The door is locked.");
+                case null -> System.out.printf("%s is not a valid direction", input);
             }
-        } while (!input.equals("exit")); {
-            System.out.println("You're exiting the maze...");
         }
+
+        System.out.println("You're exiting the maze...");
     }
 }
