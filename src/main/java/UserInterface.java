@@ -16,7 +16,7 @@ public class UserInterface
         String input;
 
         do {
-            System.out.println("\nInput: ");
+            System.out.print("\nInput: ");
             input = scanner.nextLine().toLowerCase();
 
             switch (input) {
@@ -87,6 +87,9 @@ public class UserInterface
                             System.out.println("You are in " + nextRoom.getName());
                         }
                     }
+                }
+                case "look" -> {
+                    System.out.println(adventure.look());
                 }
             }
         } while (!input.equals("exit")); {
