@@ -1,5 +1,6 @@
-public class Room {
+import java.util.ArrayList;
 
+public class Room {
     private String name;
     private String description;
     private boolean visited;
@@ -32,8 +33,12 @@ public class Room {
         Room next = north;
         if (next == null) return MoveResult.HitWall;
 
+        MoveResult result = next.visited
+                ? MoveResult.EnteredRoomAgain
+                : MoveResult.EnteredRoomFirstTime;
         next.visited = true;
-        return MoveResult.EnteredRoom;
+        next.southDoorTried = true;
+        return result;
     }
 
     public MoveResult moveEast() {
@@ -43,8 +48,12 @@ public class Room {
         Room next = east;
         if (next == null) return MoveResult.HitWall;
 
+        MoveResult result = next.visited
+                ? MoveResult.EnteredRoomAgain
+                : MoveResult.EnteredRoomFirstTime;
         next.visited = true;
-        return MoveResult.EnteredRoom;
+        next.westDoorTried = true;
+        return result;
     }
 
     public MoveResult moveSouth() {
@@ -54,8 +63,12 @@ public class Room {
         Room next = south;
         if (next == null) return MoveResult.HitWall;
 
+        MoveResult result = next.visited
+                ? MoveResult.EnteredRoomAgain
+                : MoveResult.EnteredRoomFirstTime;
         next.visited = true;
-        return MoveResult.EnteredRoom;
+        next.northDoorTried = true;
+        return result;
     }
 
     public MoveResult moveWest() {
@@ -65,8 +78,12 @@ public class Room {
         Room next = west;
         if (next == null) return MoveResult.HitWall;
 
+        MoveResult result = next.visited
+                ? MoveResult.EnteredRoomAgain
+                : MoveResult.EnteredRoomFirstTime;
         next.visited = true;
-        return MoveResult.EnteredRoom;
+        next.eastDoorTried = true;
+        return result;
     }
 
     public Room getNorth() {
@@ -152,11 +169,61 @@ public class Room {
         return description;
     }
 
-    public void setVisited() {
-        visited = true;
+    public String getDoorDescription() {
+        ArrayList<String> triedDoors = getTriedDoors();
+
+        return switch (triedDoors.size()) {
+            case 0 -> ""; // This should never happen: every Room we look at has been entered
+            // North
+            case 1 -> "There is a door to the " +
+                    triedDoors.getFirst() +
+                    ".";
+            // North and West
+            // North, South, and West
+            // North, East, South, and West
+            default -> {
+                var sb = new StringBuilder(52) // Max length, no resizing
+                        .append("There are doors to the ")
+                        .append(triedDoors.getFirst());
+                for (int i = 1; i < triedDoors.size() - 1; i++) {
+                    sb
+                            .append(", ")
+                            .append(triedDoors.get(i));
+                }
+                if (triedDoors.size() > 2) sb.append(",");
+                sb
+                        .append(" and ")
+                        .append(triedDoors.getLast())
+                        .append(".");
+                yield sb.toString();
+            }
+        };
     }
 
-    public boolean isVisited() {
-        return visited;
+    private ArrayList<String> getTriedDoors() {
+        boolean[] tried = {
+                northDoorTried && north != null,
+                southDoorTried && south != null,
+                eastDoorTried && east != null,
+                westDoorTried && west != null
+        };
+
+        ArrayList<String> triedDoors = new ArrayList<>(4);
+        for (int i = 0; i < tried.length; i++) {
+            if (tried[i]) {
+                triedDoors.add(switch (i) {
+                    case 0 -> "North";
+                    case 1 -> "South";
+                    case 2 -> "East";
+                    case 3 -> "West";
+                    default -> throw new IllegalStateException("Unexpected value: " + i);
+                });
+            }
+        }
+        return triedDoors;
+    }
+
+    public void setVisited() {
+        visited = true;
     }
 }

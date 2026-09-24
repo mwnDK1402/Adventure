@@ -28,31 +28,39 @@ public class Adventure {
         setEastWestLocked(room2, room1, true);
     }
 
-    public String look() {
-        return currentRoom.getDescription();
-    }
-
     public MoveResult moveNorth() {
         MoveResult result = currentRoom.moveNorth();
-        if (result == MoveResult.EnteredRoom) currentRoom = currentRoom.getNorth();
+        switch (result) {
+            case EnteredRoomFirstTime, EnteredRoomAgain ->
+                    currentRoom = currentRoom.getNorth();
+        }
         return result;
     }
 
     public MoveResult moveEast() {
         MoveResult result = currentRoom.moveEast();
-        if (result == MoveResult.EnteredRoom) currentRoom = currentRoom.getEast();
+        switch (result) {
+            case EnteredRoomFirstTime, EnteredRoomAgain ->
+                    currentRoom = currentRoom.getEast();
+        }
         return result;
     }
 
     public MoveResult moveSouth() {
         MoveResult result = currentRoom.moveSouth();
-        if (result == MoveResult.EnteredRoom) currentRoom = currentRoom.getSouth();
+        switch (result) {
+            case EnteredRoomFirstTime, EnteredRoomAgain ->
+                    currentRoom = currentRoom.getSouth();
+        }
         return result;
     }
 
     public MoveResult moveWest() {
         MoveResult result = currentRoom.moveWest();
-        if (result == MoveResult.EnteredRoom) currentRoom = currentRoom.getWest();
+        switch (result) {
+            case EnteredRoomFirstTime, EnteredRoomAgain ->
+                    currentRoom = currentRoom.getWest();
+        }
         return result;
     }
 

@@ -10,12 +10,14 @@ public class UserInterface
         Scanner scanner = new Scanner(System.in);
         adventure = new Adventure();
 
-        System.out.println("Welcome to the maze!\n");
-        System.out.println("You're currently in " + adventure.getCurrentRoom().getName() + ": " + adventure.look());
-        System.out.print("\nWhere do you want to go?");
+        Room initialRoom = adventure.getCurrentRoom();
+
+        System.out.printf("Welcome to the maze!%n%n");
+        System.out.printf("You're currently in %s: %s%n", initialRoom.getName(), initialRoom.getDescription());
+        System.out.printf("%nWhere do you want to go?%n");
 
         while (true) {
-            System.out.print("\nInput: ");
+            System.out.printf("%nInput: ");
             input = scanner.nextLine().toLowerCase();
 
             if (input.equals("exit")) break;
@@ -25,7 +27,10 @@ public class UserInterface
                 case "go east", "move east" -> performMove(adventure.moveEast());
                 case "go south", "move south" -> performMove(adventure.moveSouth());
                 case "go west", "move west" -> performMove(adventure.moveWest());
-                case "look" -> System.out.println(adventure.look());
+                case "look" -> {
+                    System.out.println(adventure.getCurrentRoom().getDescription());
+                    System.out.println(adventure.getCurrentRoom().getDoorDescription());
+                }
                 case "help" -> {
                     System.out.println("Available commands:");
                     System.out.println("go north - Move north");
@@ -36,7 +41,7 @@ public class UserInterface
                     System.out.println("help - Show this list of commands");
                     System.out.println("exit - Exit the game");
                 }
-                default -> System.out.printf("%s is not a valid command.", input);
+                default -> System.out.printf("%s is not a valid command.%n", input);
             }
         }
 
@@ -45,16 +50,17 @@ public class UserInterface
 
     private static void performMove(MoveResult moveResult) {
         switch (moveResult) {
-            case EnteredRoom -> {
+            case EnteredRoomFirstTime -> {
                 Room room = adventure.getCurrentRoom();
-                System.out.println("You are in " + room.getName());
-                if (!room.isVisited()) {
-                    System.out.println(room.getDescription());
-                }
+                System.out.printf("You are in %s%n%s%n", room.getName(), room.getDescription());
+            }
+            case EnteredRoomAgain -> {
+                Room room = adventure.getCurrentRoom();
+                System.out.printf("You are in %s%n", room.getName());
             }
             case HitWall -> System.out.println("You cannot go that way.");
             case DoorLocked -> System.out.println("The door is locked.");
-            case null -> System.out.printf("%s is not a valid direction", input);
+            case null -> System.out.printf("%s is not a valid direction.%n", input);
         }
     }
 }
