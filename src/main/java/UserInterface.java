@@ -51,7 +51,6 @@ public class UserInterface
                 System.out.println("You are in " + room.getName());
                 if (!room.isVisited()) {
                     System.out.println(room.getDescription());
-                    room.setVisited();
                 }
             }
             case HitWall -> System.out.println("You cannot go that way.");
