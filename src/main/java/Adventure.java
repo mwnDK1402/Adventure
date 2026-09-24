@@ -47,6 +47,7 @@ public class Adventure {
         if (next == null) return MoveResult.HitWall;
 
         currentRoom = next;
+        currentRoom.setVisited();
         return MoveResult.EnteredRoom;
     }
 
@@ -58,6 +59,7 @@ public class Adventure {
         if (next == null) return MoveResult.HitWall;
 
         currentRoom = next;
+        currentRoom.setVisited();
         return MoveResult.EnteredRoom;
     }
 
@@ -69,6 +71,7 @@ public class Adventure {
         if (next == null) return MoveResult.HitWall;
 
         currentRoom = next;
+        currentRoom.setVisited();
         return MoveResult.EnteredRoom;
     }
 
@@ -80,6 +83,7 @@ public class Adventure {
         if (next == null) return MoveResult.HitWall;
 
         currentRoom = next;
+        currentRoom.setVisited();
         return MoveResult.EnteredRoom;
     }
 

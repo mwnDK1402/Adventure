@@ -28,7 +28,16 @@ public class UserInterface
                 case "go south", "move south" -> performMove(adventure.moveSouth());
                 case "go west", "move west" -> performMove(adventure.moveWest());
                 case "look" -> System.out.println(adventure.look());
-                default -> {
+                case "help" -> {
+                    System.out.println("Available commands:");
+                    System.out.println("go north - Move north");
+                    System.out.println("go south - Move south");
+                    System.out.println("go east - Move east");
+                    System.out.println("go west - Move west");
+                    System.out.println("look - Show description of current room");
+                    System.out.println("help - Show this list of commands");
+                    System.out.println("exit - Exit the game");
+                } default -> {
                     System.out.printf("%s is not a valid command.", input);
                 }
             }
