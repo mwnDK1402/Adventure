@@ -47,6 +47,17 @@ public class Room {
         this.west = west;
     }
 
+    public void setNorthSouth(Room northRoom, Room southRoom) {
+        setNorth(northRoom);
+        northRoom.setSouth(southRoom);
+
+    }
+
+    public void setEastWest(Room eastRoom, Room westRoom) {
+        setEast(eastRoom);
+        eastRoom.setWest(westRoom);
+    }
+
     public String getName() {
         return name;
     }

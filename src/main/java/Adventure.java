@@ -1,13 +1,10 @@
 import Room.Room;
 
-public class Adventure
-{
+public class Adventure {
 
     private Room currentRoom;
 
-    public Adventure()
-    {
-
+    public Adventure() {
         Room room1 = new Room("Room 1", "An empty cave");
         Room room2 = new Room("Room 2", "Description 2");
         Room room3 = new Room("Room 3","Description 3");
@@ -20,29 +17,18 @@ public class Adventure
 
         currentRoom = room1;
 
-        room1.setEast(room2);
-        room1.setSouth(room4);
-        room2.setWest(room1);
-        room2.setEast(room3);
-        room3.setWest(room2);
-        room3.setSouth(room6);
-        room4.setNorth(room1);
-        room4.setSouth(room7);
-        room5.setSouth(room8);
-        room6.setNorth(room3);
-        room6.setSouth(room9);
-        room7.setNorth(room4);
-        room7.setEast(room8);
-        room8.setNorth(room5);
-        room8.setWest(room7);
-        room8.setEast(room9);
-        room9.setNorth(room6);
-        room9.setWest(room8);
-
+        room1.setEastWest(room2, room1);
+        room2.setEastWest(room3, room2);
+        room6.setNorthSouth(room3, room6);
+        room9.setNorthSouth(room6, room9);
+        room8.setEastWest(room9, room8);
+        room7.setEastWest(room8, room7);
+        room8.setNorthSouth(room5, room8);
+        room7.setNorthSouth(room4, room7);
+        room4.setNorthSouth(room1, room4);
     }
 
-    public String look()
-    {
+    public String look() {
         return currentRoom.getDescription();
     }
 
@@ -101,5 +87,4 @@ public class Adventure
             return null;
         }
     }
-
 }
