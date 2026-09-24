@@ -10,6 +10,10 @@ skinparam {
     ClassAttributeFontColor #C8C8C8
     ClassAttributeIconColor #F0F0F0
     ClassStereotypeFontColor #C8C8C8
+    EnumBackgroundColor #2B2B2B
+    EnumBorderColor #8A8A8A
+    EnumFontColor #F0F0F0
+    EnumTitleFontColor #F0F0F0
     TitleFontColor #F0F0F0
     DefaultFontColor #F0F0F0
 }
@@ -17,11 +21,24 @@ skinparam {
 class Room {
     - name : String
     - description : String
+    - visited : boolean
     - north : Room
     - east : Room
     - south : Room
     - west : Room
+    - northLocked : boolean
+    - eastLocked : boolean
+    - southLocked : boolean
+    - westLocked : boolean
+    - northDoorTried : boolean
+    - eastDoorTried : boolean
+    - southDoorTried : boolean
+    - westDoorTried : boolean
     + Room(name : String, description : String)
+    + moveNorth() : MoveResult
+    + moveEast() : MoveResult
+    + moveSouth() : MoveResult
+    + moveWest() : MoveResult
     + getNorth() : Room
     + getEast() : Room
     + getSouth() : Room
@@ -30,28 +47,60 @@ class Room {
     + setEast(east : Room) : void
     + setSouth(south : Room) : void
     + setWest(west : Room) : void
+    + isNorthLocked() : boolean
+    + isEastLocked() : boolean
+    + isSouthLocked() : boolean
+    + isWestLocked() : boolean
+    + setNorthLocked(locked : boolean) : void
+    + setEastLocked(locked : boolean) : void
+    + setSouthLocked(locked : boolean) : void
+    + setWestLocked(locked : boolean) : void
+    + setNorthSouth(northRoom : Room, southRoom : Room) : void
+    + setEastWest(eastRoom : Room, westRoom : Room) : void
     + getName() : String
     + getDescription() : String
+    + getDoorDescription() : String
+    - getTriedDoors() : ArrayList<String>
+    + setVisited() : void
+}
+
+enum MoveResult {
+    EnteredRoomFirstTime
+    EnteredRoomAgain
+    HitWall
+    DoorLocked
 }
 
 class Adventure {
     - currentRoom : Room
+    - xyzzyTempRoom : Room
+    - counter : int
     + Adventure()
-    + look() : String
-    + getCurrentRoom() : String
-    + moveNorth() : Room
-    + moveEast() : Room
-    + moveSouth() : Room
-    + moveWest() : Room
+    + moveNorth() : MoveResult
+    + moveEast() : MoveResult
+    + moveSouth() : MoveResult
+    + moveWest() : MoveResult
+    + getCurrentRoom() : Room
+    + setNorthSouthLocked(north : Room, south : Room, locked : boolean) : void
+    + setEastWestLocked(east : Room, west : Room, locked : boolean) : void
+    + caseXyzzy() : Room
 }
 
 class UserInterface {
-    + main(args : String[]) : void
+    - {static} input : String
+    - {static} adventure : Adventure
+    + {static} main(args : String[]) : void
+    - {static} performMove(moveResult : MoveResult) : void
 }
 
 Adventure "1" o-- "1" Room : currentRoom
+Adventure "1" *-- "9" Room : rooms
 Room "0..4" o-- "0..4" Room : north / east /\nsouth / west
+Room ..> MoveResult : <<uses>>
+Adventure ..> MoveResult : <<uses>>
+Room ..> ArrayList : <<uses>>
 UserInterface ..> Adventure : <<uses>>
 UserInterface ..> Room : <<uses>>
+UserInterface ..> MoveResult : <<uses>>
 
 @enduml
