@@ -1,6 +1,5 @@
 import Room.Room;
 
-import java.util.Locale;
 import java.util.Scanner;
 
 public class UserInterface
@@ -17,7 +16,7 @@ public class UserInterface
         String input;
 
         while (true) {
-            System.out.println("\nInput: ");
+            System.out.print("\nInput: ");
             input = scanner.nextLine().toLowerCase();
 
             if (input.equals("exit")) break;
@@ -32,8 +31,12 @@ public class UserInterface
 
             switch (moveResult) {
                 case EnteredRoom -> {
-                    System.out.println("You are in " + adventure.getCurrentRoom().getName());
-                    System.out.println(adventure.look());
+                    Room room = adventure.getCurrentRoom();
+                    System.out.println("You are in " + room.getName());
+                    if (!room.isVisited()) {
+                        System.out.println(room.getDescription());
+                        room.setVisited();
+                    }
                 }
                 case HitWall -> System.out.println("You cannot go that way.");
                 case DoorLocked -> System.out.println("The door is locked.");

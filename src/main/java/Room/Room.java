@@ -4,6 +4,7 @@ public class Room {
 
     private String name;
     private String description;
+    private boolean visited;
 
     private Room north;
     private Room east;
@@ -18,6 +19,7 @@ public class Room {
     public Room(String name, String description) {
         this.name = name;
         this.description = description;
+        this.visited = false;
     }
 
     public Room getNorth() {
@@ -84,11 +86,30 @@ public class Room {
         this.westLocked = westLocked;
     }
 
+    public void setNorthSouth(Room northRoom, Room southRoom) {
+        setNorth(northRoom);
+        northRoom.setSouth(southRoom);
+
+    }
+
+    public void setEastWest(Room eastRoom, Room westRoom) {
+        setEast(eastRoom);
+        eastRoom.setWest(westRoom);
+    }
+
     public String getName() {
         return name;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public void setVisited() {
+        visited = true;
+    }
+
+    public boolean isVisited() {
+        return visited;
     }
 }
