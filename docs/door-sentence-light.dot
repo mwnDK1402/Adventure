@@ -1,0 +1,51 @@
+digraph DoorSentence {
+    label = "Adventure - Door Sentence (light)\ngetDoorDescription() output grammar (commit b6980fa)\nLegend: gold box = direction, grey box = literal text";
+    labelloc = t;
+    fontname = "Helvetica";
+    fontsize = 20;
+    fontcolor = "#000000";
+    bgcolor = "white";
+    rankdir = LR;
+    splines = ortho;
+    nodesep = 0.5;
+    ranksep = 0.6;
+
+    node [shape = box, style = "rounded,filled", fontname = "Helvetica", fontsize = 13,
+          fillcolor = "#F1F1F1", color = "#181818", fontcolor = "#000000"];
+    edge [color = "#181818", penwidth = 1.5, fontname = "Helvetica", fontsize = 10, fontcolor = "#666666"];
+
+    start [shape = point, width = 0.1, height = 0.1, fillcolor = "#181818", label = "", style = "filled"];
+
+    // 1 door (case 1): "There is a door to the X."
+    isa     [label = "“There is a door to the ”"];
+    d1      [label = "direction", fillcolor = "#FFE08A", color = "#B8860B"];
+    p1      [label = "“.”"];
+
+    // 2-4 doors (default case): "There are doors to the X, Y, and Z."
+    are     [label = "“There are doors to the ”"];
+    first   [label = "direction", fillcolor = "#FFE08A", color = "#B8860B"];
+    // alternative 1: 2 doors -> " and " direction
+    and_    [label = "“ and ”"];
+    last2   [label = "direction", fillcolor = "#FFE08A", color = "#B8860B"];
+    // alternative 2: 3+ doors -> (", " direction)+ ", and " direction
+    comma   [label = "“, ”"];
+    mid     [label = "direction", fillcolor = "#FFE08A", color = "#B8860B"];
+    oxford  [label = "“, and ”"];
+    last3   [label = "direction", fillcolor = "#FFE08A", color = "#B8860B"];
+    period  [label = "“.”"];
+
+    start -> isa [xlabel = "1 door"];
+    isa -> d1 -> p1;
+
+    start -> are [xlabel = "2–4 doors"];
+    are -> first;
+    first -> and_ [xlabel = "2 doors"];
+    first -> comma [xlabel = "3+ doors"];
+    comma -> mid;
+    mid -> comma [xlabel = "repeat", constraint = false];
+    mid -> oxford;
+    oxford -> last3;
+    and_ -> last2;
+    last2 -> period;
+    last3 -> period;
+}
