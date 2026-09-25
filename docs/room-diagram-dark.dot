@@ -1,5 +1,5 @@
 graph Rooms {
-    label = "Adventure - Room Layout (dark)";
+    label = "Adventure - Room Layout (dark)\nDashed red edge = locked door";
     labelloc = t;
     fontname = "Helvetica";
     fontsize = 20;
@@ -24,7 +24,7 @@ graph Rooms {
     r8 [label = "Room 8"];
     r9 [label = "Room 9"];
 
-    r1 -- r2;
+    r1 -- r2 [color = "#FF6B6B", style = "dashed", penwidth = 2.5];
     r2 -- r3;
     r7 -- r8;
     r8 -- r9;

@@ -1,5 +1,6 @@
 public enum MoveResult {
-    EnteredRoom,
+    EnteredRoomFirstTime,
+    EnteredRoomAgain,
     HitWall,
     DoorLocked
 }

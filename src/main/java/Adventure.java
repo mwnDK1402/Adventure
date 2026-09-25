@@ -1,13 +1,15 @@
-import Room.Room;
-
 public class Adventure {
 
     private Room currentRoom;
+    private Room xyzzyTempRoom;
+    private int counter;
+
+    private Room room1;
 
     public Adventure() {
 
         // Startområde, evt. simpelt item
-        Room room1 = new Room("Room 1", """
+        room1 = new Room("Room 1", """
         You stand at the entrance of a dark cave.
         Cold, damp air flows out from the darkness ahead.
         Old footprints disappear into the cave, mixed with loose stones and patches of mud.
@@ -85,60 +87,44 @@ public class Adventure {
         setEastWestLocked(room2, room1, true);
     }
 
-    public String look() {
-        return currentRoom.getDescription();
+    public MoveResult moveNorth() {
+        MoveResult result = currentRoom.moveNorth();
+        switch (result) {
+            case EnteredRoomFirstTime, EnteredRoomAgain ->
+                    currentRoom = currentRoom.getNorth();
+        }
+        return result;
+    }
+
+    public MoveResult moveEast() {
+        MoveResult result = currentRoom.moveEast();
+        switch (result) {
+            case EnteredRoomFirstTime, EnteredRoomAgain ->
+                    currentRoom = currentRoom.getEast();
+        }
+        return result;
+    }
+
+    public MoveResult moveSouth() {
+        MoveResult result = currentRoom.moveSouth();
+        switch (result) {
+            case EnteredRoomFirstTime, EnteredRoomAgain ->
+                    currentRoom = currentRoom.getSouth();
+        }
+        return result;
+    }
+
+    public MoveResult moveWest() {
+        MoveResult result = currentRoom.moveWest();
+        switch (result) {
+            case EnteredRoomFirstTime, EnteredRoomAgain ->
+                    currentRoom = currentRoom.getWest();
+        }
+        return result;
     }
 
     public Room getCurrentRoom() {
         return currentRoom;
-    }
-
-    public MoveResult moveNorth()
-    {
-        if (currentRoom.isNorthLocked()) return MoveResult.DoorLocked;
-
-        Room next = currentRoom.getNorth();
-        if (next == null) return MoveResult.HitWall;
-
-        currentRoom = next;
-        currentRoom.setVisited();
-        return MoveResult.EnteredRoom;
-    }
-
-    public MoveResult moveEast()
-    {
-        if (currentRoom.isEastLocked()) return MoveResult.DoorLocked;
-
-        Room next = currentRoom.getEast();
-        if (next == null) return MoveResult.HitWall;
-
-        currentRoom = next;
-        currentRoom.setVisited();
-        return MoveResult.EnteredRoom;
-    }
-
-    public MoveResult moveSouth()
-    {
-        if (currentRoom.isSouthLocked()) return MoveResult.DoorLocked;
-
-        Room next = currentRoom.getSouth();
-        if (next == null) return MoveResult.HitWall;
-
-        currentRoom = next;
-        currentRoom.setVisited();
-        return MoveResult.EnteredRoom;
-    }
-
-    public MoveResult moveWest()
-    {
-        if (currentRoom.isWestLocked()) return MoveResult.DoorLocked;
-
-        Room next = currentRoom.getWest();
-        if (next == null) return MoveResult.HitWall;
-
-        currentRoom = next;
-        currentRoom.setVisited();
-        return MoveResult.EnteredRoom;
     }
 
     public void setNorthSouthLocked(Room north, Room south, boolean locked) {
@@ -149,5 +135,16 @@ public class Adventure {
     public void setEastWestLocked(Room east, Room west, boolean locked) {
         east.setWestLocked(locked);
         west.setEastLocked(locked);
+    }
+
+    public Room caseXyzzy() {
+        counter++;
+
+        if (counter % 2 == 1) {
+            xyzzyTempRoom = currentRoom;
+            return currentRoom = room1;
+        }
+
+        else return currentRoom = xyzzyTempRoom;
     }
 }

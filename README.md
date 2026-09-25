@@ -24,3 +24,9 @@ java -cp target/classes UserInterface # Run UserInterface.main
 ### Room layout
 
 ![Room layout](docs/room-diagram-light.svg)
+
+### Door sentence
+
+Railroad/syntax diagram of the output grammar of `Room.getDoorDescription()` as of [commit `b6980fa`](https://github.com/mwnDK1402/Adventure/commit/b6980fa92032ee8de6247d8488b51a6f2456069a).
+
+![Door sentence](docs/door-sentence-light.svg)
