@@ -73,9 +73,11 @@ public class Adventure {
         Whatever this item is, it seems to have been placed here for a reason.
         Beyond the door, you can hear a faint, distant sound.""");
 
+        // Set start-room
         currentRoom = room1;
         room1.setVisited();
 
+        // Door-connections
         room1.setEastWest(room2, room1);
         room2.setEastWest(room3, room2);
         room6.setNorthSouth(room3, room6);
@@ -86,6 +88,7 @@ public class Adventure {
         room7.setNorthSouth(room4, room7);
         room4.setNorthSouth(room1, room4);
 
+        // Locked doors
         setEastWestLocked(room2, room1, true);
     }
 
