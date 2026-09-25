@@ -13,7 +13,7 @@ public class UserInterface
         adventure = new Adventure();
 
         System.out.println("Welcome to the maze!\n");
-        System.out.println("You're currently in " + adventure.getCurrentRoom().getName() + ": " + adventure.look());
+        System.out.println("You're currently in " + adventure.getCurrentRoom().getName() + ": \n" + adventure.look());
         System.out.print("\nWhere do you want to go?");
 
         while (true) {
