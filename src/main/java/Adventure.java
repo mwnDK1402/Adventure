@@ -24,4 +24,9 @@ public class Adventure
     {
         return player.move(direction);
     }
+
+    public String inventory()
+    {
+
+    }
 }
