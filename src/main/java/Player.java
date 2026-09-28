@@ -36,17 +36,17 @@ public class Player
         }
     }
 
-    public void addItem(Item item)
+    public void addItemToInventory(Item item)
     {
         inventory.add(item);
     }
 
-    public boolean removeItem(Item item)
+    public boolean removeItemToInventory(Item item)
     {
         return inventory.remove(item);
     }
 
-    public ArrayList<Item> getItems()
+    public ArrayList<Item> getItemsInventory()
     {
         return inventory;
     }
