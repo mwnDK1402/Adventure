@@ -1,6 +1,9 @@
+import java.util.ArrayList;
+
 public class Player
 {
     private Room currentRoom;
+    private ArrayList<Item> inventory;
 
     public Player(Room currentRoom)
     {
@@ -31,5 +34,20 @@ public class Player
         {
             return false;
         }
+    }
+
+    public void addItem(Item item)
+    {
+        inventory.add(item);
+    }
+
+    public boolean removeItem(Item item)
+    {
+        return inventory.remove(item);
+    }
+
+    public ArrayList<Item> getItems()
+    {
+        return inventory;
     }
 }
