@@ -46,8 +46,9 @@ public class Player
         return inventory.remove(item);
     }
 
-    public ArrayList<Item> getItemsInventory()
+    // Return a copy so it can't be modified
+    public ArrayList<Item> getInventory()
     {
-        return inventory;
+        return new ArrayList<>(inventory);
     }
 }

@@ -91,9 +91,10 @@ public class Room
         return items.remove(item);
     }
 
+    // Return a copy so it can't be modified
     public ArrayList<Item> getItems()
     {
-        return items;
+        return new ArrayList<>(items);
     }
 
 }
