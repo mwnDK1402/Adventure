@@ -1,5 +1,8 @@
 public class Map
 {
+    private Room initialRoom;
+    private Room room1;
+
     public void buildMap()
     {
         // Startområde, evt. simpelt item? (Introduktion)
@@ -67,29 +70,25 @@ public class Map
                 Whatever this item is, it seems to have been placed here for a reason.
                 Beyond the door, you can hear a faint, distant sound.""");
 
+        initialRoom = room1;
+
         // Room connections
-        setWestEast(room1, room2);
-        setNorthSouth(room1, room4);
-        setWestEast(room3, room2);
-        setNorthSouth(room3, room6);
-        setNorthSouth(room4, room7);
-        setWestEast(room7, room8);
-        setNorthSouth(room5, room8);
-        setWestEast(room8, room9);
-        setNorthSouth(room6, room9);
+        room2.setWestEast(room1, room2);
+        room1.setNorthSouth(room1, room4);
+        room3.setWestEast(room2, room3);
+        room3.setNorthSouth(room3, room6);
+        room4.setNorthSouth(room4, room7);
+        room7.setWestEast(room7, room8);
+        room5.setNorthSouth(room5, room8);
+        room8.setWestEast(room8, room9);
+        room6.setNorthSouth(room6, room9);
 
     }
 
-    public void setWestEast(Room west, Room east)
+    public Room getInitialRoom()
     {
-        west.setEast(east);
-        east.setWest(west);
+        return initialRoom;
     }
 
-    public void setNorthSouth(Room north, Room south)
-    {
-        north.setSouth(south);
-        south.setNorth(north);
-    }
 
 }

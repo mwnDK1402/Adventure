@@ -34,4 +34,48 @@ public class Room
     {
         this.east = room;
     }
+
+    public String getDescription()
+    {
+        return this.description;
+    }
+
+    public String getName()
+    {
+        return this.name;
+    }
+
+    public Room getNorth()
+    {
+        return north;
+    }
+
+    public Room getSouth()
+    {
+        return south;
+    }
+
+    public Room getEast()
+    {
+        return east;
+    }
+
+    public Room getWest()
+    {
+        return west;
+    }
+
+    public void setWestEast(Room west, Room east)
+    {
+        west.setEast(east);
+        east.setWest(west);
+    }
+
+    public void setNorthSouth(Room north, Room south)
+    {
+        north.setSouth(south);
+        south.setNorth(north);
+    }
+
+
 }
