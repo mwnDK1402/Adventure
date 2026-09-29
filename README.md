@@ -53,3 +53,17 @@ plantuml -tsvg docs/class-diagram-light.puml docs/class-diagram-dark.puml
 dot -Tsvg docs/room-diagram-light.dot -o docs/room-diagram-light.svg
 dot -Tsvg docs/room-diagram-dark.dot  -o docs/room-diagram-dark.svg
 ```
+
+### PDF for submission
+
+The class diagram also has to be submitted as a PDF. PlantUML renders one
+directly, with no extra tooling:
+
+```bash
+plantuml -tpdf docs/class-diagram-light.puml docs/class-diagram-dark.puml
+```
+
+This writes `docs/class-diagram-light.pdf` and `docs/class-diagram-dark.pdf`.
+Both are build artifacts and are ignored by Git, so they have to be regenerated
+locally before submitting. Submit the **light** one — it is the one designed
+for a white page.
