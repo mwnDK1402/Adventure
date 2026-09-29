@@ -1,0 +1,118 @@
+@startuml
+title Adventure - Class Diagram (light)
+
+skinparam {
+    backgroundColor white
+    ArrowColor #181818
+    ClassBackgroundColor #F1F1F1
+    ClassBorderColor #181818
+    ClassFontColor #000000
+    ClassAttributeFontColor #000000
+    ClassAttributeIconColor #000000
+    ClassStereotypeFontColor #000000
+    EnumBackgroundColor #F1F1F1
+    EnumBorderColor #181818
+    EnumFontColor #000000
+    EnumTitleFontColor #000000
+    TitleFontColor #000000
+    DefaultFontColor #000000
+}
+
+class Room {
+    - name : String
+    - description : String
+    - lock : boolean
+    - items : ArrayList<Item>
+    - north : Room
+    - south : Room
+    - east : Room
+    - west : Room
+    + Room(name : String, description : String)
+    + getName() : String
+    + getDescription() : String
+    + getLock() : boolean
+    + setLock(bool : boolean) : void
+    + getNorth() : Room
+    + getSouth() : Room
+    + getEast() : Room
+    + getWest() : Room
+    + setNorth(room : Room) : void
+    + setSouth(room : Room) : void
+    + setEast(room : Room) : void
+    + setWest(room : Room) : void
+    + setNorthSouth(north : Room, south : Room) : void
+    + setWestEast(west : Room, east : Room) : void
+    + addItem(item : Item) : void
+    + removeItem(item : Item) : boolean
+    + getItems() : ArrayList<Item>
+    + findItem(shortName : String) : Item
+}
+
+class Player {
+    - currentRoom : Room
+    - isLocked : boolean
+    - inventory : ArrayList<Item>
+    + Player(currentRoom : Room)
+    + getCurrentRoom() : Room
+    + move(direction : String) : boolean
+    + isLocked() : boolean
+    + getInventory() : ArrayList<Item>
+    + takeItem(intendedItem : String) : boolean
+    + dropItem(intendedItem : String) : boolean
+    - findItem(shortName : String) : Item
+}
+
+class Adventure {
+    - player : Player
+    - map : Map
+    + Adventure()
+    + look() : String
+    + getRoomName() : String
+    + go(direction : String) : boolean
+    + roomIsLocked() : boolean
+    + inventory() : String
+    + take(shortName : String) : boolean
+    + drop(shortName : String) : boolean
+    - itemsInRoom() : String
+}
+
+class Map {
+    - initialRoom : Room
+    + buildMap() : void
+    + getInitialRoom() : Room
+}
+
+class Item {
+    - shortName : String
+    - longName : String
+    + Item(shortName : String, longName : String)
+    + getShortName() : String
+    + getLongName() : String
+}
+
+class UserInterface {
+    - scanner : Scanner
+    - adventure : Adventure
+    + start() : void
+    - confirmDirection(direction : String) : void
+}
+
+class Main {
+    + {static} main(args : String[]) : void
+}
+
+Main ..> UserInterface : <<creates>>
+UserInterface "1" o-- "1" Adventure : adventure
+Adventure "1" o-- "1" Player : player
+Adventure "1" *-- "1" Map : map
+Map "1" *-- "9" Room : buildMap()
+Player "1" o-- "1" Room : currentRoom
+Room "0..4" o-- "0..4" Room : north / south / east / west
+Room "1" o-- "0..*" Item : items
+Player "1" o-- "0..*" Item : inventory
+UserInterface ..> Scanner : <<uses>>
+Adventure ..> ArrayList : <<uses>>
+Player ..> ArrayList : <<uses>>
+Room ..> ArrayList : <<uses>>
+
+@enduml
