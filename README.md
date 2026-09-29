@@ -19,10 +19,10 @@ java -cp target/classes Main          # Run Main.main
 
 | Command | Aliases | Description |
 | --- | --- | --- |
-| `north` | `go north`, `n` | Move to the room to the north |
-| `south` | `go south`, `s` | Move to the room to the south |
-| `east` | `go east`, `e` | Move to the room to the east |
-| `west` | `go west`, `w` | Move to the room to the west |
+| `go north` | `north`, `n` | Move to the room to the north |
+| `go south` | `south`, `s` | Move to the room to the south |
+| `go east` | `east`, `e` | Move to the room to the east |
+| `go west` | `west`, `w` | Move to the room to the west |
 | `look` | | Describe the current room and the items in it |
 | `inventory` | | List the items you are carrying |
 | `take <item>` | | Pick up an item from the current room |
