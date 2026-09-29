@@ -37,12 +37,7 @@ public class Player
         }
     }
 
-    public void addItemToInventory(Item item)
-    {
-        inventory.add(item);
-    }
-
-    public boolean removeItemToInventory(Item item)
+    public boolean removeItemFromInventory(Item item)
     {
         return inventory.remove(item);
     }
@@ -51,5 +46,14 @@ public class Player
     public ArrayList<Item> getInventory()
     {
         return new ArrayList<>(inventory);
+    }
+
+    public void takeItem(Item item)
+    {
+        if(item == null)
+        {
+            return;
+        }
+
     }
 }
