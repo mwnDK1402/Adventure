@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Adventure
 {
     private Player player;
@@ -12,7 +14,8 @@ public class Adventure
 
     public String look()
     {
-        return player.getCurrentRoom().getDescription();
+        return player.getCurrentRoom().getDescription() + System.lineSeparator() + this.itemsInRoom();
+
     }
 
     public String getRoomName()
@@ -27,6 +30,41 @@ public class Adventure
 
     public String inventory()
     {
+        ArrayList<Item> inventory = player.getInventory();
+        String items = "Inventory: " + System.lineSeparator();
+
+        for(Item item : inventory)
+        {
+            items += "- " + item.getShortName() + System.lineSeparator();
+        }
+        return items;
+    }
+
+    public String itemsInRoom()
+    {
+        // Low cohesion between Player and the items of the room, why we allow them to communicate even though strangers.
+        ArrayList<Item> inventory = player.getCurrentRoom().getItems();
+
+        if(!inventory.isEmpty())
+        {
+            String items = "Here you see: ";
+
+            for(int i = 0; i < inventory.size(); i++)
+            {
+                items += inventory.get(i).getLongName().toLowerCase();
+
+                if (i < inventory.size() - 1)
+                {
+                    items += ", ";
+                }
+            }
+            return items;
+        }
+        else
+        {
+            return "";
+        }
 
     }
+
 }
