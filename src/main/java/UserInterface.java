@@ -44,9 +44,9 @@ public class UserInterface
         while(running)
         {
             System.out.print("Where do you want to go?: ");
-            String choice = scanner.nextLine();
+            String choice = scanner.nextLine().trim().toLowerCase();
 
-            switch (choice.trim().toLowerCase())
+            switch (choice)
             {
                 case "go north", "north", "go n", "n" -> confirmDirection("north");
                 case "go south", "south", "go s", "s" -> confirmDirection("south");
@@ -60,7 +60,24 @@ public class UserInterface
                 case "inventory" -> System.out.println(adventure.inventory());
                 //case "take" -> adventure.takeItem(item)
                 //case "drop" ->;
-                default -> System.out.println("Invalid command - see help");
+                default -> {
+                    if(choice.startsWith("take"))
+                    {
+                        String intendedItem = choice.substring(5);
+                        if (adventure.take(intendedItem))
+                        {
+                            System.out.println("Item added to inventory");
+                        }
+                        else
+                        {
+                            System.out.println("No such item in current room");
+                        }
+                    }
+                    else
+                    {
+                        System.out.println("Invalid command - see help");
+                    }
+                }
             }
 
         }
