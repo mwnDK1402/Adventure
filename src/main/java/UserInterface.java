@@ -1,28 +1,20 @@
 import java.util.Scanner;
 
-public class UserInterface
-{
+public class UserInterface {
     private Scanner scanner;
     private Adventure adventure;
 
-    private void confirmDirection(String direction)
-    {
-        if (adventure.go(direction))
-        {
-
+    private void confirmDirection(String direction) {
+        if (adventure.go(direction)) {
             System.out.println("You are in " + adventure.getRoomName());
             System.out.println(adventure.look());
             System.out.println();
-        }
-        else
-        {
+        } else {
             if (adventure.roomIsLocked()) {
                 System.out.println();
                 System.out.println("The door is locked. You need a key!");
                 System.out.println();
-            }
-            else
-            {
+            } else {
                 System.out.println();
                 System.out.println("You can't go that way!");
                 System.out.println();
@@ -30,8 +22,7 @@ public class UserInterface
         }
     }
 
-    public void start()
-    {
+    public void start() {
         this.scanner = new Scanner(System.in);
         this.adventure = new Adventure();
 
@@ -41,13 +32,11 @@ public class UserInterface
         System.out.println(adventure.look());
         System.out.println();
 
-        while(running)
-        {
+        while (running) {
             System.out.print("Where do you want to go?: ");
             String choice = scanner.nextLine().trim().toLowerCase();
 
-            switch (choice)
-            {
+            switch (choice) {
                 case "go north", "north", "go n", "n" -> confirmDirection("north");
                 case "go south", "south", "go s", "s" -> confirmDirection("south");
                 case "go east", "east", "go e", "e" -> confirmDirection("east");
@@ -58,18 +47,12 @@ public class UserInterface
                         """);
                 case "exit" -> running = false;
                 case "inventory" -> System.out.println(adventure.inventory());
-                //case "take" -> adventure.takeItem(item)
-                //case "drop" ->;
                 default -> {
-                    if(choice.startsWith("take"))
-                    {
+                    if (choice.startsWith("take ")) {
                         String intendedItem = choice.substring(5);
-                        if (adventure.take(intendedItem))
-                        {
+                        if (adventure.take(intendedItem)) {
                             System.out.println("Item added to inventory");
-                        }
-                        else
-                        {
+                        } else {
                             System.out.println("No such item in current room");
                         }
                     } else if (choice.startsWith("drop ")) {
@@ -84,8 +67,8 @@ public class UserInterface
                     }
                 }
             }
-
         }
+
         System.out.println("You are now exiting the maze... Goodbye.");
     }
 

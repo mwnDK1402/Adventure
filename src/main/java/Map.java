@@ -1,11 +1,7 @@
-public class Map
-{
+public class Map {
     private Room initialRoom;
-    private Room room1;
-    private Room room;
 
-    public void buildMap()
-    {
+    public void buildMap() {
         // Startområde, evt. simpelt item? (Introduktion)
         Room room1 = new Room("Room 1", """
                 You stand at the entrance of a dark cave.
@@ -94,13 +90,9 @@ public class Map
         // Add items to room
         room2.addItem(key);
         room2.addItem(lamp);
-
     }
 
-    public Room getInitialRoom()
-    {
+    public Room getInitialRoom() {
         return initialRoom;
     }
-
-
 }

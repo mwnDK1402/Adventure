@@ -1,8 +1,5 @@
-public class Main
-{
-    public static void main(String[] args)
-    {
-        UserInterface ui = new UserInterface();
-        ui.start();
+public class Main {
+    public static void main(String[] args) {
+        new UserInterface().start();
     }
 }

@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 
-public class Room
-{
+public class Room {
     private String name;
     private String description;
     private boolean lock;
@@ -12,112 +11,89 @@ public class Room
     private Room east;
     private Room west;
 
-
-    public Room(String name, String description)
-    {
+    public Room(String name, String description) {
         this.name = name;
         this.description = description;
         this.items = new ArrayList<>();
     }
 
-    public void setNorth(Room room)
-    {
+    public void setNorth(Room room) {
         this.north = room;
     }
 
-    public void setSouth(Room room)
-    {
+    public void setSouth(Room room) {
         this.south = room;
     }
 
-    public void setWest(Room room)
-    {
+    public void setWest(Room room) {
         this.west = room;
     }
 
-    public void setEast(Room room)
-    {
+    public void setEast(Room room) {
         this.east = room;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return this.description;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
 
-    public Room getNorth()
-    {
+    public Room getNorth() {
         return north;
     }
 
-    public Room getSouth()
-    {
+    public Room getSouth() {
         return south;
     }
 
-    public Room getEast()
-    {
+    public Room getEast() {
         return east;
     }
 
-    public Room getWest()
-    {
+    public Room getWest() {
         return west;
     }
 
-    public void setWestEast(Room west, Room east)
-    {
+    public void setWestEast(Room west, Room east) {
         west.setEast(east);
         east.setWest(west);
     }
 
-    public void setNorthSouth(Room north, Room south)
-    {
+    public void setNorthSouth(Room north, Room south) {
         north.setSouth(south);
         south.setNorth(north);
     }
 
-    public boolean getLock()
-    {
+    public boolean getLock() {
         return lock;
     }
 
-    public void setLock(boolean bool)
-    {
+    public void setLock(boolean bool) {
         lock = bool;
     }
 
-    public void addItem(Item item)
-    {
+    public void addItem(Item item) {
         items.add(item);
     }
 
-    public boolean removeItem(Item item)
-    {
+    public boolean removeItem(Item item) {
         return items.remove(item);
     }
 
     // Return a copy so it can't be modified
-    public ArrayList<Item> getItems()
-    {
+    public ArrayList<Item> getItems() {
         return new ArrayList<>(items);
     }
 
-    public Item findItem(String shortName)
-    {
-        for(Item item : items)
-        {
-            if(item.getShortName().equalsIgnoreCase((shortName)))
-            {
+    public Item findItem(String shortName) {
+        for (Item item : items) {
+            if (item.getShortName().equalsIgnoreCase((shortName))) {
                 return item;
             }
         }
         return null;
     }
-
 }
