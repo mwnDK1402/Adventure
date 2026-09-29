@@ -108,4 +108,16 @@ public class Room
         return new ArrayList<>(items);
     }
 
+    public Item findItem(String shortName)
+    {
+        for(Item item : items)
+        {
+            if(item.getShortName().equalsIgnoreCase((shortName)))
+            {
+                return item;
+            }
+        }
+        return null;
+    }
+
 }

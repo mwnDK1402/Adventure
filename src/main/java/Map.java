@@ -74,7 +74,7 @@ public class Map
         initialRoom = room1;
 
         //Lock the door to room 2
-        room2.setLock(true);
+        //room2.setLock(true);
 
         // Room connections
         room2.setWestEast(room1, room2);

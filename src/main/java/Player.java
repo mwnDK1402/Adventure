@@ -62,12 +62,17 @@ public class Player
         return new ArrayList<>(inventory);
     }
 
-    public void takeItem(Item item)
+    public boolean takeItem(String intendedItem)
     {
+        Item item = currentRoom.findItem(intendedItem);
+
         if(item == null)
         {
-            return;
+            return false;
         }
 
+        inventory.add(item);
+        currentRoom.removeItem(item);
+        return true;
     }
 }

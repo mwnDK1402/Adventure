@@ -36,6 +36,11 @@ public class Adventure
         ArrayList<Item> inventory = player.getInventory();
         String items = "Inventory: " + System.lineSeparator();
 
+        if(inventory.isEmpty())
+        {
+            return "Your inventory is empty";
+        }
+
         for(Item item : inventory)
         {
             items += "- " + item.getShortName() + System.lineSeparator();
@@ -67,5 +72,10 @@ public class Adventure
         {
             return "";
         }
+    }
+
+    public boolean take(String shortName)
+    {
+        return player.takeItem(shortName);
     }
 }
