@@ -60,10 +60,12 @@ The class diagram also has to be submitted as a PDF. PlantUML renders one
 directly, with no extra tooling:
 
 ```bash
-plantuml -tpdf docs/class-diagram-light.puml docs/class-diagram-dark.puml
+plantuml -tpdf docs/class-diagram-light.puml
 ```
 
-This writes `docs/class-diagram-light.pdf` and `docs/class-diagram-dark.pdf`.
-Both are build artifacts and are ignored by Git, so they have to be regenerated
-locally before submitting. Submit the **light** one — it is the one designed
-for a white page.
+This writes `docs/class-diagram-light.pdf`. It is a build artifact and is
+ignored by Git, so it has to be regenerated locally before submitting.
+
+Only the light variant is generated. PlantUML's PDF output does not paint a
+page background, so the dark variant would come out with near-white text on a
+white page. For on-screen viewing, use the SVGs above instead.
