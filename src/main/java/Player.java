@@ -8,6 +8,7 @@ public class Player
     public Player(Room currentRoom)
     {
         this.currentRoom = currentRoom;
+        this.inventory = new ArrayList<>();
     }
 
     public Room getCurrentRoom()
