@@ -15,7 +15,6 @@ public class Adventure
     public String look()
     {
         return player.getCurrentRoom().getDescription() + System.lineSeparator() + this.itemsInRoom();
-
     }
 
     public String getRoomName()
@@ -26,6 +25,10 @@ public class Adventure
     public boolean go(String direction)
     {
         return player.move(direction);
+    }
+
+    public boolean roomIsLocked(){
+        return player.isLocked();
     }
 
     public String inventory()
@@ -64,7 +67,5 @@ public class Adventure
         {
             return "";
         }
-
     }
-
 }

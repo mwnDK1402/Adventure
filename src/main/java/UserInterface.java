@@ -16,9 +16,17 @@ public class UserInterface
         }
         else
         {
-            System.out.println();
-            System.out.println("You can't go that way!");
-            System.out.println();
+            if (adventure.roomIsLocked()) {
+                System.out.println();
+                System.out.println("The door is locked. You need a key!");
+                System.out.println();
+            }
+            else
+            {
+                System.out.println();
+                System.out.println("You can't go that way!");
+                System.out.println();
+            }
         }
     }
 

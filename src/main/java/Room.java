@@ -4,6 +4,7 @@ public class Room
 {
     private String name;
     private String description;
+    private boolean lock;
     private ArrayList<Item> items;
 
     private Room north;
@@ -79,6 +80,16 @@ public class Room
     {
         north.setSouth(south);
         south.setNorth(north);
+    }
+
+    public boolean getLock()
+    {
+        return lock;
+    }
+
+    public void setLock(boolean bool)
+    {
+        lock = bool;
     }
 
     public void addItem(Item item)

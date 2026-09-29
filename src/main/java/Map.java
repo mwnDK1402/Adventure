@@ -2,6 +2,7 @@ public class Map
 {
     private Room initialRoom;
     private Room room1;
+    private Room room;
 
     public void buildMap()
     {
@@ -71,6 +72,9 @@ public class Map
                 Beyond the door, you can hear a faint, distant sound.""");
 
         initialRoom = room1;
+
+        //Lock the door to room 2
+        room2.setLock(true);
 
         // Room connections
         room2.setWestEast(room1, room2);

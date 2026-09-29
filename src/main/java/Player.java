@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class Player
 {
     private Room currentRoom;
+    private boolean isLocked;
     private ArrayList<Item> inventory;
 
     public Player(Room currentRoom)
@@ -27,14 +28,27 @@ public class Player
             default -> null;
         };
 
-        if (desiredRoom != null)
+        if (desiredRoom == null)
+        {
+            isLocked = false;
+            return false;
+        }
+
+        if (desiredRoom.getLock())
+        {
+            isLocked = true;
+            return false;
+        }
+
+        else
         {
             currentRoom = desiredRoom;
             return true;
-        } else
-        {
-            return false;
         }
+    }
+    public boolean isLocked()
+    {
+        return isLocked;
     }
 
     public boolean removeItemFromInventory(Item item)
