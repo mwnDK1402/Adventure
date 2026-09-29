@@ -78,4 +78,8 @@ public class Adventure
     {
         return player.takeItem(shortName);
     }
+
+    public boolean drop(String shortName) {
+        return player.dropItem(shortName);
+    }
 }

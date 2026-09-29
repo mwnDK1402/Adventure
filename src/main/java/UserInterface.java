@@ -72,9 +72,14 @@ public class UserInterface
                         {
                             System.out.println("No such item in current room");
                         }
-                    }
-                    else
-                    {
+                    } else if (choice.startsWith("drop ")) {
+                        String intendedItem = choice.substring(5);
+                        if (adventure.drop(intendedItem)) {
+                            System.out.println("Item removed from inventory");
+                        } else {
+                            System.out.println("No such item in your inventory");
+                        }
+                    } else {
                         System.out.println("Invalid command - see help");
                     }
                 }

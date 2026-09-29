@@ -75,4 +75,23 @@ public class Player
         currentRoom.removeItem(item);
         return true;
     }
+
+    public boolean dropItem(String intendedItem) {
+        Item item = findItem(intendedItem);
+
+        if (item == null) return false;
+        currentRoom.addItem(item);
+        inventory.remove(item);
+        return true;
+    }
+
+
+    private Item findItem(String shortName) {
+        for (Item item : inventory) {
+            if (item.getShortName().equalsIgnoreCase((shortName))) {
+                return item;
+            }
+        }
+        return null;
+    }
 }
