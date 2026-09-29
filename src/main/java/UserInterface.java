@@ -49,8 +49,8 @@ public class UserInterface
                         instructions
                         """);
                 case "exit" -> running = false;
-                //case "inventory" -> System.out.println(
-                //case "take" ->;
+                case "inventory" -> System.out.println(adventure.inventory());
+                //case "take" -> adventure.takeItem(item)
                 //case "drop" ->;
                 default -> System.out.println("Invalid command - see help");
             }
