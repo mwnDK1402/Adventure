@@ -83,6 +83,14 @@ public class Map
         room8.setWestEast(room8, room9);
         room6.setNorthSouth(room6, room9);
 
+        // Items for rooms
+        Item lamp = new Item("Lamp", "A shiny brass lamp");
+        Item key = new Item("Key", "An old rusty key");
+
+        // Add items to room
+        room2.addItem(key);
+        room2.addItem(lamp);
+
     }
 
     public Room getInitialRoom()

@@ -9,9 +9,6 @@ public class Item
         this.longName = longName;
     }
 
-    Item item1 = new Item("Lamp", "A shiny brass lamp");
-    Item item2 = new Item("Key", "An old rusty key");
-
     public String getShortName()
     {
         return this.shortName;
