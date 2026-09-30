@@ -1,26 +1,20 @@
 import java.util.Scanner;
 
-public class UserInterface
-{
+public class UserInterface {
     private Scanner scanner;
     private Adventure adventure;
 
-    private void confirmDirection(String direction)
-    {
-        if (adventure.go(direction))
-        {
+    private void confirmDirection(String direction) {
+        if (adventure.go(direction)) {
             System.out.println("You are in " + adventure.getRoomName());
             System.out.println(adventure.look());
             System.out.println();
-        } else
-        {
-            if (adventure.roomIsLocked())
-            {
+        } else {
+            if (adventure.roomIsLocked()) {
                 System.out.println();
                 System.out.println("The door is locked. You need a key!");
                 System.out.println();
-            } else
-            {
+            } else {
                 System.out.println();
                 System.out.println("You can't go that way!");
                 System.out.println();
@@ -28,8 +22,7 @@ public class UserInterface
         }
     }
 
-    public void start()
-    {
+    public void start() {
         this.scanner = new Scanner(System.in);
         this.adventure = new Adventure();
 
@@ -39,13 +32,11 @@ public class UserInterface
         System.out.println(adventure.look());
         System.out.println();
 
-        while (running)
-        {
+        while (running) {
             System.out.print("Where do you want to go?: ");
             String choice = scanner.nextLine().trim().toLowerCase();
 
-            switch (choice)
-            {
+            switch (choice) {
                 case "go north", "north", "go n", "n" -> confirmDirection("north");
                 case "go south", "south", "go s", "s" -> confirmDirection("south");
                 case "go east", "east", "go e", "e" -> confirmDirection("east");
@@ -57,78 +48,54 @@ public class UserInterface
                 case "exit" -> running = false;
                 case "inventory" -> System.out.println(adventure.inventory());
                 case "health" -> {
-                    if (adventure.health() >= 100)
-                    {
+                    if (adventure.health() >= 100) {
                         System.out.println("Health: " + adventure.health() + ". You are in perfect health!");
-                    }
-                    else if (adventure.health() >= 50)
-                    {
+                    } else if (adventure.health() >= 50) {
                         System.out.println("Health: " + adventure.health() + ". You are in good health, but avoid fighting right now.");
-                    }
-                    else if (adventure.health() >= 25)
-                    {
+                    } else if (adventure.health() >= 25) {
                         System.out.println("Health: " + adventure.health() + ". You are wounded - find something healthy to eat.");
-                    }
-                    else if (adventure.health() >= 1)
-                    {
+                    } else if (adventure.health() >= 1) {
                         System.out.println("Health: " + adventure.health() + ". You are barely alive.");
-                    }
-                    else
-                    {
+                    } else {
                         System.out.println("Health: " + adventure.health() + ". You should be dead.");
                     }
                 }
-                default ->
-                {
-                    if (choice.startsWith("take "))
-                    {
+                default -> {
+                    if (choice.startsWith("take ")) {
                         String intendedItem = choice.substring(5);
-                        if (adventure.take(intendedItem))
-                        {
+                        if (adventure.take(intendedItem)) {
                             System.out.println("Item added to inventory");
-                        } else
-                        {
+                        } else {
                             System.out.println("No such item in current room");
                         }
-                    } else if (choice.startsWith("drop "))
-                    {
+                    } else if (choice.startsWith("drop ")) {
                         String intendedItem = choice.substring(5);
-                        if (adventure.drop(intendedItem))
-                        {
+                        if (adventure.drop(intendedItem)) {
                             System.out.println("Item removed from inventory");
-                        } else
-                        {
+                        } else {
                             System.out.println("No such item in your inventory");
                         }
-                    } else if (choice.startsWith("eat "))
-                    {
+                    } else if (choice.startsWith("eat ")) {
                         String intendedItem = choice.substring(4);
                         EatOutcome outcome = adventure.eat(intendedItem);
 
-                        switch (outcome.getResult())
-                        {
+                        switch (outcome.getResult()) {
                             case NOT_FOOD -> System.out.println("You cannot eat the " + intendedItem);
                             case NOT_FOUND ->
                                     System.out.println("There is nothing like " + intendedItem + " to eat around here");
                             case EATEN -> {
-                                if (outcome.getHealthChange() > 0)
-                                {
+                                if (outcome.getHealthChange() > 0) {
                                     System.out.println("You ate the " + intendedItem + ". You feel better.");
-                                }
-                                else if (outcome.getHealthChange() < 0)
-                                {
+                                } else if (outcome.getHealthChange() < 0) {
                                     System.out.println("You ate the " + intendedItem + ". You feel worse.");
-                                }
-                                else
-                                {
+                                } else {
                                     System.out.println("You ate the " + intendedItem + ". You feel no different.");
                                 }
 
                                 System.out.println("Health: " + adventure.health());
                             }
                         }
-                    } else
-                    {
+                    } else {
                         System.out.println("Invalid command - see help");
                     }
                 }

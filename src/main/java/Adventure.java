@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 public class Adventure {
-    private Player player;
-    private Map map;
+    private final Player player;
+    private final Map map;
 
     public Adventure() {
         this.map = new Map();
@@ -68,13 +68,11 @@ public class Adventure {
         return player.dropItem(shortName);
     }
 
-    public int health()
-    {
+    public int health() {
         return player.getHealth();
     }
 
-    public EatOutcome eat(String shortName)
-    {
+    public EatOutcome eat(String shortName) {
         return player.eat(shortName);
     }
 

@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 
 public class Room {
-    private String name;
-    private String description;
+    private final String name;
+    private final String description;
     private boolean lock;
-    private ArrayList<Item> items;
+    private final ArrayList<Item> items;
 
     private Room north;
     private Room south;

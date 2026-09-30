@@ -1,28 +1,23 @@
 import java.util.ArrayList;
 
-public class Player
-{
+public class Player {
     private Room currentRoom;
     private boolean isLocked;
-    private ArrayList<Item> inventory;
+    private final ArrayList<Item> inventory;
     private int health;
 
-    public Player(Room currentRoom, int health)
-    {
+    public Player(Room currentRoom, int health) {
         this.currentRoom = currentRoom;
         this.inventory = new ArrayList<>();
         this.health = health;
     }
 
-    public Room getCurrentRoom()
-    {
+    public Room getCurrentRoom() {
         return currentRoom;
     }
 
-    public boolean move(String direction)
-    {
-        Room desiredRoom = switch (direction)
-        {
+    public boolean move(String direction) {
+        Room desiredRoom = switch (direction) {
             case "north" -> currentRoom.getNorth();
             case "south" -> currentRoom.getSouth();
             case "east" -> currentRoom.getEast();
@@ -30,36 +25,30 @@ public class Player
             default -> null;
         };
 
-        if (desiredRoom == null)
-        {
+        if (desiredRoom == null) {
             isLocked = false;
             return false;
         }
 
-        if (desiredRoom.getLock())
-        {
+        if (desiredRoom.getLock()) {
             isLocked = true;
             return false;
-        } else
-        {
+        } else {
             currentRoom = desiredRoom;
             return true;
         }
     }
 
-    public boolean isLocked()
-    {
+    public boolean isLocked() {
         return isLocked;
     }
 
     // Return a copy so it can't be modified
-    public ArrayList<Item> getInventory()
-    {
+    public ArrayList<Item> getInventory() {
         return new ArrayList<>(inventory);
     }
 
-    public boolean takeItem(String intendedItem)
-    {
+    public boolean takeItem(String intendedItem) {
         Item item = currentRoom.findItem(intendedItem);
 
         if (item == null) return false;
@@ -69,8 +58,7 @@ public class Player
         return true;
     }
 
-    public boolean dropItem(String intendedItem)
-    {
+    public boolean dropItem(String intendedItem) {
         Item item = findItem(intendedItem);
 
         if (item == null) return false;
@@ -80,44 +68,34 @@ public class Player
     }
 
 
-    private Item findItem(String shortName)
-    {
-        for (Item item : inventory)
-        {
-            if (item.getShortName().equalsIgnoreCase((shortName)))
-            {
+    private Item findItem(String shortName) {
+        for (Item item : inventory) {
+            if (item.getShortName().equalsIgnoreCase((shortName))) {
                 return item;
             }
         }
         return null;
     }
 
-    public int getHealth()
-    {
+    public int getHealth() {
         return health;
     }
 
-    public EatOutcome eat(String shortName)
-    {
+    public EatOutcome eat(String shortName) {
         Item item = findItem(shortName);
-        if (item == null)
-        {
+        if (item == null) {
             item = currentRoom.findItem(shortName);
         }
-        if (item == null)
-        {
+        if (item == null) {
             return new EatOutcome(EatResult.NOT_FOUND, shortName, 0);
         }
-        if (!(item instanceof Food))
-        {
+        if (!(item instanceof Food food)) {
             return new EatOutcome(EatResult.NOT_FOOD, shortName, 0);
         }
 
-        Food food = (Food) item;
         health += food.getHealthPoints();
 
-        if (!inventory.remove(food))
-        {
+        if (!inventory.remove(food)) {
             currentRoom.removeItem(food);
         }
 
