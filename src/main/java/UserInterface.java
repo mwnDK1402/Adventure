@@ -56,7 +56,28 @@ public class UserInterface
                         """);
                 case "exit" -> running = false;
                 case "inventory" -> System.out.println(adventure.inventory());
-                case "health" -> System.out.println("Health: " + adventure.health());
+                case "health" -> {
+                    if (adventure.health() >= 100)
+                    {
+                        System.out.println("Health: " + adventure.health() + ". You are in perfect health!");
+                    }
+                    else if (adventure.health() >= 50)
+                    {
+                        System.out.println("Health: " + adventure.health() + ". You are in good health, but avoid fighting right now.");
+                    }
+                    else if (adventure.health() >= 25)
+                    {
+                        System.out.println("Health: " + adventure.health() + ". You are wounded - find something healthy to eat.");
+                    }
+                    else if (adventure.health() >= 1)
+                    {
+                        System.out.println("Health: " + adventure.health() + ". You are barely alive.");
+                    }
+                    else
+                    {
+                        System.out.println("Health: " + adventure.health() + ". You should be dead.");
+                    }
+                }
                 default ->
                 {
                     if (choice.startsWith("take "))
@@ -82,13 +103,29 @@ public class UserInterface
                     } else if (choice.startsWith("eat "))
                     {
                         String intendedItem = choice.substring(4);
-                        switch (adventure.eat(intendedItem))
+                        EatOutcome outcome = adventure.eat(intendedItem);
+
+                        switch (outcome.getResult())
                         {
                             case NOT_FOOD -> System.out.println("You cannot eat the " + intendedItem);
                             case NOT_FOUND ->
                                     System.out.println("There is nothing like " + intendedItem + " to eat around here");
-                            case EATEN ->
-                                    System.out.println("You ate the " + intendedItem + ". Health: " + adventure.health());
+                            case EATEN -> {
+                                if (outcome.getHealthChange() > 0)
+                                {
+                                    System.out.println("You ate the " + intendedItem + ". You feel better.");
+                                }
+                                else if (outcome.getHealthChange() < 0)
+                                {
+                                    System.out.println("You ate the " + intendedItem + ". You feel worse.");
+                                }
+                                else
+                                {
+                                    System.out.println("You ate the " + intendedItem + ". You feel no different.");
+                                }
+
+                                System.out.println("Health: " + adventure.health());
+                            }
                         }
                     } else
                     {

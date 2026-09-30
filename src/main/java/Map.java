@@ -93,9 +93,11 @@ public class Map {
 
         // Food for rooms
         Food burger = new Food("Burger", "A delicious burger", 20);
+        Food mushroom = new Food("Mushroom", "A glowing mushrooom", -20);
 
         // Add food to rooms
         room2.addItem(burger);
+        room4.addItem(mushroom);
 
     }
 

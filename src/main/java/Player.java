@@ -97,7 +97,7 @@ public class Player
         return health;
     }
 
-    public EatResult eat(String shortName)
+    public EatOutcome eat(String shortName)
     {
         Item item = findItem(shortName);
         if (item == null)
@@ -106,11 +106,11 @@ public class Player
         }
         if (item == null)
         {
-            return EatResult.NOT_FOUND;
+            return new EatOutcome(EatResult.NOT_FOUND, shortName, 0);
         }
         if (!(item instanceof Food))
         {
-            return EatResult.NOT_FOOD;
+            return new EatOutcome(EatResult.NOT_FOOD, shortName, 0);
         }
 
         Food food = (Food) item;
@@ -121,6 +121,6 @@ public class Player
             currentRoom.removeItem(food);
         }
 
-        return EatResult.EATEN;
+        return new EatOutcome(EatResult.EATEN, shortName, food.getHealthPoints());
     }
 }

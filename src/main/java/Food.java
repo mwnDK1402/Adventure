@@ -8,12 +8,6 @@ public class Food extends Item
         this.healthPoints = healthPoints;
     }
 
-    @Override
-    public String getLongName()
-    {
-        return super.getLongName() + " (HP: " + healthPoints + ")";
-    }
-
     public int getHealthPoints()
     {
         return healthPoints;
