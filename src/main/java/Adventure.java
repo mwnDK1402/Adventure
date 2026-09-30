@@ -72,4 +72,10 @@ public class Adventure {
     {
         return player.getHealth();
     }
+
+    public EatResult eat(String shortName)
+    {
+        return player.eat(shortName);
+    }
+
 }

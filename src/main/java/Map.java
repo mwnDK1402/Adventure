@@ -90,6 +90,13 @@ public class Map {
         // Add items to room
         room2.addItem(key);
         room2.addItem(lamp);
+
+        // Food for rooms
+        Food burger = new Food("Burger", "A delicious burger", 20);
+
+        // Add food to rooms
+        room2.addItem(burger);
+
     }
 
     public Room getInitialRoom() {
