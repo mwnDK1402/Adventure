@@ -7,7 +7,7 @@ public class Adventure {
     public Adventure() {
         this.map = new Map();
         map.buildMap();
-        this.player = new Player(map.getInitialRoom());
+        this.player = new Player(map.getInitialRoom(), 100);
     }
 
     public String look() {
@@ -66,5 +66,10 @@ public class Adventure {
 
     public boolean drop(String shortName) {
         return player.dropItem(shortName);
+    }
+
+    public int health()
+    {
+        return player.getHealth();
     }
 }

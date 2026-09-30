@@ -4,10 +4,12 @@ public class Player {
     private Room currentRoom;
     private boolean isLocked;
     private ArrayList<Item> inventory;
+    private int health;
 
-    public Player(Room currentRoom) {
+    public Player(Room currentRoom, int health) {
         this.currentRoom = currentRoom;
         this.inventory = new ArrayList<>();
+        this.health = health;
     }
 
     public Room getCurrentRoom() {
@@ -73,5 +75,10 @@ public class Player {
             }
         }
         return null;
+    }
+
+    public int getHealth()
+    {
+        return health;
     }
 }

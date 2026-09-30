@@ -47,6 +47,7 @@ public class UserInterface {
                         """);
                 case "exit" -> running = false;
                 case "inventory" -> System.out.println(adventure.inventory());
+                case "health" -> System.out.println("Health: " + adventure.health());
                 default -> {
                     if (choice.startsWith("take ")) {
                         String intendedItem = choice.substring(5);
