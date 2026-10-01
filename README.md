@@ -7,13 +7,19 @@ For reference, the original game's [C source code](https://github.com/vattam/BSD
 ## Build and run
 
 ```bash
-mvn compile                           # Compile to bytecode
-java -cp target/classes Main          # Run Main.main
+mvn package                           # Build target/adventure.jar
+java -jar target/adventure.jar        # Run the game
 ```
 
 > [!TIP]
-> `-cp target/classes` points Java at the compiled `.class`
-> files produced by `mvn compile`.
+> The jar's manifest names `Main` as its entry point, so
+> `java -jar` needs no classpath and no class name.
+
+`target/adventure.jar` is the whole game in one 15 KB file. Copy it
+wherever you like and run it the same way; it works on Windows, macOS
+and Linux alike, as long as the machine has a Java 21 or newer runtime
+installed. The jar is platform-independent, but the Java runtime is not
+bundled into it.
 
 ## Commands
 
