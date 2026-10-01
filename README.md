@@ -27,7 +27,12 @@ java -cp target/classes Main          # Run Main.main
 | `inventory` | | List the items you are carrying |
 | `take <item>` | | Pick up an item from the current room |
 | `drop <item>` | | Put down an item from your inventory |
+| `eat <item>` | | Eat an item, either from the current room or from your inventory |
+| `health` | | Show your current health and how you are feeling |
 | `exit` | | Quit the game |
+
+You start out with 100 health. Only food can be eaten, and eating it changes your
+health by the food's health points, which can be negative.
 
 ## Diagrams
 
