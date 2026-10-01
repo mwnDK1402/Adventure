@@ -15,9 +15,9 @@ graph Rooms {
     { rank = same; r7; r8; r9; }
 
     r1 [label = "Room 1", fillcolor = "#FFE08A", color = "#B8860B"];
-    r2 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 2</TD></TR><TR><TD><FONT POINT-SIZE="11">Key, Lamp</FONT></TD></TR></TABLE>>];
+    r2 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 2</TD></TR><TR><TD><FONT POINT-SIZE="11">Key, Lamp, Burger</FONT></TD></TR></TABLE>>];
     r3 [label = "Room 3"];
-    r4 [label = "Room 4"];
+    r4 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 4</TD></TR><TR><TD><FONT POINT-SIZE="11">Mushroom</FONT></TD></TR></TABLE>>];
     r5 [label = "Room 5"];
     r6 [label = "Room 6"];
     r7 [label = "Room 7"];
