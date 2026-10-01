@@ -52,13 +52,16 @@ class Player {
     - currentRoom : Room
     - isLocked : boolean
     - inventory : ArrayList<Item>
-    + Player(currentRoom : Room)
+    - health : int
+    + Player(currentRoom : Room, health : int)
     + getCurrentRoom() : Room
     + move(direction : String) : boolean
     + isLocked() : boolean
     + getInventory() : ArrayList<Item>
     + takeItem(intendedItem : String) : boolean
     + dropItem(intendedItem : String) : boolean
+    + getHealth() : int
+    + eat(shortName : String) : EatOutcome
     - findItem(shortName : String) : Item
 }
 
@@ -73,6 +76,8 @@ class Adventure {
     + inventory() : String
     + take(shortName : String) : boolean
     + drop(shortName : String) : boolean
+    + health() : int
+    + eat(shortName : String) : EatOutcome
     - itemsInRoom() : String
 }
 
@@ -88,6 +93,27 @@ class Item {
     + Item(shortName : String, longName : String)
     + getShortName() : String
     + getLongName() : String
+}
+
+class Food {
+    - healthPoints : int
+    + Food(shortName : String, longName : String, healthPoints : int)
+    + getHealthPoints() : int
+}
+
+class EatOutcome {
+    - result : EatResult
+    - foodName : String
+    - healthChange : int
+    + EatOutcome(result : EatResult, foodName : String, healthChange : int)
+    + getResult() : EatResult
+    + getHealthChange() : int
+}
+
+enum EatResult {
+    NOT_FOUND
+    NOT_FOOD
+    EATEN
 }
 
 class UserInterface {
@@ -110,6 +136,10 @@ Player "1" o-- "1" Room : currentRoom
 Room "0..4" o-- "0..4" Room : north / south / east / west
 Room "1" o-- "0..*" Item : items
 Player "1" o-- "0..*" Item : inventory
+Food --|> Item
+Player ..> Food : <<uses>>
+Player ..> EatOutcome : <<creates>>
+EatOutcome "1" o-- "1" EatResult : result
 UserInterface ..> Scanner : <<uses>>
 Adventure ..> ArrayList : <<uses>>
 Player ..> ArrayList : <<uses>>
