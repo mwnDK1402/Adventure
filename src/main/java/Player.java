@@ -5,6 +5,7 @@ public class Player {
     private boolean isLocked;
     private final ArrayList<Item> inventory;
     private int health;
+    private Weapon equipped;
 
     public Player(Room currentRoom, int health) {
         this.currentRoom = currentRoom;
@@ -100,5 +101,24 @@ public class Player {
         }
 
         return new EatOutcome(EatResult.EATEN, shortName, food.getHealthPoints());
+    }
+
+    public EquipResult equip(String shortName) {
+        Item item = findItem(shortName);
+        if (item == null) {
+            item = currentRoom.findItem(shortName);
+            inventory.add(item);
+            currentRoom.removeItem(item);
+        }
+        if (item == null) {
+            return EquipResult.NOT_FOUND;
+        }
+        if (!(item instanceof Weapon weapon)) {
+            return EquipResult.NOT_EQUIPMENT;
+        }
+
+        equipped = weapon;
+        return EquipResult.EQUIPPED;
+
     }
 }
