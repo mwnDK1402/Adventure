@@ -57,7 +57,25 @@ health by the food's health points, which can be negative.
 </picture>
 
 The diagrams are generated from source files in [`docs/`](docs): the class
-diagram from PlantUML and the room layout from Graphviz.
+diagram from PlantUML and the room layout from Graphviz. Each diagram has a
+light and a dark variant that are identical apart from their theme colours.
+
+To bring them back in sync with the Java sources after changing them, run:
+
+```bash
+tools/update-diagrams.sh
+```
+
+This finds the last commit that touched `docs/`, asks the `diagram-updater`
+agent in [`.opencode/agents/`](.opencode/agents) to reconcile the diagram
+sources with everything in `src/main/java` since then, and has it render and
+commit the result. The script prints the commits that were made at the end so
+you can review them. Run it with `--no-run` to only list the relevant commits.
+
+The agent may only edit files under `docs/` and is denied `git push`, so it
+cannot change the game itself or publish anything.
+
+Rendering the diagrams by hand, without the agent:
 
 ```bash
 plantuml -tsvg docs/class-diagram-light.puml docs/class-diagram-dark.puml
