@@ -51,18 +51,22 @@ tools/release.sh
 On Windows, double-click **`release.cmd`** in the repository root instead. It
 finds Git Bash for you, so there is no need to open a terminal or type a path.
 
-The script asks a few questions, each with a default you can accept by pressing
-Enter, and then it:
+The script asks a few questions, then it:
 
 1. builds the jar with `mvn package`;
 2. warns you if the Java sources have changed since the diagrams were last
    updated, and offers to stop (see [Diagrams](#diagrams));
 3. renders `docs/class-diagram-light.pdf` if it is missing or older than its
    source, so a stale diagram never reaches the teachers;
-4. commits any uncommitted changes, tags the commit and pushes both;
-5. creates the GitHub release with the jar and the PDF attached;
-6. copies both files into `dist/`;
-7. prints the link to send the teachers.
+4. asks what the part is about, which becomes the heading on the release page;
+5. commits any uncommitted changes, tags the commit and pushes both;
+6. creates the GitHub release with the jar and the PDF attached;
+7. copies both files into `dist/`;
+8. prints the link to send the teachers.
+
+Most questions have a default you can accept by pressing Enter. The summary in
+step 4 is the exception: it wants a real sentence, like *"Food and Health!"* on
+`part-3`, because it is the first thing a reader sees.
 
 `part-1`, `part-2`, … are pre-releases. The finished submission uses the tag
 `final` and is published as a full release. The script asks which one you want
@@ -76,10 +80,10 @@ tools/release.sh --dry-run              # check everything, change nothing
 tools/release.sh --help                 # all options
 ```
 
-Useful options: `--tag <name>` to choose the tag, `--title <text>` and
-`--notes <text>` for the release title and description, `--prerelease` or
-`--no-prerelease` to skip that question, and `--yes` to accept every default
-without prompting.
+Useful options: `--tag <name>` to choose the tag, `--summary <text>` for the
+release heading, `--title <text>` and `--notes <text>` for the release title
+and a complete replacement body, `--prerelease` or `--no-prerelease` to skip
+that question, and `--yes` to accept every default without prompting.
 
 ### What you need installed
 

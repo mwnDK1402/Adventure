@@ -34,6 +34,7 @@ die() {
 
 TAG=""
 TITLE=""
+SUMMARY=""
 NOTES=""
 PRERELEASE=""
 ASSUME_YES=""
@@ -46,7 +47,8 @@ usage() {
 Options:
   --tag <name>       Tag to create. Default is the next part-N, or "final".
   --title <text>     Release title. Default is "Part N" or "Final".
-  --notes <text>     Release notes. Default is the title plus a changelog link.
+  --summary <text>   One-line note for the release page. Asked for otherwise.
+  --notes <text>     Replace the whole release body. Overrides --summary.
   --prerelease       Mark the GitHub release as a pre-release.
   --no-prerelease    Publish it as a full release.
   --yes              Accept every default without prompting.
@@ -65,6 +67,11 @@ while [[ $# -gt 0 ]]; do
         --title)
             [[ -n "${2:-}" ]] || die "--title needs a value."
             TITLE="$2"
+            shift 2
+            ;;
+        --summary)
+            [[ -n "${2:-}" ]] || die "--summary needs a value."
+            SUMMARY="$2"
             shift 2
             ;;
         --notes)
@@ -101,6 +108,10 @@ while [[ $# -gt 0 ]]; do
 done
 
 # ask PROMPT DEFAULT -> $REPLY
+#
+# read returns non-zero at end of input. Under `set -e` that would abort the
+# script silently, and in a retry loop it would spin, so treat it as a real
+# failure with a way out.
 ask() {
     local prompt="$1" default="${2:-}" reply
     if [[ -n "$ASSUME_YES" ]]; then
@@ -109,12 +120,11 @@ ask() {
         return
     fi
     if [[ -n "$default" ]]; then
-        read -r -p "   $prompt [$default]: " reply
-        REPLY="${reply:-$default}"
+        read -r -p "   $prompt [$default]: " reply || no_input
     else
-        read -r -p "   $prompt: " reply
-        REPLY="$reply"
+        read -r -p "   $prompt: " reply || no_input
     fi
+    REPLY="${reply:-$default}"
 }
 
 # confirm PROMPT -> 0 for yes
@@ -124,8 +134,12 @@ confirm() {
         printf '   %s yes\n' "$prompt"
         return 0
     fi
-    read -r -p "   $prompt [y/N]: " reply
+    read -r -p "   $prompt [y/N]: " reply || no_input
     [[ "$reply" =~ ^[Yy] ]]
+}
+
+no_input() {
+    die "No input to read. Re-run with --yes to accept every default, or pass the answers as options."
 }
 
 # ---------------------------------------------------------------- requirements
@@ -300,11 +314,34 @@ if [[ -z "$TITLE" ]]; then
     [[ "$TAG" == part-* ]] || TITLE="Final"
 fi
 
+# The release body opens with this line, so it is worth a sentence rather than a
+# repeat of the tag. Only skipped when --notes replaces the body outright.
+if [[ -z "$SUMMARY" && -z "$NOTES" ]]; then
+    if [[ -n "$ASSUME_YES" ]]; then
+        SUMMARY="$TITLE"
+    else
+        say "Release notes"
+        note "This opens the release page, like \"Food and Health!\" on part-3."
+        while :; do
+            ask "What is this part about?" ""
+            [[ -n "$REPLY" ]] && break
+            warn "A blank summary would just repeat the tag, so please write a line."
+        done
+        SUMMARY="$REPLY"
+        note ""
+    fi
+fi
+
 # ------------------------------------------------------ 5. what will be tagged
 
 say "About to release"
 note "tag:     $TAG"
 note "title:   $TITLE"
+if [[ -n "$NOTES" ]]; then
+    note "body:    replaced by --notes"
+elif [[ -n "$SUMMARY" ]]; then
+    note "summary: $SUMMARY"
+fi
 if [[ "$PRERELEASE" == yes ]]; then
     note "type:    pre-release"
 else
@@ -358,7 +395,7 @@ if [[ -n "$NOTES" ]]; then
     printf '%s\n' "$NOTES" >"$NOTES_FILE"
 else
     {
-        printf '# %s\n\n' "$TITLE"
+        printf '# %s\n\n' "$SUMMARY"
         if [[ -n "$PREV" ]]; then
             printf '**Full Changelog**: https://github.com/%s/compare/%s...%s\n' \
                 "$REPO_SLUG" "$PREV" "$TAG"
