@@ -446,4 +446,4 @@ if [[ -n "$PREV" ]]; then
     note "changes:  https://github.com/$REPO_SLUG/compare/$PREV...$TAG"
 fi
 note ""
-note "Email the tree link, the PDF and the jar to the teachers."
+note "Submit the tree link, the PDF and the jar on ItsLearning."
