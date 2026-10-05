@@ -99,6 +99,13 @@ public class Map {
         room2.addItem(burger);
         room4.addItem(mushroom);
 
+        // Weapons for room
+        Weapon woodenSword = new MeleeWeapon("Wooden sword", "A mossy wooden sword", 5);
+        Weapon slingshot = new RangedWeapon("Slingshot", "A wooden slingshot with a worn leather pouch", 8, 3);
+
+        // Add weapons to rooms
+        room1.addItem(woodenSword);
+        room3.addItem(slingshot);
     }
 
     public Room getInitialRoom() {
