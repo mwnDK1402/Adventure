@@ -40,6 +40,71 @@ bundled into it.
 You start out with 100 health. Only food can be eaten, and eating it changes your
 health by the food's health points, which can be negative.
 
+## Releasing
+
+Each submission is a tagged release. To cut one, run:
+
+```bash
+tools/release.sh
+```
+
+On Windows, double-click **`release.cmd`** in the repository root instead. It
+finds Git Bash for you, so there is no need to open a terminal or type a path.
+
+The script asks a few questions, each with a default you can accept by pressing
+Enter, and then it:
+
+1. builds the jar with `mvn package`;
+2. warns you if the Java sources have changed since the diagrams were last
+   updated, and offers to stop (see [Diagrams](#diagrams));
+3. renders `docs/class-diagram-light.pdf` if it is missing or older than its
+   source, so a stale diagram never reaches the teachers;
+4. commits any uncommitted changes, tags the commit and pushes both;
+5. creates the GitHub release with the jar and the PDF attached;
+6. copies both files into `dist/`;
+7. prints the link to send the teachers.
+
+`part-1`, `part-2`, … are pre-releases. The finished submission uses the tag
+`final` and is published as a full release. The script asks which one you want
+and suggests the next free number.
+
+Re-running the script after a failure is safe: if the tag is already on the
+commit being released, it is reused rather than refused.
+
+```bash
+tools/release.sh --dry-run              # check everything, change nothing
+tools/release.sh --help                 # all options
+```
+
+Useful options: `--tag <name>` to choose the tag, `--title <text>` and
+`--notes <text>` for the release title and description, `--prerelease` or
+`--no-prerelease` to skip that question, and `--yes` to accept every default
+without prompting.
+
+### What you need installed
+
+| Tool | Why | Where |
+| --- | --- | --- |
+| Java 21+ | Runs Maven and PlantUML | [adoptium.net](https://adoptium.net/) |
+| Maven | Builds the jar | [maven.apache.org](https://maven.apache.org/download.cgi) |
+| Git | Commits, tags, pushes | [git-scm.com](https://git-scm.com/download/win) |
+| GitHub CLI | Creates the release | [cli.github.com](https://cli.github.com/) |
+| PlantUML | Renders the submission PDF | [plantuml.com/pdf](https://plantuml.com/pdf) |
+
+Log the GitHub CLI in once with `gh auth login`. The script checks all of these
+up front and reports everything that is missing at once, with a link for each.
+
+PlantUML only has to be able to write a PDF, which is why the shared
+`plantuml.zip` works: unzip it anywhere, then either add it to `PATH` or point
+the script at the jar with `PLANTUML_JAR`. Graphviz is *not* needed to release;
+only the diagram script uses it.
+
+### Sending it in
+
+Email the teachers the `tree/<tag>` link the script prints, together with
+`dist/adventure.jar` and `dist/class-diagram-light.pdf`. Both are also attached
+to the release, so the link alone is enough for them to download them.
+
 ## Diagrams
 
 ### Class diagram
@@ -87,7 +152,7 @@ The script runs it on `opencode/big-pickle`. Use `--model <provider>/<model>`,
 or set `DIAGRAM_MODEL`, to run it on something else; `opencode models` lists
 what you have available.
 
-Rendering the diagrams by hand, without the agent:
+Rendering the diagrams by hand, without the agent (needs Graphviz):
 
 ```bash
 plantuml -tsvg docs/class-diagram-light.puml docs/class-diagram-dark.puml
@@ -106,6 +171,7 @@ plantuml -tpdf docs/class-diagram-light.puml
 
 This writes `docs/class-diagram-light.pdf`. It is a build artifact and is
 ignored by Git, so it has to be regenerated locally before submitting.
+`tools/release.sh` does this for you and copies the result into `dist/`.
 
 Only the light variant is generated. PlantUML's PDF output does not paint a
 page background, so the dark variant would come out with near-white text on a
