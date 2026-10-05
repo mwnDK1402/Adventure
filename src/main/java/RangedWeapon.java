@@ -15,4 +15,9 @@ public class RangedWeapon extends Weapon {
     public void use(){
         ammunition--;
     }
+
+    @Override
+    public String getCannotUseMessage(){
+        return "You are out of ammunition";
+    }
 }

@@ -84,4 +84,8 @@ public class Adventure {
         return player.equip(shortName);
     }
 
+    public AttackOutcome attack(){
+        return player.attack();
+    }
+
 }

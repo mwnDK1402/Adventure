@@ -65,7 +65,7 @@ public class Player {
         if (item == null) return false;
         currentRoom.addItem(item);
         inventory.remove(item);
-        if (item instanceof Weapon weapon && equipped == weapon){
+        if (item instanceof Weapon weapon && equipped == weapon) {
             equipped = null;
         }
         return true;
@@ -127,5 +127,19 @@ public class Player {
 
     public Weapon getEquipped() {
         return equipped;
+    }
+
+    public AttackOutcome attack() {
+        if (equipped == null) {
+           return new AttackOutcome(AttackResult.NO_WEAPON, 0, null);
+        }
+
+        if (!equipped.canUse()) {
+            return new AttackOutcome(AttackResult.CANNOT_USE, 0, equipped.getCannotUseMessage());
+        }
+
+        equipped.use();
+        return new AttackOutcome(AttackResult.ATTACKED, equipped.getDamage(), null);
+
     }
 }
