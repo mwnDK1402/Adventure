@@ -165,7 +165,9 @@ need gh "creates the GitHub release" \
     "Install the GitHub CLI: https://cli.github.com/"
 
 # PlantUML renders the submission PDF. Prefer the command, but fall back to a
-# plantuml.jar so the shared zip works without installing anything.
+# plantuml.jar so the shared zip works without installing anything. It is not a
+# hard requirement: only a missing or out-of-date PDF needs it, so it is looked
+# for at that point rather than up front.
 PLANTUML=()
 detect_plantuml() {
     local jar
@@ -187,9 +189,18 @@ detect_plantuml() {
     return 1
 }
 
-if ! detect_plantuml; then
-    MISSING+=("plantuml"$'\n'"      why: renders the submission PDF"$'\n'"      fix: PlantUML can export to PDF: https://plantuml.com/pdf -- unzip plantuml.zip somewhere, then put it on PATH or set PLANTUML_JAR to the jar inside it.")
-fi
+render_pdf() {
+    if ! detect_plantuml; then
+        warn "PlantUML is needed to render the PDF, but it was not found."
+        note "PlantUML can export to PDF: https://plantuml.com/pdf"
+        note "Unzip plantuml.zip anywhere, then put it on PATH or set PLANTUML_JAR"
+        note "to the jar inside it. Or render the PDF yourself with:"
+        note "    plantuml -tpdf $PUML"
+        die "Then run this again."
+    fi
+    "${PLANTUML[@]}" -tpdf "$PUML"
+    [[ -f "$PDF" ]] || die "PlantUML did not produce $PDF."
+}
 
 if [[ ${#MISSING[@]} -gt 0 ]]; then
     warn "Missing tools:"
@@ -239,11 +250,11 @@ else
     warn "src/ has changed since the last diagram update."
     git diff --stat "$BASE" -- src/ | sed 's/^/   /' >&2
     note ""
-    note "The diagrams in docs/ may be out of date. Refresh them with:"
-    note "    tools/update-diagrams.sh"
+    note "The diagrams in docs/ may be out of date. Update them, or re-run this"
+    note "once they are, unless the change did not affect them."
     note ""
     if ! confirm "Release anyway?"; then
-        die "Stopped. Run tools/update-diagrams.sh, then this again."
+        die "Stopped."
     fi
 fi
 
@@ -256,16 +267,15 @@ fi
 if [[ ! -f "$PDF" ]]; then
     say "Rendering the submission PDF"
     note "$PDF is missing, generating it from $PUML"
-    "${PLANTUML[@]}" -tpdf "$PUML"
+    render_pdf
 elif [[ "$PDF" -ot "$PUML" ]]; then
     say "Rendering the submission PDF"
     warn "$PDF is older than $PUML, regenerating"
-    "${PLANTUML[@]}" -tpdf "$PUML"
+    render_pdf
 else
     say "Submission PDF"
     note "$PDF is up to date"
 fi
-[[ -f "$PDF" ]] || die "PlantUML did not produce $PDF."
 
 # ------------------------------------------------------------- 4. tag choice
 
