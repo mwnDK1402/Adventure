@@ -60,6 +60,15 @@ public class UserInterface {
                         System.out.println("Health: " + adventure.health() + ". You should be dead.");
                     }
                 }
+                case "attack" -> {
+                    AttackOutcome outcome = adventure.attack();
+
+                    switch (outcome.getResult()){
+                        case NO_WEAPON -> System.out.println("You have no weapon equipped");
+                        case CANNOT_USE -> System.out.println(outcome.getMessage());
+                        case ATTACKED -> System.out.println("You attacked for " + outcome.getDamage() + " damage.");
+                    }
+                }
                 default -> {
                     if (choice.startsWith("take ")) {
                         String intendedItem = choice.substring(5);
