@@ -1,0 +1,6 @@
+# Git for Windows defaults to core.autocrlf=true, which checks out .sh files
+# with CRLF. Git Bash then fails on the shebang with "bad interpreter", so pin
+# the shell scripts to LF. Windows launchers are the mirror image.
+*.sh text eol=lf
+*.cmd text eol=crlf
+*.bat text eol=crlf
