@@ -20,4 +20,9 @@ public class RangedWeapon extends Weapon {
     public String getCannotUseMessage(){
         return "You are out of ammunition";
     }
+
+    @Override
+    public String getAttackVerb() {
+        return "shot";
+    }
 }

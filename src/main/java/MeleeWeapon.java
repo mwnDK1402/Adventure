@@ -18,4 +18,8 @@ public class MeleeWeapon extends Weapon {
         return null;
     }
 
+    @Override
+    public String getAttackVerb() {
+        return "slashed";
+    }
 }

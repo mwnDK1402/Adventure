@@ -5,6 +5,8 @@ public abstract class Weapon extends Item {
 
     public abstract String getCannotUseMessage();
 
+    public abstract String getAttackVerb();
+
     private int damage;
 
     public Weapon(String shortName, String longName, int damage) {
