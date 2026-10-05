@@ -71,7 +71,6 @@ public class Player {
         return true;
     }
 
-
     private Item findItem(String shortName) {
         for (Item item : inventory) {
             if (item.getInventoryText().equalsIgnoreCase((shortName))) {
@@ -108,10 +107,10 @@ public class Player {
 
     public EquipResult equip(String shortName) {
         Item item = findItem(shortName);
+        boolean takeItem = false;
         if (item == null) {
             item = currentRoom.findItem(shortName);
-            inventory.add(item);
-            currentRoom.removeItem(item);
+            takeItem = item != null;
         }
         if (item == null) {
             return EquipResult.NOT_FOUND;
@@ -121,8 +120,11 @@ public class Player {
         }
 
         equipped = weapon;
+        if (takeItem) {
+            inventory.add(item);
+            currentRoom.removeItem(item);
+        }
         return EquipResult.EQUIPPED;
-
     }
 
     public Weapon getEquipped() {
@@ -140,6 +142,5 @@ public class Player {
 
         equipped.use();
         return new AttackOutcome(AttackResult.ATTACKED, equipped.getDamage(), null, equipped.getAttackVerb(), equipped.getUsesLeft());
-
     }
 }
