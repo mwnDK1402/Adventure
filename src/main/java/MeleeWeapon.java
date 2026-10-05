@@ -22,4 +22,9 @@ public class MeleeWeapon extends Weapon {
     public String getAttackVerb() {
         return "slashed";
     }
+
+    @Override
+    public int getUsesLeft() {
+        return -1;
+    }
 }

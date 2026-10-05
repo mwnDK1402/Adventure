@@ -131,15 +131,15 @@ public class Player {
 
     public AttackOutcome attack() {
         if (equipped == null) {
-           return new AttackOutcome(AttackResult.NO_WEAPON, 0, null, null);
+           return new AttackOutcome(AttackResult.NO_WEAPON, 0, null, null, -1);
         }
 
         if (!equipped.canUse()) {
-            return new AttackOutcome(AttackResult.CANNOT_USE, 0, equipped.getCannotUseMessage(), null);
+            return new AttackOutcome(AttackResult.CANNOT_USE, 0, equipped.getCannotUseMessage(), null, equipped.getUsesLeft());
         }
 
         equipped.use();
-        return new AttackOutcome(AttackResult.ATTACKED, equipped.getDamage(), null, equipped.getAttackVerb());
+        return new AttackOutcome(AttackResult.ATTACKED, equipped.getDamage(), null, equipped.getAttackVerb(), equipped.getUsesLeft());
 
     }
 }

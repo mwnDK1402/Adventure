@@ -7,6 +7,8 @@ public abstract class Weapon extends Item {
 
     public abstract String getAttackVerb();
 
+    public abstract int getUsesLeft();
+
     private int damage;
 
     public Weapon(String shortName, String longName, int damage) {

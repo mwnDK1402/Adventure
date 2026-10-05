@@ -66,7 +66,12 @@ public class UserInterface {
                     switch (outcome.getResult()){
                         case NO_WEAPON -> System.out.println("You have no weapon equipped");
                         case CANNOT_USE -> System.out.println(outcome.getMessage());
-                        case ATTACKED -> System.out.println("You " + outcome.getAttackVerb() + " the enemy for " + outcome.getDamage() + " damage");
+                        case ATTACKED -> {
+                            System.out.println("You " + outcome.getAttackVerb() + " the enemy for " + outcome.getDamage() + " damage");
+                            if (outcome.getUsesLeft() >= 0){
+                                System.out.println("Uses left: " + outcome.getUsesLeft());
+                            }
+                        }
                     }
                 }
                 default -> {

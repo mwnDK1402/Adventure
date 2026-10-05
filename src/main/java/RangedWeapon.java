@@ -25,4 +25,9 @@ public class RangedWeapon extends Weapon {
     public String getAttackVerb() {
         return "shot";
     }
+
+    @Override
+    public int getUsesLeft() {
+        return ammunition;
+    }
 }
