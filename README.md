@@ -34,6 +34,7 @@ bundled into it.
 | `take <item>` | | Pick up an item from the current room |
 | `drop <item>` | | Put down an item from your inventory |
 | `eat <item>` | | Eat an item, either from the current room or from your inventory |
+| `equip <item>` | | Equip an item, either from the current room or from your inventory |
 | `health` | | Show your current health and how you are feeling |
 | `exit` | | Quit the game |
 
