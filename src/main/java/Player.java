@@ -124,4 +124,8 @@ public class Player {
         return EquipResult.EQUIPPED;
 
     }
+
+    public Weapon getEquipped() {
+        return equipped;
+    }
 }

@@ -35,7 +35,11 @@ public class Adventure {
         }
 
         for (Item item : inventory) {
-            items += "- " + item.getInventoryText() + System.lineSeparator();
+            items += "- " + item.getInventoryText();
+            if (item instanceof Weapon weapon && player.getEquipped() == weapon){
+                items += " (equipped)";
+            }
+            items += System.lineSeparator();
         }
         return items;
     }
