@@ -53,6 +53,7 @@ class Player {
     - isLocked : boolean
     - inventory : ArrayList<Item>
     - health : int
+    - equipped : Weapon
     + Player(currentRoom : Room, health : int)
     + getCurrentRoom() : Room
     + move(direction : String) : boolean
@@ -62,6 +63,9 @@ class Player {
     + dropItem(intendedItem : String) : boolean
     + getHealth() : int
     + eat(shortName : String) : EatOutcome
+    + equip(shortName : String) : EquipResult
+    + getEquipped() : Weapon
+    + attack() : AttackOutcome
     - findItem(shortName : String) : Item
 }
 
@@ -78,6 +82,8 @@ class Adventure {
     + drop(shortName : String) : boolean
     + health() : int
     + eat(shortName : String) : EatOutcome
+    + equip(shortName : String) : EquipResult
+    + attack() : AttackOutcome
     - itemsInRoom() : String
 }
 
@@ -91,7 +97,7 @@ class Item {
     - shortName : String
     - longName : String
     + Item(shortName : String, longName : String)
-    + getShortName() : String
+    + getInventoryText() : String
     + getLongName() : String
 }
 
@@ -99,6 +105,36 @@ class Food {
     - healthPoints : int
     + Food(shortName : String, longName : String, healthPoints : int)
     + getHealthPoints() : int
+}
+
+abstract class Weapon {
+    - damage : int
+    + Weapon(shortName : String, longName : String, damage : int)
+    + {abstract} canUse() : boolean
+    + {abstract} use() : void
+    + {abstract} getCannotUseMessage() : String
+    + {abstract} getAttackVerb() : String
+    + {abstract} getUsesLeft() : int
+    + getDamage() : int
+}
+
+class MeleeWeapon {
+    + MeleeWeapon(shortName : String, longName : String, damage : int)
+    + canUse() : boolean
+    + use() : void
+    + getCannotUseMessage() : String
+    + getAttackVerb() : String
+    + getUsesLeft() : int
+}
+
+class RangedWeapon {
+    - ammunition : int
+    + RangedWeapon(shortName : String, longName : String, damage : int, ammunition : int)
+    + canUse() : boolean
+    + use() : void
+    + getCannotUseMessage() : String
+    + getAttackVerb() : String
+    + getUsesLeft() : int
 }
 
 class EatOutcome {
@@ -114,6 +150,32 @@ enum EatResult {
     NOT_FOUND
     NOT_FOOD
     EATEN
+}
+
+class AttackOutcome {
+    - result : AttackResult
+    - damage : int
+    - message : String
+    - attackVerb : String
+    - usesLeft : int
+    + AttackOutcome(result : AttackResult, damage : int, message : String, attackVerb : String, usesLeft : int)
+    + getResult() : AttackResult
+    + getDamage() : int
+    + getMessage() : String
+    + getAttackVerb() : String
+    + getUsesLeft() : int
+}
+
+enum AttackResult {
+    NO_WEAPON
+    CANNOT_USE
+    ATTACKED
+}
+
+enum EquipResult {
+    NOT_EQUIPMENT
+    NOT_FOUND
+    EQUIPPED
 }
 
 class UserInterface {
@@ -136,10 +198,16 @@ Player "1" o-- "1" Room : currentRoom
 Room "0..4" o-- "0..4" Room : north / south / east / west
 Room "1" o-- "0..*" Item : items
 Player "1" o-- "0..*" Item : inventory
+Player "1" o-- "0..1" Weapon : equipped
 Food --|> Item
+Weapon --|> Item
+MeleeWeapon --|> Weapon
+RangedWeapon --|> Weapon
 Player ..> Food : <<uses>>
 Player ..> EatOutcome : <<creates>>
 EatOutcome "1" o-- "1" EatResult : result
+Player ..> AttackOutcome : <<creates>>
+AttackOutcome "1" o-- "1" AttackResult : result
 UserInterface ..> Scanner : <<uses>>
 Adventure ..> ArrayList : <<uses>>
 Player ..> ArrayList : <<uses>>
