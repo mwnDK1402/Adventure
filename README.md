@@ -70,10 +70,17 @@ This finds the last commit that touched `docs/`, asks the `diagram-updater`
 agent in [`.opencode/agents/`](.opencode/agents) to reconcile the diagram
 sources with everything in `src/main/java` since then, and has it render and
 commit the result. The script prints the commits that were made at the end so
-you can review them. Run it with `--no-run` to only list the relevant commits.
+you can review them.
+
+```bash
+tools/update-diagrams.sh --no-run     # only list the relevant commits
+tools/update-diagrams.sh --help# full usage
+```
 
 The agent may only edit files under `docs/` and is denied `git push`, so it
-cannot change the game itself or publish anything.
+cannot change the game itself or publish anything. It runs on
+`opencode/big-pickle`; pass `--model <provider>/<model>` to the script to
+override that, or run `opencode models` to see what you have available.
 
 Rendering the diagrams by hand, without the agent:
 

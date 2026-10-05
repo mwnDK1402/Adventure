@@ -2,8 +2,9 @@
 #
 # Refresh the diagrams in docs/ from the Java sources, then show what was committed.
 #
-#   tools/update-diagrams.sh            # update, render and commit
-#   tools/update-diagrams.sh --no-run   # only show the relevant commit range
+#   tools/update-diagrams.sh                     # update, render and commit
+#   tools/update-diagrams.sh --no-run            # only show the relevant commit range
+#   tools/update-diagrams.sh --model <id>        # override the model
 #
 # The diagram agent is scoped to docs/ and is denied `git push`, so this is safe
 # to run without further supervision: it can only ever change documentation.
@@ -11,6 +12,28 @@
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
+
+MODEL=""
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --no-run)
+            NO_RUN=1
+            ;;
+        --model)
+            MODEL="$2"
+            shift
+            ;;
+        -h | --help)
+            sed -n '2,10p' "$0" | cut -c 3-
+            exit 0
+            ;;
+        *)
+            echo "Unknown option: $1" >&2
+            exit 2
+            ;;
+    esac
+    shift
+done
 
 # The last commit that touched the diagrams. Everything in src/ after it is
 # source work the diagrams have not caught up with yet.
@@ -23,12 +46,20 @@ BEFORE=$(git rev-parse HEAD)
 echo "Diagrams last updated in $BASE ($(git log -1 --format=%s "$BASE"))"
 echo
 
-if [[ "${1:-}" == "--no-run" ]]; then
+if [[ -n "${NO_RUN:-}" ]]; then
     git log --oneline "$BASE"..HEAD -- src/
     exit 0
 fi
 
-opencode run --agent diagram-updater --auto \
+# Optional model override, passed through only when given.
+MODEL_ARGS=()
+if [[ -n "$MODEL" ]]; then
+    MODEL_ARGS=(--model "$MODEL")
+    echo "Using model $MODEL"
+    echo
+fi
+
+if ! opencode run --agent diagram-updater --auto "${MODEL_ARGS[@]}" \
     "Update the diagram sources in docs/ to match the Java sources in src/main/java.
 
 Start from what changed since commit $BASE:
@@ -40,7 +71,15 @@ That range is a hint about where to look, not the whole job. Read the full
 sources and reconcile every class, field, method and room against the
 diagrams, so that anything missed in earlier runs is caught too.
 
-Then render the diagrams and commit the result."
+Then render the diagrams and commit the result."; then
+    echo >&2
+    echo "The diagram run failed. The usual cause is a model that is not available" >&2
+    echo "to you. List what you have, then retry with one of those:" >&2
+    echo >&2
+    echo "    opencode models" >&2
+    echo "    tools/update-diagrams.sh --model <provider>/<model>" >&2
+    exit 1
+fi
 
 echo
 echo "Commits made:"
