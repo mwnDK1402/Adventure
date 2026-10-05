@@ -70,7 +70,7 @@ public class Player {
 
     private Item findItem(String shortName) {
         for (Item item : inventory) {
-            if (item.getShortName().equalsIgnoreCase((shortName))) {
+            if (item.getInventoryText().equalsIgnoreCase((shortName))) {
                 return item;
             }
         }

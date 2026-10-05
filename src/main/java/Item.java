@@ -7,7 +7,7 @@ public class Item {
         this.longName = longName;
     }
 
-    public String getShortName() {
+    public String getInventoryText() {
         return this.shortName;
     }
 

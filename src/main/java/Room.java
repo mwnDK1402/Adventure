@@ -90,7 +90,7 @@ public class Room {
 
     public Item findItem(String shortName) {
         for (Item item : items) {
-            if (item.getShortName().equalsIgnoreCase((shortName))) {
+            if (item.getInventoryText().equalsIgnoreCase((shortName))) {
                 return item;
             }
         }

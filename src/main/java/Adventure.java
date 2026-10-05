@@ -35,7 +35,7 @@ public class Adventure {
         }
 
         for (Item item : inventory) {
-            items += "- " + item.getShortName() + System.lineSeparator();
+            items += "- " + item.getInventoryText() + System.lineSeparator();
         }
         return items;
     }
