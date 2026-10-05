@@ -65,6 +65,9 @@ public class Player {
         if (item == null) return false;
         currentRoom.addItem(item);
         inventory.remove(item);
+        if (item instanceof Weapon weapon && equipped == weapon){
+            equipped = null;
+        }
         return true;
     }
 

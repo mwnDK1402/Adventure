@@ -95,6 +95,16 @@ public class UserInterface {
                                 System.out.println("Health: " + adventure.health());
                             }
                         }
+                    } else if (choice.startsWith("equip ")) {
+                        String intendedWeapon = choice.substring(6);
+                        EquipResult result = adventure.equip(intendedWeapon);
+
+                        switch (result) {
+                            case NOT_EQUIPMENT -> System.out.println("You cannot equip the " + intendedWeapon);
+                            case NOT_FOUND ->
+                                    System.out.println("There is nothing like " + intendedWeapon + " to equip around here.");
+                            case EQUIPPED -> System.out.println("You equipped the " + intendedWeapon);
+                        }
                     } else {
                         System.out.println("Invalid command - see help");
                     }

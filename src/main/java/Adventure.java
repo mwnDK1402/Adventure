@@ -76,4 +76,8 @@ public class Adventure {
         return player.eat(shortName);
     }
 
+    public EquipResult equip(String shortName){
+        return player.equip(shortName);
+    }
+
 }
