@@ -66,15 +66,18 @@ To bring them back in sync with the Java sources after changing them, run:
 tools/update-diagrams.sh
 ```
 
-This finds the last commit that touched `docs/`, asks the `diagram-updater`
-agent in [`.opencode/agents/`](.opencode/agents) to reconcile the diagram
-sources with everything in `src/main/java` since then, and has it render and
-commit the result. The script prints the commits that were made at the end so
-you can review them.
+This finds the last commit that touched `docs/`. If nothing in `src/main/java`
+has changed since then — including uncommitted edits — it reports that the
+diagrams are already up to date and exits without calling the model. Otherwise
+it asks the `diagram-updater` agent in [`.opencode/agents/`](.opencode/agents) to
+reconcile the diagram sources with the whole source tree, then render and commit
+the result. The script prints the commits that were made at the end so you can
+review them.
 
 ```bash
 tools/update-diagrams.sh --no-run     # only list the relevant commits
-tools/update-diagrams.sh --help# full usage
+tools/update-diagrams.sh --force      # reconcile even if src/ looks unchanged
+tools/update-diagrams.sh --help       # full usage
 ```
 
 The agent may only edit files under `docs/` and is denied `git push`, so it

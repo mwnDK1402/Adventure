@@ -4,6 +4,7 @@
 #
 #   tools/update-diagrams.sh                     # update, render and commit
 #   tools/update-diagrams.sh --no-run            # only show the relevant commit range
+#   tools/update-diagrams.sh --force             # reconcile even if src/ looks unchanged
 #   tools/update-diagrams.sh --model <id>        # override the model
 #
 # The diagram agent is scoped to docs/ and is denied `git push`, so this is safe
@@ -19,12 +20,15 @@ while [[ $# -gt 0 ]]; do
         --no-run)
             NO_RUN=1
             ;;
+        --force | -f)
+            FORCE=1
+            ;;
         --model)
             MODEL="$2"
             shift
             ;;
         -h | --help)
-            sed -n '2,10p' "$0" | cut -c 3-
+            sed -n '2,11p' "$0" | cut -c 3-
             exit 0
             ;;
         *)
@@ -41,15 +45,29 @@ if ! BASE=$(git log -1 --format=%H -- docs/); then
     BASE=$(git rev-list --max-parents=0 HEAD)
 fi
 
-BEFORE=$(git rev-parse HEAD)
-
 echo "Diagrams last updated in $BASE ($(git log -1 --format=%s "$BASE"))"
-echo
 
 if [[ -n "${NO_RUN:-}" ]]; then
+    echo
     git log --oneline "$BASE"..HEAD -- src/
     exit 0
 fi
+
+# Compare $BASE against the working tree, so uncommitted src/ edits count too.
+# Reconciling costs a model call and a few minutes, so never pay for it when
+# there is provably nothing to reconcile.
+if git diff --quiet "$BASE" -- src/ && [[ -z "${FORCE:-}" ]]; then
+    echo
+    echo "src/ is unchanged since then, so the diagrams are already up to date."
+    echo "Pass --force to reconcile the whole source tree anyway."
+    exit 0
+fi
+
+echo
+git diff --stat "$BASE" -- src/
+echo
+
+BEFORE=$(git rev-parse HEAD)
 
 # Optional model override, passed through only when given.
 MODEL_ARGS=()
@@ -71,7 +89,10 @@ That range is a hint about where to look, not the whole job. Read the full
 sources and reconcile every class, field, method and room against the
 diagrams, so that anything missed in earlier runs is caught too.
 
-Then render the diagrams and commit the result."; then
+Then render the diagrams and commit the result.
+
+If after reconciling you find nothing to change, say so in one sentence and
+commit nothing."; then
     echo >&2
     echo "The diagram run failed. The usual cause is a model that is not available" >&2
     echo "to you. List what you have, then retry with one of those:" >&2
