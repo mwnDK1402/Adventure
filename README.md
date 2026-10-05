@@ -81,9 +81,11 @@ tools/update-diagrams.sh --help       # full usage
 ```
 
 The agent may only edit files under `docs/` and is denied `git push`, so it
-cannot change the game itself or publish anything. It runs on
-`opencode/big-pickle`; pass `--model <provider>/<model>` to the script to
-override that, or run `opencode models` to see what you have available.
+cannot change the game itself or publish anything.
+
+The script runs it on `opencode/big-pickle`. Use `--model <provider>/<model>`,
+or set `DIAGRAM_MODEL`, to run it on something else; `opencode models` lists
+what you have available.
 
 Rendering the diagrams by hand, without the agent:
 

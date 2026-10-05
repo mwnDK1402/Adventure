@@ -9,12 +9,16 @@
 #
 # The diagram agent is scoped to docs/ and is denied `git push`, so this is safe
 # to run without further supervision: it can only ever change documentation.
+#
+# The model is passed with --model rather than set on the agent, because a
+# primary agent's `model:` field does not override the model a session already
+# selected. Override the default with DIAGRAM_MODEL or --model.
 
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-MODEL=""
+MODEL="${DIAGRAM_MODEL:-opencode/big-pickle}"
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --no-run)
@@ -69,13 +73,9 @@ echo
 
 BEFORE=$(git rev-parse HEAD)
 
-# Optional model override, passed through only when given.
-MODEL_ARGS=()
-if [[ -n "$MODEL" ]]; then
-    MODEL_ARGS=(--model "$MODEL")
-    echo "Using model $MODEL"
-    echo
-fi
+MODEL_ARGS=(--model "$MODEL")
+echo "Using model $MODEL"
+echo
 
 if ! opencode run --agent diagram-updater --auto "${MODEL_ARGS[@]}" \
     "Update the diagram sources in docs/ to match the Java sources in src/main/java.

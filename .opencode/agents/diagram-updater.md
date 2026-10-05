@@ -1,7 +1,6 @@
 ---
 description: Updates the PlantUML and Graphviz diagram sources in docs/ from the Java sources, renders them, and commits.
 mode: primary
-model: opencode/big-pickle
 permissions:
   - action: shell
     resource: "git push*"
