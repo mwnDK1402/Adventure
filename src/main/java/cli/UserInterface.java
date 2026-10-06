@@ -54,7 +54,24 @@ public final class UserInterface {
                         instructions
                         """);
                 case "exit" -> running = false;
-                case "inventory" -> System.out.println(adventure.inventory());
+                case "inventory" -> {
+                    var inv = adventure.getInventory();
+                    if (inv.isEmpty()) {
+                        System.out.println("Your inventory is empty");
+                    } else {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("Inventory: ").append(System.lineSeparator());
+                        var equipped = adventure.getEquipped();
+                        for (var item : inv) {
+                            sb.append("- ").append(item.getInventoryText());
+                            if (item instanceof model.Weapon w && equipped == w) {
+                                sb.append(" (equipped)");
+                            }
+                            sb.append(System.lineSeparator());
+                        }
+                        System.out.print(sb);
+                    }
+                }
                 case "health" -> {
                     System.out.printf("Health: %d. ", adventure.health());
                     if (adventure.health() >= 100) {

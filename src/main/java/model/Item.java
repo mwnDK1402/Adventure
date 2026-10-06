@@ -1,6 +1,6 @@
 package model;
 
-class Item {
+public class Item {
     private final String shortName;
     private final String longName;
 

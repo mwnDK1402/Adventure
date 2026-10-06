@@ -14,6 +14,10 @@ public final class Adventure {
     public java.util.ArrayList<Item> getInventory() {
         return player.getInventory();
     }
+    public Weapon getEquipped() {
+        return player.getEquipped();
+    }
+
 
     public String look() {
         return String.format("%s%n%s%s", player.getCurrentRoom().getDescription(), this.itemsInRoom(), this.enemiesInRoom());

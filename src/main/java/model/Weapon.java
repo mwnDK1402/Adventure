@@ -2,7 +2,7 @@ package model;
 
 import java.util.OptionalInt;
 
-abstract class Weapon extends Item {
+public abstract class Weapon extends Item {
     private final WeaponVerb verb;
     private final int damage;
 
