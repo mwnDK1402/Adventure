@@ -1,33 +1,25 @@
+import java.util.OptionalInt;
+
 public class RangedWeapon extends Weapon {
     private int ammunition;
 
-    public RangedWeapon(String shortName, String longName, int damage, int ammunition){
-        super(shortName, longName, damage);
+    public RangedWeapon(WeaponVerb verb, String shortName, String longName, int damage, int ammunition){
+        super(verb, shortName, longName, damage);
         this.ammunition = ammunition;
     }
 
     @Override
-    public boolean canUse(){
-        return ammunition > 0;
+    public WeaponStatus getStatus(){
+        return ammunition > 0 ? WeaponStatus.Usable : WeaponStatus.OutOfAmmo;
+    }
+
+    @Override
+    public OptionalInt getUsesLeft() {
+        return OptionalInt.of(ammunition);
     }
 
     @Override
     public void use(){
         ammunition--;
-    }
-
-    @Override
-    public String getCannotUseMessage(){
-        return "You are out of ammunition";
-    }
-
-    @Override
-    public String getAttackVerb() {
-        return "shot";
-    }
-
-    @Override
-    public int getUsesLeft() {
-        return ammunition;
     }
 }

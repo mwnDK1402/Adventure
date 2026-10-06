@@ -100,16 +100,16 @@ public class Map {
         room4.addItem(mushroom);
 
         // Weapons for room
-        Weapon woodenSword = new MeleeWeapon("Wooden sword", "A mossy wooden sword", 5);
-        Weapon slingshot = new RangedWeapon("Slingshot", "A wooden slingshot with a worn leather pouch", 8, 3);
-        Weapon bowNarrow = new RangedWeapon("Bow & Arrow", "An old bow with rusty but sharp arrows", 10, 10);
+        Weapon woodenSword = new MeleeWeapon(WeaponVerb.Sword, "Wooden sword", "A mossy wooden sword", 5);
+        Weapon slingshot = new RangedWeapon(WeaponVerb.Slingshot, "Slingshot", "A wooden slingshot with a worn leather pouch", 8, 3);
+        Weapon bowNarrow = new RangedWeapon(WeaponVerb.Bow, "Bow & Arrow", "An old bow with rusty but sharp arrows", 10, 10);
 
         // Add weapons to rooms
         room1.addItem(woodenSword);
         room3.addItem(slingshot);
 
         //Enemies in room
-        Enemy skeleton = new Enemy("Skeleton", "Enraged Ranged Skeleton", "A living skeleton with a bow and arrow", 40, bowNarrow);
+        Enemy skeleton = new Enemy(EnemyNoun.Skeleton, "Enraged Ranged Skeleton", "A living skeleton with a bow and arrow", 40, bowNarrow);
 
         // Add enemies to rooms
         room7.addEnemy(skeleton);

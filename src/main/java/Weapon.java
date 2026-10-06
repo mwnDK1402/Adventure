@@ -1,22 +1,26 @@
+import java.util.OptionalInt;
+
 public abstract class Weapon extends Item {
-    public abstract boolean canUse();
+    private final WeaponVerb verb;
+    private final int damage;
 
-    public abstract void use();
-
-    public abstract String getCannotUseMessage();
-
-    public abstract String getAttackVerb();
-
-    public abstract int getUsesLeft();
-
-    private int damage;
-
-    public Weapon(String shortName, String longName, int damage) {
+    public Weapon(WeaponVerb verb, String shortName, String longName, int damage) {
         super(shortName, longName);
+        this.verb = verb;
         this.damage = damage;
     }
 
-    public int getDamage() {
+    public final WeaponVerb getVerb() {
+        return verb;
+    }
+
+    public final int getDamage() {
         return damage;
     }
+
+    public abstract WeaponStatus getStatus();
+
+    public abstract OptionalInt getUsesLeft();
+
+    public abstract void use();
 }

@@ -1,30 +1,22 @@
+import java.util.OptionalInt;
+
 public class MeleeWeapon extends Weapon {
 
-    public MeleeWeapon(String shortName, String longName, int damage) {
-        super(shortName, longName, damage);
+    public MeleeWeapon(WeaponVerb verb, String shortName, String longName, int damage) {
+        super(verb, shortName, longName, damage);
     }
 
     @Override
-    public boolean canUse() {
-        return true;
+    public WeaponStatus getStatus() {
+        return WeaponStatus.Usable;
+    }
+
+    @Override
+    public OptionalInt getUsesLeft() {
+        return OptionalInt.empty();
     }
 
     @Override
     public void use() {
-    }
-
-    @Override
-    public String getCannotUseMessage(){
-        return null;
-    }
-
-    @Override
-    public String getAttackVerb() {
-        return "slashed";
-    }
-
-    @Override
-    public int getUsesLeft() {
-        return -1;
     }
 }

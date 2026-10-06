@@ -1,11 +1,8 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Adventure {
     private final Player player;
     private final Map map;
-    private Weapon weapon;
-
 
     public Adventure() {
         this.map = new Map();
@@ -106,11 +103,9 @@ public class Adventure {
         return player.equip(shortName);
     }
 
-    public AttackOutcome attack(String shortName) {
-        Enemy enemy = player.getCurrentRoom().findEnemy(shortName);
-        enemy.hit(player.getEquipped().getDamage());
+    public AttackOutcome attack(EnemyNoun noun) {
+        Enemy enemy = player.getCurrentRoom().findEnemy(noun);
+        if (enemy == null) return new AttackOutcome.NoEnemy();
         return player.attack(enemy);
     }
-
-
 }

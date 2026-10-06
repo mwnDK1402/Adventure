@@ -3,11 +3,10 @@ import java.util.ArrayList;
 public class Room {
     private final String name;
     private final String description;
-    private boolean lock;
-
     private final ArrayList<Item> items;
-    private ArrayList<Enemy> enemies;
+    private final ArrayList<Enemy> enemies;
 
+    private boolean lock;
     private Room north;
     private Room south;
     private Room east;
@@ -112,9 +111,9 @@ public class Room {
         return new ArrayList<>(enemies);
     }
 
-    public Enemy findEnemy(String shortName) {
+    public Enemy findEnemy(EnemyNoun noun) {
         for (Enemy enemy : enemies) {
-            if (enemy.getShortName().equalsIgnoreCase((shortName))) {
+            if (enemy.getNoun() == noun) {
                 return enemy;
             }
         }
@@ -124,7 +123,4 @@ public class Room {
     public int getEnemySize() {
         return enemies.size();
     }
-
-
-
 }

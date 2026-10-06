@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -84,22 +85,37 @@ public class UserInterface {
                  */
                 default -> {
                     if (choice.startsWith("attack ")) {
-                        String intendedEnemy = choice.substring(7);
-                        AttackOutcome outcome = adventure.attack(intendedEnemy);
+                        var enemyInput = choice.substring(7);
+                        if (enemyInput.isBlank()) {
+                            System.out.printf("You must specify a target when attacking.%n");
+                            break;
+                        }
+                        var intendedEnemy = parseEnemyNoun(enemyInput);
+                        if (intendedEnemy.isEmpty()) {
+                            System.out.printf("%s does not exist here.%n", enemyInput);
+                            break;
+                        }
+                        AttackOutcome outcome = adventure.attack(intendedEnemy.get());
 
-                        switch (outcome.getResult()){
-                            case NO_WEAPON -> System.out.println("You have no weapon equipped");
-                            case CANNOT_USE -> System.out.println(outcome.getMessage());
-                            case ATTACKED -> {
-                                System.out.println("You " + outcome.getAttackVerb() + " the enemy for " + outcome.getDamage() + " damage");
+                        switch (outcome) {
+                            case AttackOutcome.Attacked attacked -> {
+                                System.out.printf("""
+                                        You %s the %s for %d damage
+                                        Enemy HP: %d
+                                        """,
+                                        resolveWeaponVerb(attacked.verb()),
+                                        resolveEnemyNoun(attacked.noun()),
+                                        attacked.damage(),
+                                        attacked.enemyRemainingHealth());
 
-                                System.out.println(outcome.getEnemyHealthOutcome());
-
-                                if (outcome.getUsesLeft() >= 0){
-                                    System.out.println("Uses left: " + outcome.getUsesLeft());
+                                if (attacked.usesLeft().isPresent()){
+                                    System.out.printf("Uses left: %d%n", attacked.usesLeft().getAsInt());
                                 }
-
                             }
+                            case AttackOutcome.CannotUse cannotUse -> System.out.printf(resolveWeaponStatus(cannotUse.status()));
+                            case AttackOutcome.Missed ignored -> throw new RuntimeException("Not implemented");
+                            case AttackOutcome.NoWeapon ignored -> System.out.println("You have no weapon equipped");
+                            case AttackOutcome.NoEnemy ignored -> System.out.printf("%s does not exist here.%n", resolveEnemyNoun(intendedEnemy.get()));
                         }
                     } else if (choice.startsWith("take ")) {
                         String intendedItem = choice.substring(5);
@@ -155,4 +171,31 @@ public class UserInterface {
         System.out.println("You are now exiting the maze... Goodbye.");
     }
 
+    private static String resolveWeaponVerb(WeaponVerb verb) {
+        return switch (verb) {
+            case Sword -> "slash";
+            case Slingshot, Bow -> "shoot";
+        };
+    }
+
+    private static Optional<EnemyNoun> parseEnemyNoun(String noun) {
+        //noinspection SwitchStatementWithTooFewBranches
+        return switch (noun.toLowerCase(Locale.ROOT)) {
+            case "skeleton" -> Optional.of(EnemyNoun.Skeleton);
+            default -> Optional.empty();
+        };
+    }
+
+    private static String resolveEnemyNoun(EnemyNoun noun) {
+        return switch (noun) {
+            case Skeleton -> "skeleton";
+        };
+    }
+    
+    private static String resolveWeaponStatus(UnusableStatus status) {
+        return switch (status) {
+            case OutOfAmmo -> "You are out of ammunition.%n";
+            case OutOfCharges -> "You are out of charges.%n";
+        };
+    }
 }
