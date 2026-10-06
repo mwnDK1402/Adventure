@@ -2,13 +2,17 @@ package model;
 
 import java.util.ArrayList;
 
-public class Adventure {
+public final class Adventure {
     private final Player player;
 
     public Adventure() {
         Map map = new Map();
         map.buildMap();
         this.player = new Player(map.getInitialRoom(), 100);
+    }
+
+    public java.util.ArrayList<Item> getInventory() {
+        return player.getInventory();
     }
 
     public String look() {
