@@ -1,8 +1,11 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Adventure {
     private final Player player;
     private final Map map;
+    private Weapon weapon;
+
 
     public Adventure() {
         this.map = new Map();
@@ -11,7 +14,7 @@ public class Adventure {
     }
 
     public String look() {
-        return player.getCurrentRoom().getDescription() + System.lineSeparator() + this.itemsInRoom();
+        return player.getCurrentRoom().getDescription() + System.lineSeparator() + this.itemsInRoom() + this.enemiesInRoom();
     }
 
     public String getRoomName() {
@@ -42,6 +45,25 @@ public class Adventure {
             items += System.lineSeparator();
         }
         return items;
+    }
+
+    private String enemiesInRoom() {
+        String enemiesString = "Here lurks: ";
+        Room room = player.getCurrentRoom();
+        ArrayList<Enemy> enemies = room.getEnemies();
+
+        if (!enemies.isEmpty()) {
+            for (int i = 0; i < room.getEnemySize(); i++) {
+                enemiesString += enemies.get(i).getLongName().toLowerCase();
+
+                if (i < enemies.size() - 1) {
+                    enemiesString += ", ";
+                }
+            }
+            return enemiesString;
+        }  else {
+            return "";
+        }
     }
 
     private String itemsInRoom() {
@@ -80,12 +102,15 @@ public class Adventure {
         return player.eat(shortName);
     }
 
-    public EquipResult equip(String shortName){
+    public EquipResult equip(String shortName) {
         return player.equip(shortName);
     }
 
-    public AttackOutcome attack(){
-        return player.attack();
+    public AttackOutcome attack(String shortName) {
+        Enemy enemy = player.getCurrentRoom().findEnemy(shortName);
+        enemy.hit(player.getEquipped().getDamage());
+        return player.attack(enemy);
     }
+
 
 }
