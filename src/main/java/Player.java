@@ -131,16 +131,21 @@ public class Player {
         return equipped;
     }
 
-    public AttackOutcome attack() {
+    public AttackOutcome attack(Enemy enemy) {
+
         if (equipped == null) {
-           return new AttackOutcome(AttackResult.NO_WEAPON, 0, null, null, -1);
+           return new AttackOutcome(AttackResult.NO_WEAPON, 0, null, null, -1, -1);
         }
 
         if (!equipped.canUse()) {
-            return new AttackOutcome(AttackResult.CANNOT_USE, 0, equipped.getCannotUseMessage(), null, equipped.getUsesLeft());
+            return new AttackOutcome(AttackResult.CANNOT_USE, 0, equipped.getCannotUseMessage(), null, equipped.getUsesLeft(), -1);
         }
 
         equipped.use();
-        return new AttackOutcome(AttackResult.ATTACKED, equipped.getDamage(), null, equipped.getAttackVerb(), equipped.getUsesLeft());
+        return new AttackOutcome(AttackResult.ATTACKED, equipped.getDamage(), null, equipped.getAttackVerb(), equipped.getUsesLeft(), enemy.getEnemyHealth());
+    }
+
+    public void hit(int damage) {
+        this.health -= damage;
     }
 }
