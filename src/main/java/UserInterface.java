@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -60,6 +61,7 @@ public class UserInterface {
                         System.out.println("Health: " + adventure.health() + ". You should be dead.");
                     }
                 }
+                /*
                 case "attack" -> {
                     AttackOutcome outcome = adventure.attack();
 
@@ -68,14 +70,38 @@ public class UserInterface {
                         case CANNOT_USE -> System.out.println(outcome.getMessage());
                         case ATTACKED -> {
                             System.out.println("You " + outcome.getAttackVerb() + " the enemy for " + outcome.getDamage() + " damage");
+
+                            System.out.println(outcome.getEnemyHealthOutcome());
+
                             if (outcome.getUsesLeft() >= 0){
                                 System.out.println("Uses left: " + outcome.getUsesLeft());
                             }
+
                         }
                     }
                 }
+
+                 */
                 default -> {
-                    if (choice.startsWith("take ")) {
+                    if (choice.startsWith("attack ")) {
+                        String intendedEnemy = choice.substring(7);
+                        AttackOutcome outcome = adventure.attack(intendedEnemy);
+
+                        switch (outcome.getResult()){
+                            case NO_WEAPON -> System.out.println("You have no weapon equipped");
+                            case CANNOT_USE -> System.out.println(outcome.getMessage());
+                            case ATTACKED -> {
+                                System.out.println("You " + outcome.getAttackVerb() + " the enemy for " + outcome.getDamage() + " damage");
+
+                                System.out.println(outcome.getEnemyHealthOutcome());
+
+                                if (outcome.getUsesLeft() >= 0){
+                                    System.out.println("Uses left: " + outcome.getUsesLeft());
+                                }
+
+                            }
+                        }
+                    } else if (choice.startsWith("take ")) {
                         String intendedItem = choice.substring(5);
                         if (adventure.take(intendedItem)) {
                             System.out.println("Item added to inventory");
