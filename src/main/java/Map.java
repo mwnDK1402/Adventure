@@ -36,7 +36,7 @@ public class Map {
                 In the middle of the floor are tracks left by something large.
                 You cannot see where they lead.
                 Somewhere in the darkness, you hear slow, heavy breathing and you notice something move.
-                To glowing eyes slowly open...""");
+                Two glowing eyes slowly open...""");
 
         // Puzzle + item? (Underground lake)
         Room room6 = new Room("Room 6", """
@@ -69,7 +69,7 @@ public class Map {
 
         initialRoom = room1;
 
-        //Lock the door to room 2
+        //Lock doors
         //room2.setLock(true);
 
         // Room connections
@@ -102,10 +102,17 @@ public class Map {
         // Weapons for room
         Weapon woodenSword = new MeleeWeapon("Wooden sword", "A mossy wooden sword", 5);
         Weapon slingshot = new RangedWeapon("Slingshot", "A wooden slingshot with a worn leather pouch", 8, 3);
+        Weapon bowNarrow = new RangedWeapon("Bow & Arrow", "An old bow with rusty but sharp arrows", 10, 10);
 
         // Add weapons to rooms
         room1.addItem(woodenSword);
         room3.addItem(slingshot);
+
+        //Enemies in room
+        Enemy skeleton = new Enemy("Skeleton", "Enraged Ranged Skeleton", "A living skeleton with a bow and arrow", 40, bowNarrow);
+
+        // Add enemies to rooms
+        room7.addEnemy(skeleton);
     }
 
     public Room getInitialRoom() {
