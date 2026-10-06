@@ -1,6 +1,8 @@
+package model;
+
 import java.util.OptionalInt;
 
-public class RangedWeapon extends Weapon {
+class RangedWeapon extends Weapon {
     private int ammunition;
 
     public RangedWeapon(WeaponVerb verb, String shortName, String longName, int damage, int ammunition){

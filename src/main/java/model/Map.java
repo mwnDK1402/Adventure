@@ -1,4 +1,6 @@
-public class Map {
+package model;
+
+class Map {
     private Room initialRoom;
 
     public void buildMap() {

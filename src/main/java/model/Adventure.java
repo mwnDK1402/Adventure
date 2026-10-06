@@ -1,17 +1,18 @@
+package model;
+
 import java.util.ArrayList;
 
 public class Adventure {
     private final Player player;
-    private final Map map;
 
     public Adventure() {
-        this.map = new Map();
+        Map map = new Map();
         map.buildMap();
         this.player = new Player(map.getInitialRoom(), 100);
     }
 
     public String look() {
-        return player.getCurrentRoom().getDescription() + System.lineSeparator() + this.itemsInRoom() + this.enemiesInRoom();
+        return String.format("%s%n%s%s", player.getCurrentRoom().getDescription(), this.itemsInRoom(), this.enemiesInRoom());
     }
 
     public String getRoomName() {
@@ -28,59 +29,56 @@ public class Adventure {
 
     public String inventory() {
         ArrayList<Item> inventory = player.getInventory();
-        String items = "Inventory: " + System.lineSeparator();
 
-        if (inventory.isEmpty()) {
-            return "Your inventory is empty";
-        }
+        if (inventory.isEmpty()) return "Your inventory is empty";
 
+        StringBuilder items = new StringBuilder(128);
+        items.append("Inventory: ").append(System.lineSeparator());
         for (Item item : inventory) {
-            items += "- " + item.getInventoryText();
+            items.append("- ").append(item.getInventoryText());
             if (item instanceof Weapon weapon && player.getEquipped() == weapon){
-                items += " (equipped)";
+                items.append(" (equipped)");
             }
-            items += System.lineSeparator();
+            items.append(System.lineSeparator());
         }
-        return items;
+        return items.toString();
     }
 
     private String enemiesInRoom() {
-        String enemiesString = "Here lurks: ";
+        StringBuilder enemiesString = new StringBuilder(128);
+        enemiesString.append("Here lurks: ");
         Room room = player.getCurrentRoom();
         ArrayList<Enemy> enemies = room.getEnemies();
 
-        if (!enemies.isEmpty()) {
-            for (int i = 0; i < room.getEnemySize(); i++) {
-                enemiesString += enemies.get(i).getLongName().toLowerCase();
+        if (enemies.isEmpty()) return "";
 
-                if (i < enemies.size() - 1) {
-                    enemiesString += ", ";
-                }
+        for (int i = 0; i < room.getEnemySize(); i++) {
+            enemiesString.append(enemies.get(i).getLongName().toLowerCase());
+
+            if (i < enemies.size() - 1) {
+                enemiesString.append(", ");
             }
-            return enemiesString;
-        }  else {
-            return "";
         }
+        return enemiesString.toString();
     }
 
     private String itemsInRoom() {
         // Low cohesion between Player and the items of the room, why we allow them to communicate even though strangers.
         ArrayList<Item> inventory = player.getCurrentRoom().getItems();
 
-        if (!inventory.isEmpty()) {
-            String items = "Here you see: ";
+        if (inventory.isEmpty()) return "";
 
-            for (int i = 0; i < inventory.size(); i++) {
-                items += inventory.get(i).getLongName().toLowerCase();
+        StringBuilder items = new StringBuilder(128);
+        items.append("Here you see: ");
 
-                if (i < inventory.size() - 1) {
-                    items += ", ";
-                }
+        for (int i = 0; i < inventory.size(); i++) {
+            items.append(inventory.get(i).getLongName().toLowerCase());
+
+            if (i < inventory.size() - 1) {
+                items.append(", ");
             }
-            return items;
-        } else {
-            return "";
         }
+        return items.toString();
     }
 
     public boolean take(String shortName) {

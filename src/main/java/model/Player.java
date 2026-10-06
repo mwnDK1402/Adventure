@@ -1,6 +1,8 @@
+package model;
+
 import java.util.ArrayList;
 
-public class Player {
+class Player {
     private Room currentRoom;
     private boolean isLocked;
     private final ArrayList<Item> inventory;
@@ -73,9 +75,7 @@ public class Player {
 
     private Item findItem(String shortName) {
         for (Item item : inventory) {
-            if (item.getInventoryText().equalsIgnoreCase((shortName))) {
-                return item;
-            }
+            if (item.getInventoryText().equalsIgnoreCase((shortName))) return item;
         }
         return null;
     }
@@ -89,12 +89,8 @@ public class Player {
         if (item == null) {
             item = currentRoom.findItem(shortName);
         }
-        if (item == null) {
-            return new EatOutcome(EatResult.NOT_FOUND, shortName, 0);
-        }
-        if (!(item instanceof Food food)) {
-            return new EatOutcome(EatResult.NOT_FOOD, shortName, 0);
-        }
+        if (item == null) return new EatOutcome.NotFound();
+        if (!(item instanceof Food food)) return new EatOutcome.NotFood();
 
         health += food.getHealthPoints();
 
@@ -102,7 +98,7 @@ public class Player {
             currentRoom.removeItem(food);
         }
 
-        return new EatOutcome(EatResult.EATEN, shortName, food.getHealthPoints());
+        return new EatOutcome.Eaten(food.getHealthPoints());
     }
 
     public EquipResult equip(String shortName) {
@@ -112,12 +108,8 @@ public class Player {
             item = currentRoom.findItem(shortName);
             takeItem = item != null;
         }
-        if (item == null) {
-            return EquipResult.NOT_FOUND;
-        }
-        if (!(item instanceof Weapon weapon)) {
-            return EquipResult.NOT_EQUIPMENT;
-        }
+        if (item == null) return EquipResult.NOT_FOUND;
+        if (!(item instanceof Weapon weapon)) return EquipResult.NOT_EQUIPMENT;
 
         equipped = weapon;
         if (takeItem) {
@@ -132,14 +124,10 @@ public class Player {
     }
 
     public AttackOutcome attack(Enemy enemy) {
-        if (equipped == null) {
-            return new AttackOutcome.NoWeapon();
-        }
+        if (equipped == null) return new AttackOutcome.NoWeapon();
 
         WeaponStatus status = equipped.getStatus();
-        if (status != WeaponStatus.Usable) {
-            return new AttackOutcome.CannotUse(status.toUnusable());
-        }
+        if (status != WeaponStatus.Usable) return new AttackOutcome.CannotUse(status.toUnusable());
 
         equipped.use();
         enemy.hit(equipped.getDamage());

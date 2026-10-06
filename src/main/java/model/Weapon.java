@@ -1,6 +1,8 @@
+package model;
+
 import java.util.OptionalInt;
 
-public abstract class Weapon extends Item {
+abstract class Weapon extends Item {
     private final WeaponVerb verb;
     private final int damage;
 

@@ -1,4 +1,6 @@
-public class Food extends Item {
+package model;
+
+class Food extends Item {
     private final int healthPoints;
 
     public Food(String shortName, String longName, int healthPoints) {

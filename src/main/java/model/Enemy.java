@@ -1,4 +1,6 @@
-public class Enemy {
+package model;
+
+class Enemy {
     private EnemyNoun noun;
     private String longName;
     private String description;

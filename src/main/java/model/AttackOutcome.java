@@ -1,3 +1,5 @@
+package model;
+
 import java.util.OptionalInt;
 
 public sealed interface AttackOutcome {

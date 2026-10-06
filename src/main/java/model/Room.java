@@ -1,6 +1,8 @@
+package model;
+
 import java.util.ArrayList;
 
-public class Room {
+class Room {
     private final String name;
     private final String description;
     private final ArrayList<Item> items;
@@ -92,9 +94,7 @@ public class Room {
 
     public Item findItem(String shortName) {
         for (Item item : items) {
-            if (item.getInventoryText().equalsIgnoreCase((shortName))) {
-                return item;
-            }
+            if (item.getInventoryText().equalsIgnoreCase((shortName))) return item;
         }
         return null;
     }
@@ -113,9 +113,7 @@ public class Room {
 
     public Enemy findEnemy(EnemyNoun noun) {
         for (Enemy enemy : enemies) {
-            if (enemy.getNoun() == noun) {
-                return enemy;
-            }
+            if (enemy.getNoun() == noun) return enemy;
         }
         return null;
     }

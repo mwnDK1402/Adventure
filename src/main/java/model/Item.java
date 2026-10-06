@@ -1,4 +1,6 @@
-public class Item {
+package model;
+
+class Item {
     private final String shortName;
     private final String longName;
 
