@@ -108,6 +108,9 @@ public class Adventure {
 
     public AttackOutcome attack(String shortName) {
         Enemy enemy = player.getCurrentRoom().findEnemy(shortName);
+        if (enemy == null) {
+            return new AttackOutcome(AttackResult.NO_ENEMY, 0, null, null, -1, -1, null, -1);
+        }
         AttackOutcome outcome = player.attack(enemy);
 
         if (enemy.isAlive()) {

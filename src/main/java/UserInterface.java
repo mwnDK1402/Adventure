@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -88,8 +87,15 @@ public class UserInterface {
                         AttackOutcome outcome = adventure.attack(intendedEnemy);
 
                         switch (outcome.getResult()) {
-                            case NO_WEAPON -> System.out.println("You have no weapon equipped");
-                            case CANNOT_USE -> System.out.println(outcome.getMessage());
+                            case NO_WEAPON -> {
+                                System.out.println("You have no weapon equipped");
+                                printEnemyAttack(outcome);
+                            }
+                            case CANNOT_USE -> {
+                                System.out.println(outcome.getMessage());
+                                printEnemyAttack(outcome);
+                            }
+                            case NO_ENEMY -> System.out.println("There is no " + intendedEnemy + " in this room");
                             case ATTACKED -> {
                                 if (outcome.getEnemyHealthOutcome() >= 0) {
                                     System.out.println();
@@ -97,9 +103,7 @@ public class UserInterface {
                                     System.out.println("The enemy now has " + outcome.getEnemyHealthOutcome() + " HP");
                                     System.out.println();
                                     if (outcome.getEnemyHealthOutcome() > 0) {
-                                        System.out.println(outcome.getEnemyLongName() + " " + outcome.getEnemyAttackVerb() + " you for " + outcome.getEnemyDamageDealt() + " HP");
-                                        System.out.println("You now have " + outcome.getPlayerHealth() + " HP");
-                                        System.out.println();
+                                        printEnemyAttack(outcome);
                                     }
                                     else {
                                         System.out.println("You killed the " + outcome.getEnemyLongName());
@@ -172,6 +176,12 @@ public class UserInterface {
         }
 
         System.out.println("You are now exiting the maze... Goodbye.");
+    }
+
+    private static void printEnemyAttack(AttackOutcome outcome) {
+        System.out.println(outcome.getEnemyLongName() + " " + outcome.getEnemyAttackVerb() + " you for " + outcome.getEnemyDamageDealt() + " HP");
+        System.out.println("You now have " + outcome.getPlayerHealth() + " HP");
+        System.out.println();
     }
 
 }

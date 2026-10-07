@@ -133,11 +133,11 @@ public class Player {
 
     public AttackOutcome attack(Enemy enemy) {
         if (equipped == null) {
-           return new AttackOutcome(AttackResult.NO_WEAPON, 0, null, null, -1, -1, null, getHealth());
+           return new AttackOutcome(AttackResult.NO_WEAPON, 0, null, null, -1, -1, enemy.getLongName(), getHealth());
         }
 
         if (!equipped.canUse()) {
-            return new AttackOutcome(AttackResult.CANNOT_USE, 0, equipped.getCannotUseMessage(), null, equipped.getUsesLeft(), -1, null, getHealth());
+            return new AttackOutcome(AttackResult.CANNOT_USE, 0, equipped.getCannotUseMessage(), null, equipped.getUsesLeft(), -1, enemy.getLongName(), getHealth());
         }
 
         equipped.use();
