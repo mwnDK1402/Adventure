@@ -1,15 +1,17 @@
 public class AttackOutcome {
     private AttackResult result;
-    private int damage;
+    private int playerDamageDealt;
     private String message;
     private String attackVerb;
     private int usesLeft;
     private int enemyHealth;
     private String enemyLongName;
+    private int enemyDamageDealt;
+    private int playerHealth;
 
-    public AttackOutcome(AttackResult result, int damage, String message, String attackVerb, int usesLeft, int enemyHealth, String enemyLongName) {
+    public AttackOutcome(AttackResult result, int playerDamageDealt, String message, String attackVerb, int usesLeft, int enemyHealth, String enemyLongName, int enemyDamageDealt, int playerHealth) {
         this.result = result;
-        this.damage = damage;
+        this.playerDamageDealt = playerDamageDealt;
         this.message = message;
         this.attackVerb = attackVerb;
         this.usesLeft = usesLeft;
@@ -19,10 +21,6 @@ public class AttackOutcome {
 
     public AttackResult getResult() {
         return result;
-    }
-
-    public int getDamage() {
-        return damage;
     }
 
     public String getMessage() {

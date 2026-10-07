@@ -6,6 +6,7 @@ public class Enemy {
     private int health;
     private Weapon weapon;
     private Room room;
+    //private boolean isAlive;
 
     public Enemy(String shortName, String longName, String description, int health, Weapon weapon, Room room) {
         this.shortName = shortName;
@@ -16,8 +17,8 @@ public class Enemy {
         this.room = room;
     }
 
-    public void attack(Player player) {
-
+    public int attack(Player player) {
+        return weapon.getDamage();
     }
 
     public void hit(int damage) {

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 public class Adventure {
     private final Player player;
     private final Map map;
-    private Weapon weapon;
-
 
     public Adventure() {
         this.map = new Map();
@@ -99,6 +97,9 @@ public class Adventure {
     }
 
     public EatOutcome eat(String shortName) {
+        if (player.getCurrentRoom().getEnemySize() == 0) {
+
+        }
         return player.eat(shortName);
     }
 
@@ -108,7 +109,23 @@ public class Adventure {
 
     public AttackOutcome attack(String shortName) {
         Enemy enemy = player.getCurrentRoom().findEnemy(shortName);
-        enemy.hit(player.getEquipped().getDamage());
+
         return player.attack(enemy);
     }
+
+    public void resolveEnemyTurn() {
+        for (Enemy enemy : player.getCurrentRoom().getEnemies()) {
+
+            enemy.attack(player);
+        }
+    }
+
+    /*
+    - If walk into room with enemy
+    + If attack/take/eat -> Enemy attacks back
+        + else enemy does nothing
+
+
+
+     */
 }

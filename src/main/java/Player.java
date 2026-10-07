@@ -133,15 +133,16 @@ public class Player {
 
     public AttackOutcome attack(Enemy enemy) {
         if (equipped == null) {
-           return new AttackOutcome(AttackResult.NO_WEAPON, 0, null, null, -1, -1, null);
+           return new AttackOutcome(AttackResult.NO_WEAPON, 0, null, null, -1, -1, null, -1, -1);
         }
 
         if (!equipped.canUse()) {
-            return new AttackOutcome(AttackResult.CANNOT_USE, 0, equipped.getCannotUseMessage(), null, equipped.getUsesLeft(), -1, null);
+            return new AttackOutcome(AttackResult.CANNOT_USE, 0, equipped.getCannotUseMessage(), null, equipped.getUsesLeft(), -1, null, -1, -1);
         }
 
         equipped.use();
-        return new AttackOutcome(AttackResult.ATTACKED, equipped.getDamage(), null, equipped.getAttackVerb(), equipped.getUsesLeft(), enemy.getEnemyHealth(), enemy.getLongName());
+        enemy.hit(getEquipped().getDamage());
+        return new AttackOutcome(AttackResult.ATTACKED, equipped.getDamage(), null, equipped.getAttackVerb(), equipped.getUsesLeft(), enemy.getEnemyHealth(), enemy.getLongName(), enemy.attack());
     }
 
     public void hit(int damage) {
