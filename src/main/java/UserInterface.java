@@ -34,7 +34,7 @@ public class UserInterface {
         System.out.println();
 
         while (running) {
-            System.out.print("Where do you want to go?: ");
+            System.out.print("Input (use 'help' for commands): ");
             String choice = scanner.nextLine().trim().toLowerCase();
 
             switch (choice) {
@@ -87,18 +87,23 @@ public class UserInterface {
                         String intendedEnemy = choice.substring(7);
                         AttackOutcome outcome = adventure.attack(intendedEnemy);
 
-                        switch (outcome.getResult()){
+                        switch (outcome.getResult()) {
                             case NO_WEAPON -> System.out.println("You have no weapon equipped");
                             case CANNOT_USE -> System.out.println(outcome.getMessage());
                             case ATTACKED -> {
-                                System.out.println("You " + outcome.getAttackVerb() + " the enemy for " + outcome.getDamage() + " damage");
+                                if (outcome.getEnemyHealthOutcome() >= 0) {
+                                    System.out.println();
+                                    System.out.println("You " + outcome.getAttackVerb() + " the enemy for " + outcome.getDamage() + " damage");
+                                    System.out.println("The enemy now has " + outcome.getEnemyHealthOutcome() + "HP");
+                                    System.out.println();
 
-                                System.out.println(outcome.getEnemyHealthOutcome());
+                                } else if (outcome.getEnemyHealthOutcome() <= 0) {
+                                    System.out.println(outcome.getEnemyLongName() + " has been slain.");
+                                }
 
                                 if (outcome.getUsesLeft() >= 0){
                                     System.out.println("Uses left: " + outcome.getUsesLeft());
                                 }
-
                             }
                         }
                     } else if (choice.startsWith("take ")) {
@@ -150,6 +155,7 @@ public class UserInterface {
                     }
                 }
             }
+
         }
 
         System.out.println("You are now exiting the maze... Goodbye.");

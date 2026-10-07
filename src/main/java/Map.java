@@ -109,7 +109,7 @@ public class Map {
         room3.addItem(slingshot);
 
         //Enemies in room
-        Enemy skeleton = new Enemy("Skeleton", "Enraged Ranged Skeleton", "A living skeleton with a bow and arrow", 40, bowNarrow);
+        Enemy skeleton = new Enemy("Skeleton", "Enraged Ranged Skeleton", "A living skeleton with a bow and arrow", 40, bowNarrow, room7);
 
         // Add enemies to rooms
         room7.addEnemy(skeleton);

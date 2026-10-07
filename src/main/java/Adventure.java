@@ -111,6 +111,4 @@ public class Adventure {
         enemy.hit(player.getEquipped().getDamage());
         return player.attack(enemy);
     }
-
-
 }
