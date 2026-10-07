@@ -17,8 +17,11 @@ public class Enemy {
         this.room = room;
     }
 
-    public int attack(Player player) {
-        return weapon.getDamage();
+    public void attack(Player player, AttackOutcome outcome) {
+        outcome.setEnemyAttackVerb(weapon.getAttackVerb());
+        outcome.setEnemyDamageDealt(weapon.getDamage());
+        player.hit(weapon.getDamage());
+        outcome.setPlayerHealth(player.getHealth());
     }
 
     public void hit(int damage) {
@@ -27,6 +30,10 @@ public class Enemy {
         } else {
             room.removeEnemy(this);
         }
+    }
+
+    public boolean isAlive() {
+        return health > 0;
     }
 
     public String getShortName() {

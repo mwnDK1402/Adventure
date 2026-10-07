@@ -93,9 +93,18 @@ public class UserInterface {
                             case ATTACKED -> {
                                 if (outcome.getEnemyHealthOutcome() >= 0) {
                                     System.out.println();
-                                    System.out.println("You " + outcome.getAttackVerb() + " the enemy for " + outcome.getDamage() + " damage");
-                                    System.out.println("The enemy now has " + outcome.getEnemyHealthOutcome() + "HP");
+                                    System.out.println("You " + outcome.getAttackVerb() + " the enemy for " + outcome.getPlayerDamageDealt() + " damage");
+                                    System.out.println("The enemy now has " + outcome.getEnemyHealthOutcome() + " HP");
                                     System.out.println();
+                                    if (outcome.getEnemyHealthOutcome() > 0) {
+                                        System.out.println(outcome.getEnemyLongName() + " " + outcome.getEnemyAttackVerb() + " you for " + outcome.getEnemyDamageDealt() + " HP");
+                                        System.out.println("You now have " + outcome.getPlayerHealth() + " HP");
+                                        System.out.println();
+                                    }
+                                    else {
+                                        System.out.println("You killed the " + outcome.getEnemyLongName());
+                                        System.out.println();
+                                    }
 
                                 } else if (outcome.getEnemyHealthOutcome() <= 0) {
                                     System.out.println(outcome.getEnemyLongName() + " has been slain.");
@@ -103,6 +112,10 @@ public class UserInterface {
 
                                 if (outcome.getUsesLeft() >= 0){
                                     System.out.println("Uses left: " + outcome.getUsesLeft());
+                                }
+                                if (outcome.getPlayerHealth() <= 0) {
+                                    System.out.println("Game over");
+                                    running = false;
                                 }
                             }
                         }

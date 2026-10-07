@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Adventure {
@@ -37,7 +36,7 @@ public class Adventure {
 
         for (Item item : inventory) {
             items += "- " + item.getInventoryText();
-            if (item instanceof Weapon weapon && player.getEquipped() == weapon){
+            if (item instanceof Weapon weapon && player.getEquipped() == weapon) {
                 items += " (equipped)";
             }
             items += System.lineSeparator();
@@ -59,7 +58,7 @@ public class Adventure {
                 }
             }
             return enemiesString;
-        }  else {
+        } else {
             return "";
         }
     }
@@ -109,14 +108,20 @@ public class Adventure {
 
     public AttackOutcome attack(String shortName) {
         Enemy enemy = player.getCurrentRoom().findEnemy(shortName);
+        AttackOutcome outcome = player.attack(enemy);
 
-        return player.attack(enemy);
+        if (enemy.isAlive()) {
+            enemy.attack(player, outcome);
+        }
+
+        return outcome;
     }
 
+    /*
     public void resolveEnemyTurn() {
         for (Enemy enemy : player.getCurrentRoom().getEnemies()) {
 
-            enemy.attack(player);
+            enemy.attack();
         }
     }
 
