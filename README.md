@@ -4,6 +4,14 @@ Our implementation of the [course project assignment](https://github.com/EK-DAT-
 
 For reference, the original game's [C source code](https://github.com/vattam/BSDGames/tree/master/adventure) is bundled with a Linux port of BSD Games.
 
+## Contributors
+
+| Name | GitHub |
+| --- | --- |
+| Mathias | [mwnDK1402](https://github.com/mwnDK1402) |
+| Nikita | [NikitaM2527](https://github.com/NikitaM2527) |
+| Nikolas | [NikolasCCT](https://github.com/NikolasCCT) |
+
 ## Commands
 
 | Command | Aliases | Description |
