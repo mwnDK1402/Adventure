@@ -14,14 +14,16 @@ graph Rooms {
     { rank = same; r4; r5; r6; }
     { rank = same; r7; r8; r9; }
 
+    // Captions: items from roomN.addItem(...), then "Enemy: ..." from
+    // roomN.addEnemy(...) using the enemy's long name, as `look` shows it.
     r1 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 1</TD></TR><TR><TD><FONT POINT-SIZE="11">Backpack, Wooden sword</FONT></TD></TR></TABLE>>, fillcolor = "#FFE08A", color = "#B8860B"];
-    r2 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 2</TD></TR><TR><TD><FONT POINT-SIZE="11">Key, Lamp, Canned beans</FONT></TD></TR></TABLE>>];
+    r2 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 2</TD></TR><TR><TD><FONT POINT-SIZE="11">Key, Lamp, Canned beans</FONT></TD></TR><TR><TD><FONT POINT-SIZE="11">Enemy: Cave Goblin</FONT></TD></TR></TABLE>>];
     r3 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 3</TD></TR><TR><TD><FONT POINT-SIZE="11">Rope, Slingshot, Trail mix</FONT></TD></TR></TABLE>>];
-    r4 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 4</TD></TR><TR><TD><FONT POINT-SIZE="11">Torch, Mushroom</FONT></TD></TR></TABLE>>];
-    r5 [label = "Room 5"];
-    r6 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 6</TD></TR><TR><TD><FONT POINT-SIZE="11">Hook, Fish</FONT></TD></TR></TABLE>>];
-    r7 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 7</TD></TR><TR><TD><FONT POINT-SIZE="11">Dried meat, Bone club</FONT></TD></TR></TABLE>>];
-    r8 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 8</TD></TR><TR><TD><FONT POINT-SIZE="11">Ancient Key, Stone fist</FONT></TD></TR></TABLE>>];
+    r4 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 4</TD></TR><TR><TD><FONT POINT-SIZE="11">Torch, Mushroom</FONT></TD></TR><TR><TD><FONT POINT-SIZE="11">Enemy: Stone scorpion</FONT></TD></TR></TABLE>>];
+    r5 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 5</TD></TR><TR><TD><FONT POINT-SIZE="11">Enemy: Cursed Beast</FONT></TD></TR></TABLE>>];
+    r6 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 6</TD></TR><TR><TD><FONT POINT-SIZE="11">Hook, Fish</FONT></TD></TR><TR><TD><FONT POINT-SIZE="11">Enemy: Venomous Serpent</FONT></TD></TR></TABLE>>];
+    r7 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 7</TD></TR><TR><TD><FONT POINT-SIZE="11">Dried meat, Bone club</FONT></TD></TR><TR><TD><FONT POINT-SIZE="11">Enemy: Enraged Ranged Skeleton</FONT></TD></TR></TABLE>>];
+    r8 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 8</TD></TR><TR><TD><FONT POINT-SIZE="11">Ancient Key, Stone fist</FONT></TD></TR><TR><TD><FONT POINT-SIZE="11">Enemy: Stone Guardian</FONT></TD></TR></TABLE>>];
     r9 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 9</TD></TR><TR><TD><FONT POINT-SIZE="11">Steel sword, Energy bar</FONT></TD></TR></TABLE>>];
 
     // Room connections, mirroring Map.buildMap():
