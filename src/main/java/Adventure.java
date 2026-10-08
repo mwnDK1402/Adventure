@@ -107,7 +107,12 @@ public class Adventure {
     }
 
     public CombatOutcome attack(String shortName) {
-        Enemy enemy = player.getCurrentRoom().findEnemy(shortName);
+        Enemy enemy;
+        if (shortName.isBlank()) {
+            enemy = player.getCurrentRoom().getAnyEnemy();
+        } else {
+            enemy = player.getCurrentRoom().findEnemy(shortName);
+        }
         if (enemy == null) {
             return new CombatOutcome(new PlayerAttackOutcome(AttackResult.NO_ENEMY, 0, null, null, -1, -1, null), null);
         }

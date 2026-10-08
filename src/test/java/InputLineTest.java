@@ -6,11 +6,11 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class CommandTest {
+class InputLineTest {
     @ParameterizedTest
     @MethodSource("commandCases")
     void testCommand(String input, String expectedCommand, String expectedArg) {
-        var cmd = new Command(input);
+        var cmd = new InputLine(input);
         assertEquals(expectedCommand, cmd.getCommand());
         assertEquals(expectedArg, cmd.getArg());
     }

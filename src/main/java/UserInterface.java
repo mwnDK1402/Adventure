@@ -1,3 +1,4 @@
+import java.util.Locale;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -5,8 +6,193 @@ public class UserInterface {
     private Adventure adventure;
     private boolean running;
 
-    private void confirmDirection(String direction) {
-        if (adventure.go(direction)) {
+    public void start() {
+        this.scanner = new Scanner(System.in);
+        this.adventure = new Adventure();
+
+        running = true;
+
+        System.out.println("You are in " + adventure.getRoomName());
+        System.out.println(adventure.look());
+        System.out.println();
+
+        while (running) {
+            System.out.print("Input (use 'help' for commands): ");
+            InputLine input = new InputLine(scanner.nextLine());
+            Command command = Command.validate(input.getCommand());
+
+            switch (command) {
+                case Go -> {
+                    Direction direction = Direction.validate(input.getArg());
+                    if (direction != null) {
+                        handleGo(direction);
+                    } else {
+                        handleInvalid();
+                    }
+                }
+                case North, N -> handleGo(Direction.North);
+                case South, S -> handleGo(Direction.South);
+                case East, E -> handleGo(Direction.East);
+                case West, W -> handleGo(Direction.West);
+                case Look -> handleLook();
+                case Help -> handleHelp();
+                case Exit -> handleExit();
+                case Inventory -> handleInventory();
+                case Health -> handleHealth();
+                case Attack -> handleAttack(input.getArg());
+                case Eat -> handleEat(input.getArg());
+                case Drop -> handleDrop(input.getArg());
+                case Take -> handleTake(input.getArg());
+                case Equip -> handleEquip(input.getArg());
+                case Invalid -> handleInvalid();
+            }
+        }
+
+        System.out.println("You are now exiting the maze... Goodbye.");
+    }
+
+    private static void handleInvalid() {
+        System.out.println("Invalid command - see help");
+    }
+
+    private void handleHelp() {
+        System.out.println("""
+                instructions
+                """);
+    }
+
+    private void handleExit() {
+        running = false;
+    }
+
+    private void handleInventory() {
+        System.out.println(adventure.inventory());
+    }
+
+    private void handleHealth() {
+        if (adventure.health() >= 100) {
+            System.out.println("Health: " + adventure.health() + ". You are in perfect health!");
+        } else if (adventure.health() >= 50) {
+            System.out.println("Health: " + adventure.health() + ". You are in good health, but avoid fighting right now.");
+        } else if (adventure.health() >= 25) {
+            System.out.println("Health: " + adventure.health() + ". You are wounded - find something healthy to eat.");
+        } else if (adventure.health() >= 1) {
+            System.out.println("Health: " + adventure.health() + ". You are barely alive.");
+        } else {
+            System.out.println("Health: " + adventure.health() + ". You should be dead.");
+        }
+    }
+
+    private void handleEquip(String intendedWeapon) {
+        EquipResult result = adventure.equip(intendedWeapon);
+
+        switch (result) {
+            case NOT_EQUIPMENT -> System.out.println("You cannot equip the " + intendedWeapon);
+            case NOT_FOUND ->
+                    System.out.println("There is nothing like " + intendedWeapon + " to equip around here.");
+            case EQUIPPED -> System.out.println("You equipped the " + intendedWeapon);
+        }
+    }
+
+    private void handleTake(String intendedItem) {
+        if (adventure.take(intendedItem)) {
+            System.out.println("Item added to inventory");
+        } else {
+            System.out.println("No such item in current room");
+        }
+    }
+
+    private void handleDrop(String intendedItem) {
+        if (adventure.drop(intendedItem)) {
+            System.out.println("Item removed from inventory");
+        } else {
+            System.out.println("No such item in your inventory");
+        }
+    }
+
+    private void handleEat(String intendedFood) {
+        EatOutcome outcome = adventure.eat(intendedFood);
+
+        switch (outcome.getResult()) {
+            case NOT_FOOD -> System.out.println("You cannot eat the " + intendedFood);
+            case NOT_FOUND ->
+                    System.out.println("There is nothing like " + intendedFood + " to eat around here");
+            case EATEN -> {
+                if (outcome.getHealthChange() > 0) {
+                    System.out.println("You ate the " + intendedFood + ". You feel better.");
+                } else if (outcome.getHealthChange() < 0) {
+                    System.out.println("You ate the " + intendedFood + ". You feel worse.");
+                } else {
+                    System.out.println("You ate the " + intendedFood + ". You feel no different.");
+                }
+
+                System.out.println("You now have " + outcome.getHealthPostFood() + " HP");
+            }
+        }
+        if (outcome.getEnemyOutcome() != null) {
+            printEnemyAttack(outcome.getEnemyOutcome());
+            checkGameOver(outcome.getEnemyOutcome());
+        }
+    }
+
+    private void handleAttack(String intendedEnemy) {
+        CombatOutcome outcome = adventure.attack(intendedEnemy);
+
+        switch (outcome.getPlayer().getResult()) {
+            case NO_WEAPON -> {
+                System.out.println("You have no weapon equipped");
+                printEnemyAttack(outcome.getEnemy());
+                checkGameOver(outcome.getEnemy());
+            }
+            case CANNOT_USE -> {
+                System.out.println(outcome.getPlayer().getMessage());
+                printEnemyAttack(outcome.getEnemy());
+                checkGameOver(outcome.getEnemy());
+            }
+            case NO_ENEMY -> {
+                if (!intendedEnemy.isBlank()) {
+                    System.out.println("There is no " + intendedEnemy + " in this room");
+                } else {
+                    System.out.println("There is no enemy in this room");
+                }
+            }
+            case ATTACKED -> {
+                if (outcome.getPlayer().getEnemyHealthOutcome() > 0) {
+                    System.out.println();
+                    System.out.println("You " + outcome.getPlayer().getAttackVerb() + " the enemy for " + outcome.getPlayer().getPlayerDamageDealt() + " damage");
+                    System.out.println("The enemy now has " + outcome.getPlayer().getEnemyHealthOutcome() + " HP");
+                    System.out.println();
+                    if (outcome.getPlayer().getEnemyHealthOutcome() > 0) {
+                        printEnemyAttack(outcome.getEnemy());
+                    }
+                    else {
+                        System.out.println("You killed the " + outcome.getPlayer().getEnemyLongName());
+                        System.out.println();
+                    }
+
+                } else if (outcome.getPlayer().getEnemyHealthOutcome() <= 0) {
+                    System.out.println(outcome.getPlayer().getEnemyLongName() + " has been slain.");
+                }
+
+                int usesLeft = outcome.getPlayer().getUsesLeft();
+                if (usesLeft > 0){
+                    System.out.println("Uses left: " + outcome.getPlayer().getUsesLeft());
+                }
+                else if (usesLeft == 0) {
+                    System.out.println("Your weapon is out of uses");
+                }
+                if (outcome.getEnemy() != null) checkGameOver(outcome.getEnemy());
+            }
+        }
+    }
+
+    private void handleLook() {
+        System.out.println(adventure.look());
+    }
+
+    private void handleGo(Direction direction) {
+        String dirString = direction.name().toLowerCase(Locale.ROOT);
+        if (adventure.go(dirString)) {
             System.out.println("You are in " + adventure.getRoomName());
             System.out.println(adventure.look());
             System.out.println();
@@ -16,22 +202,18 @@ public class UserInterface {
                 if (adventure.playerHasKey()) {
                     System.out.println("The door is locked, but you have a key.");
                     if (askYesNo("Do you want to unlock this door? (Y/N)")) {
-                        adventure.unlock(direction);
+                        adventure.unlock(dirString);
                         System.out.println("You unlock the door.");
-                        System.out.println();
-                        confirmDirection(direction);
+                        handleGo(direction);
                     } else {
                         System.out.println("You leave the door locked.");
-                        System.out.println();
                     }
                 } else {
                     System.out.println("The door is locked. You need a key!");
-                    System.out.println();
                 }
             } else {
                 System.out.println();
                 System.out.println("You can't go that way!");
-                System.out.println();
             }
         }
     }
@@ -50,148 +232,6 @@ public class UserInterface {
         }
     }
 
-    public void start() {
-        this.scanner = new Scanner(System.in);
-        this.adventure = new Adventure();
-
-        running = true;
-
-        System.out.println("You are in " + adventure.getRoomName());
-        System.out.println(adventure.look());
-        System.out.println();
-
-        while (running) {
-            System.out.print("Input (use 'help' for commands): ");
-            String choice = scanner.nextLine().trim().toLowerCase();
-
-            switch (choice) {
-                case "go north", "north", "go n", "n" -> confirmDirection("north");
-                case "go south", "south", "go s", "s" -> confirmDirection("south");
-                case "go east", "east", "go e", "e" -> confirmDirection("east");
-                case "go west", "west", "go w", "w" -> confirmDirection("west");
-                case "look" -> System.out.println(adventure.look());
-                case "help" -> System.out.println("""
-                        instructions
-                        """);
-                case "exit" -> running = false;
-                case "inventory" -> System.out.println(adventure.inventory());
-                case "health" -> {
-                    if (adventure.health() >= 100) {
-                        System.out.println("Health: " + adventure.health() + ". You are in perfect health!");
-                    } else if (adventure.health() >= 50) {
-                        System.out.println("Health: " + adventure.health() + ". You are in good health, but avoid fighting right now.");
-                    } else if (adventure.health() >= 25) {
-                        System.out.println("Health: " + adventure.health() + ". You are wounded - find something healthy to eat.");
-                    } else if (adventure.health() >= 1) {
-                        System.out.println("Health: " + adventure.health() + ". You are barely alive.");
-                    } else {
-                        System.out.println("Health: " + adventure.health() + ". You should be dead.");
-                    }
-                }
-                default -> {
-                    if (choice.startsWith("attack ")) {
-                        String intendedEnemy = choice.substring(7);
-                        CombatOutcome outcome = adventure.attack(intendedEnemy);
-
-                        switch (outcome.getPlayer().getResult()) {
-                            case NO_WEAPON -> {
-                                System.out.println("You have no weapon equipped");
-                                printEnemyAttack(outcome.getEnemy());
-                                checkGameOver(outcome.getEnemy());
-                            }
-                            case CANNOT_USE -> {
-                                System.out.println(outcome.getPlayer().getMessage());
-                                printEnemyAttack(outcome.getEnemy());
-                                checkGameOver(outcome.getEnemy());
-                            }
-                            case NO_ENEMY -> System.out.println("There is no " + intendedEnemy + " in this room");
-                            case ATTACKED -> {
-                                if (outcome.getPlayer().getEnemyHealthOutcome() > 0) {
-                                    System.out.println();
-                                    System.out.println("You " + outcome.getPlayer().getAttackVerb() + " the enemy for " + outcome.getPlayer().getPlayerDamageDealt() + " damage");
-                                    System.out.println("The enemy now has " + outcome.getPlayer().getEnemyHealthOutcome() + " HP");
-                                    System.out.println();
-                                    if (outcome.getPlayer().getEnemyHealthOutcome() > 0) {
-                                        printEnemyAttack(outcome.getEnemy());
-                                    }
-                                    else {
-                                        System.out.println("You killed the " + outcome.getPlayer().getEnemyLongName());
-                                        System.out.println();
-                                    }
-
-                                } else if (outcome.getPlayer().getEnemyHealthOutcome() <= 0) {
-                                    System.out.println(outcome.getPlayer().getEnemyLongName() + " has been slain.");
-                                }
-
-                                if (outcome.getPlayer().getUsesLeft() > 0){
-                                    System.out.println("Uses left: " + outcome.getPlayer().getUsesLeft());
-                                }
-                                else {
-                                    System.out.println("Your weapon is out of uses");
-                                }
-                                checkGameOver(outcome.getEnemy());
-                            }
-                        }
-                    } else if (choice.startsWith("take ")) {
-                        String intendedItem = choice.substring(5);
-                        if (adventure.take(intendedItem)) {
-                            System.out.println("Item added to inventory");
-                        } else {
-                            System.out.println("No such item in current room");
-                        }
-                    } else if (choice.startsWith("drop ")) {
-                        String intendedItem = choice.substring(5);
-                        if (adventure.drop(intendedItem)) {
-                            System.out.println("Item removed from inventory");
-                        } else {
-                            System.out.println("No such item in your inventory");
-                        }
-                    } else if (choice.startsWith("eat ")) {
-                        String intendedItem = choice.substring(4);
-                        EatOutcome outcome = adventure.eat(intendedItem);
-
-                        switch (outcome.getResult()) {
-                            case NOT_FOOD -> System.out.println("You cannot eat the " + intendedItem);
-                            case NOT_FOUND ->
-                                    System.out.println("There is nothing like " + intendedItem + " to eat around here");
-                            case EATEN -> {
-                                if (outcome.getHealthChange() > 0) {
-                                    System.out.println("You ate the " + intendedItem + ". You feel better.");
-                                } else if (outcome.getHealthChange() < 0) {
-                                    System.out.println("You ate the " + intendedItem + ". You feel worse.");
-                                } else {
-                                    System.out.println("You ate the " + intendedItem + ". You feel no different.");
-                                }
-
-                                System.out.println("You now have " + outcome.getHealthPostFood() + " HP");
-                            }
-                        }
-                        if (outcome.getEnemyOutcome() != null) {
-                            printEnemyAttack(outcome.getEnemyOutcome());
-                            checkGameOver(outcome.getEnemyOutcome());
-                        }
-
-                    } else if (choice.startsWith("equip ")) {
-                        String intendedWeapon = choice.substring(6);
-                        EquipResult result = adventure.equip(intendedWeapon);
-
-                        switch (result) {
-                            case NOT_EQUIPMENT -> System.out.println("You cannot equip the " + intendedWeapon);
-                            case NOT_FOUND ->
-                                    System.out.println("There is nothing like " + intendedWeapon + " to equip around here.");
-                            case EQUIPPED -> System.out.println("You equipped the " + intendedWeapon);
-                        }
-                    } else {
-                        System.out.println("Invalid command - see help");
-                    }
-                }
-            }
-
-        }
-
-        System.out.println("You are now exiting the maze... Goodbye.");
-    }
-
     private void checkGameOver(EnemyAttackOutcome outcome) {
         if (outcome.getPlayerHealth() < 0) {
             System.out.println("Game over");
@@ -205,5 +245,4 @@ public class UserInterface {
         System.out.println("You now have " + outcome.getPlayerHealth() + " HP");
         System.out.println();
     }
-
 }
