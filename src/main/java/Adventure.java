@@ -97,8 +97,14 @@ public class Adventure {
 
     public EatOutcome eat(String shortName) {
         if (player.getCurrentRoom().getEnemySize() == 0) {
-
+            return player.eat(shortName);
         }
+
+        Enemy enemy = player.getCurrentRoom().getEnemies().getFirst();
+        /*
+        AttackOutcome outcome = enemy.attack(player);
+        enemy.attack(player, outcome);
+         */
         return player.eat(shortName);
     }
 

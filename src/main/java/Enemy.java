@@ -25,9 +25,13 @@ public class Enemy {
     }
 
     public void hit(int damage) {
-        if (getEnemyHealth() >= 0) {
-            this.health -= damage;
-        } else {
+        if (!isAlive()) {
+            return;
+        }
+        this.health -= damage;
+
+        if (!isAlive()) {
+            room.addItem(getWeapon());
             room.removeEnemy(this);
         }
     }
@@ -54,5 +58,9 @@ public class Enemy {
 
     public Room getEnemyRoom() {
         return room;
+    }
+
+    public Weapon getWeapon() {
+        return weapon;
     }
 }
