@@ -117,21 +117,4 @@ public class Adventure {
 
         return new CombatOutcome(outcome, enemyOutcome);
     }
-
-    /*
-    public void resolveEnemyTurn() {
-        for (Enemy enemy : player.getCurrentRoom().getEnemies()) {
-
-            enemy.attack();
-        }
-    }
-
-    /*
-    - If walk into room with enemy
-    + If attack/take/eat -> Enemy attacks back
-        + else enemy does nothing
-
-
-
-     */
 }
