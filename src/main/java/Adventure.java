@@ -57,6 +57,9 @@ public class Adventure {
                     enemiesString += ", ";
                 }
             }
+            for (Enemy enemy : enemies) {
+                enemiesString += System.lineSeparator() + enemy.getDescription();
+            }
             return enemiesString;
         } else {
             return "";
