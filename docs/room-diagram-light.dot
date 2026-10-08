@@ -1,5 +1,5 @@
 graph Rooms {
-    label = "Adventure - Room Layout (light)\nGold = starting room · Dashed red = locked door (none locked yet)";
+    label = "Adventure - Room Layout (light)\nGold = starting room · Dashed red = locked door";
     labelloc = t;
     fontname = "Helvetica";
     fontsize = 20;
@@ -14,15 +14,15 @@ graph Rooms {
     { rank = same; r4; r5; r6; }
     { rank = same; r7; r8; r9; }
 
-    r1 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 1</TD></TR><TR><TD><FONT POINT-SIZE="11">Wooden sword</FONT></TD></TR></TABLE>>, fillcolor = "#FFE08A", color = "#B8860B"];
-    r2 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 2</TD></TR><TR><TD><FONT POINT-SIZE="11">Key, Lamp, Burger</FONT></TD></TR></TABLE>>];
-    r3 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 3</TD></TR><TR><TD><FONT POINT-SIZE="11">Slingshot</FONT></TD></TR></TABLE>>];
-    r4 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 4</TD></TR><TR><TD><FONT POINT-SIZE="11">Mushroom</FONT></TD></TR></TABLE>>];
+    r1 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 1</TD></TR><TR><TD><FONT POINT-SIZE="11">Backpack, Wooden sword</FONT></TD></TR></TABLE>>, fillcolor = "#FFE08A", color = "#B8860B"];
+    r2 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 2</TD></TR><TR><TD><FONT POINT-SIZE="11">Key, Lamp, Canned beans</FONT></TD></TR></TABLE>>];
+    r3 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 3</TD></TR><TR><TD><FONT POINT-SIZE="11">Rope, Slingshot, Trail mix</FONT></TD></TR></TABLE>>];
+    r4 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 4</TD></TR><TR><TD><FONT POINT-SIZE="11">Torch, Mushroom</FONT></TD></TR></TABLE>>];
     r5 [label = "Room 5"];
-    r6 [label = "Room 6"];
-    r7 [label = "Room 7"];
-    r8 [label = "Room 8"];
-    r9 [label = "Room 9"];
+    r6 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 6</TD></TR><TR><TD><FONT POINT-SIZE="11">Hook, Fish</FONT></TD></TR></TABLE>>];
+    r7 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 7</TD></TR><TR><TD><FONT POINT-SIZE="11">Dried meat, Bone club</FONT></TD></TR></TABLE>>];
+    r8 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 8</TD></TR><TR><TD><FONT POINT-SIZE="11">Ancient Key, Stone fist</FONT></TD></TR></TABLE>>];
+    r9 [label = <<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>Room 9</TD></TR><TR><TD><FONT POINT-SIZE="11">Steel sword, Energy bar</FONT></TD></TR></TABLE>>];
 
     // Room connections, mirroring Map.buildMap():
     //   room2.setWestEast(room1, room2)   -> r1 -- r2
@@ -34,8 +34,12 @@ graph Rooms {
     //   room5.setNorthSouth(room5, room8) -> r5 -- r8
     //   room8.setWestEast(room8, room9)   -> r8 -- r9
     //   room6.setNorthSouth(room6, room9) -> r6 -- r9
-    r1 -- r2;
-    r2 -- r3;
+    // Locked doors: Map.buildMap() calls `room2.setLock(true)`, so Room 2 is
+    // locked and both edges leading to it are drawn dashed red. Note that
+    // Room.lock is per-room, not per-direction, so the lock blocks BOTH
+    // approaches to Room 2, not just the one from Room 1.
+    r1 -- r2 [color = "#C62828", style = "dashed", penwidth = 2.5];
+    r2 -- r3 [color = "#C62828", style = "dashed", penwidth = 2.5];
     r3 -- r6;
     r1 -- r4;
     r4 -- r7;
@@ -43,12 +47,6 @@ graph Rooms {
     r8 -- r9;
     r5 -- r8;
     r6 -- r9;
-
-    // Locked doors: none active. Map.buildMap() keeps `room2.setLock(true)`
-    // commented out. Note that Room.lock is per-room, not per-direction, so
-    // enabling it blocks BOTH approaches to Room 2, not just the one from Room 1:
-    //   r1 -- r2 [color = "#C62828", style = "dashed", penwidth = 2.5];
-    //   r2 -- r3 [color = "#C62828", style = "dashed", penwidth = 2.5];
 
     // Invisible edges, used only to hold the grid layout
     edge [style = invis, color = "white"];

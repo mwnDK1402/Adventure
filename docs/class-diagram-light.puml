@@ -23,6 +23,7 @@ class Room {
     - description : String
     - lock : boolean
     - items : ArrayList<Item>
+    - enemies : ArrayList<Enemy>
     - north : Room
     - south : Room
     - east : Room
@@ -46,6 +47,30 @@ class Room {
     + removeItem(item : Item) : boolean
     + getItems() : ArrayList<Item>
     + findItem(shortName : String) : Item
+    + addEnemy(enemy : Enemy) : void
+    + removeEnemy(enemy : Enemy) : void
+    + getEnemies() : ArrayList<Enemy>
+    + findEnemy(shortName : String) : Enemy
+    + getEnemySize() : int
+    + getAnyEnemy() : Enemy
+}
+
+class Enemy {
+    - shortName : String
+    - longName : String
+    - description : String
+    - weapon : Weapon
+    - room : Room
+    - health : int
+    + Enemy(shortName : String, longName : String, description : String, health : int, weapon : Weapon, room : Room)
+    + attack(player : Player) : EnemyAttackOutcome
+    + hit(damage : int) : void
+    + isAlive() : boolean
+    + getShortName() : String
+    + getDescription() : String
+    + getLongName() : String
+    + getEnemyHealth() : int
+    + getWeapon() : Weapon
 }
 
 class Player {
@@ -65,7 +90,10 @@ class Player {
     + eat(shortName : String) : EatOutcome
     + equip(shortName : String) : EquipResult
     + getEquipped() : Weapon
-    + attack() : AttackOutcome
+    + attack(enemy : Enemy) : PlayerAttackOutcome
+    + hit(damage : int) : void
+    + hasKey() : boolean
+    + unlock(direction : String) : boolean
     - findItem(shortName : String) : Item
 }
 
@@ -83,7 +111,10 @@ class Adventure {
     + health() : int
     + eat(shortName : String) : EatOutcome
     + equip(shortName : String) : EquipResult
-    + attack() : AttackOutcome
+    + attack(shortName : String) : CombatOutcome
+    + playerHasKey() : boolean
+    + unlock(direction : String) : boolean
+    - enemiesInRoom() : String
     - itemsInRoom() : String
 }
 
@@ -139,11 +170,15 @@ class RangedWeapon {
 
 class EatOutcome {
     - result : EatResult
-    - foodName : String
     - healthChange : int
-    + EatOutcome(result : EatResult, foodName : String, healthChange : int)
+    - healthPostFood : int
+    - enemyOutcome : EnemyAttackOutcome
+    + EatOutcome(result : EatResult, healthChange : int, enemyOutcome : EnemyAttackOutcome, healthPostFood : int)
     + getResult() : EatResult
     + getHealthChange() : int
+    + getEnemyOutcome() : EnemyAttackOutcome
+    + getHealthPostFood() : int
+    + isPlayerAlive() : boolean
 }
 
 enum EatResult {
@@ -152,24 +187,51 @@ enum EatResult {
     EATEN
 }
 
-class AttackOutcome {
+class PlayerAttackOutcome {
     - result : AttackResult
-    - damage : int
+    - playerDamageDealt : int
     - message : String
-    - attackVerb : String
+    - playerAttackVerb : String
     - usesLeft : int
-    + AttackOutcome(result : AttackResult, damage : int, message : String, attackVerb : String, usesLeft : int)
+    - enemyHealth : int
+    - enemyLongName : String
+    + PlayerAttackOutcome(result : AttackResult, playerDamageDealt : int, message : String, attackVerb : String, usesLeft : int, enemyHealth : int, enemyLongName : String)
     + getResult() : AttackResult
-    + getDamage() : int
     + getMessage() : String
     + getAttackVerb() : String
     + getUsesLeft() : int
+    + getEnemyHealthOutcome() : int
+    + getEnemyLongName() : String
+    + getPlayerDamageDealt() : int
+    + isEnemyAlive() : boolean
+}
+
+class EnemyAttackOutcome {
+    - enemyDamageDealt : int
+    - playerHealth : int
+    - enemyAttackVerb : String
+    - enemyLongName : String
+    + EnemyAttackOutcome(enemyDamageDealt : int, playerHealth : int, enemyAttackVerb : String, enemyLongName : String)
+    + getEnemyAttackVerb() : String
+    + getEnemyDamageDealt() : int
+    + getPlayerHealth() : int
+    + getEnemyLongName() : String
+    + isPlayerAlive() : boolean
+}
+
+class CombatOutcome {
+    - enemyAttackOutcome : EnemyAttackOutcome
+    - playerAttackOutcome : PlayerAttackOutcome
+    + CombatOutcome(playerAttackOutcome : PlayerAttackOutcome, enemyAttackOutcome : EnemyAttackOutcome)
+    + getEnemy() : EnemyAttackOutcome
+    + getPlayer() : PlayerAttackOutcome
 }
 
 enum AttackResult {
     NO_WEAPON
     CANNOT_USE
     ATTACKED
+    NO_ENEMY
 }
 
 enum EquipResult {
@@ -178,11 +240,58 @@ enum EquipResult {
     EQUIPPED
 }
 
+enum Command {
+    Invalid
+    Go
+    Look
+    Help
+    Exit
+    Inventory
+    Health
+    Attack
+    Eat
+    Drop
+    Take
+    Equip
+    + {static} validate(command : String) : Command
+}
+
+enum Direction {
+    North
+    South
+    East
+    West
+    + {static} validate(direction : String) : Direction
+}
+
+class InputLine {
+    - command : String
+    - arg : String
+    + InputLine(inputLine : String)
+    + getCommand() : String
+    + getArg() : String
+}
+
 class UserInterface {
     - scanner : Scanner
     - adventure : Adventure
+    - running : boolean
     + start() : void
-    - confirmDirection(direction : String) : void
+    - {static} handleInvalid() : void
+    - handleHelp() : void
+    - handleExit() : void
+    - handleInventory() : void
+    - handleHealth() : void
+    - handleEquip(intendedWeapon : String) : void
+    - handleTake(intendedItem : String) : void
+    - handleDrop(intendedItem : String) : void
+    - handleEat(intendedFood : String) : void
+    - handleAttack(intendedEnemy : String) : void
+    - handleLook() : void
+    - handleGo(direction : Direction) : void
+    - askYesNo(question : String) : boolean
+    - handleGameOver() : void
+    - {static} printEnemyAttack(outcome : EnemyAttackOutcome) : void
 }
 
 class Main {
@@ -197,6 +306,9 @@ Map "1" *-- "9" Room : buildMap()
 Player "1" o-- "1" Room : currentRoom
 Room "0..4" o-- "0..4" Room : north / south / east / west
 Room "1" o-- "0..*" Item : items
+Room "1" o-- "0..*" Enemy : enemies
+Enemy "0..*" o-- "1" Room : room
+Enemy "1" o-- "1" Weapon : weapon
 Player "1" o-- "0..*" Item : inventory
 Player "1" o-- "0..1" Weapon : equipped
 Food --|> Item
@@ -206,8 +318,19 @@ RangedWeapon --|> Weapon
 Player ..> Food : <<uses>>
 Player ..> EatOutcome : <<creates>>
 EatOutcome "1" o-- "1" EatResult : result
-Player ..> AttackOutcome : <<creates>>
-AttackOutcome "1" o-- "1" AttackResult : result
+EatOutcome "1" o-- "0..1" EnemyAttackOutcome : enemyOutcome
+Player ..> PlayerAttackOutcome : <<creates>>
+PlayerAttackOutcome "1" o-- "1" AttackResult : result
+Adventure ..> CombatOutcome : <<creates>>
+CombatOutcome "1" o-- "1" PlayerAttackOutcome : playerAttackOutcome
+CombatOutcome "1" o-- "0..1" EnemyAttackOutcome : enemyAttackOutcome
+Enemy ..> EnemyAttackOutcome : <<creates>>
+Player ..> Enemy : <<uses>>
+Enemy ..> Player : <<uses>>
+UserInterface ..> InputLine : <<creates>>
+UserInterface ..> Command : <<uses>>
+UserInterface ..> Direction : <<uses>>
+InputLine ..> Direction : <<uses>>
 UserInterface ..> Scanner : <<uses>>
 Adventure ..> ArrayList : <<uses>>
 Player ..> ArrayList : <<uses>>
