@@ -4,23 +4,6 @@ Our implementation of the [course project assignment](https://github.com/EK-DAT-
 
 For reference, the original game's [C source code](https://github.com/vattam/BSDGames/tree/master/adventure) is bundled with a Linux port of BSD Games.
 
-## Build and run
-
-```bash
-mvn package                           # Build target/adventure.jar
-java -jar target/adventure.jar        # Run the game
-```
-
-> [!TIP]
-> The jar's manifest names `Main` as its entry point, so
-> `java -jar` needs no classpath and no class name.
-
-`target/adventure.jar` is the whole game in one 15 KB file. Copy it
-wherever you like and run it the same way; it works on Windows, macOS
-and Linux alike, as long as the machine has a Java 21 or newer runtime
-installed. The jar is platform-independent, but the Java runtime is not
-bundled into it.
-
 ## Commands
 
 | Command | Aliases | Description |
@@ -40,8 +23,57 @@ bundled into it.
 | `help` | | Show the list of commands |
 | `exit` | | Quit the game |
 
-You start out with 100 health. Only food can be eaten, and eating it changes your
-health by the food's health points, which can be negative.
+## Diagrams
+
+### Class diagram
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/class-diagram-dark.svg">
+  <img alt="Class diagram" src="docs/class-diagram-light.svg">
+</picture>
+
+### Activity diagram
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/attack-flowchart-dark.svg">
+  <img alt="Attack flowchart" src="docs/attack-flowchart-light.svg">
+</picture>
+
+### Room layout
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/room-diagram-dark.svg">
+  <img alt="Room layout" src="docs/room-diagram-light.svg">
+</picture>
+
+The diagrams are generated from source files in [`docs/`](docs): the class
+diagram from PlantUML and the room layout from Graphviz. Each diagram has a
+light and a dark variant that are identical apart from their theme colours.
+
+Edit the `.puml` or `.dot` source to match the code, then re-render:
+
+```bash
+plantuml -tsvg docs/class-diagram-light.puml docs/class-diagram-dark.puml
+dot -Tsvg docs/room-diagram-light.dot -o docs/room-diagram-light.svg
+dot -Tsvg docs/room-diagram-dark.dot  -o docs/room-diagram-dark.svg
+```
+
+## Build and run
+
+```bash
+mvn package                           # Build target/adventure.jar
+java -jar target/adventure.jar        # Run the game
+```
+
+> [!TIP]
+> The jar's manifest names `Main` as its entry point, so
+> `java -jar` needs no classpath and no class name.
+
+`target/adventure.jar` is the whole game in one 15 KB file. Copy it
+wherever you like and run it the same way; it works on Windows, macOS
+and Linux alike, as long as the machine has a Java 21 or newer runtime
+installed. The jar is platform-independent, but the Java runtime is not
+bundled into it.
 
 ## Releasing
 
@@ -91,38 +123,3 @@ which needs `gh auth login` once. PlantUML
 ([plantuml.com/pdf](https://plantuml.com/pdf)) is only needed if the PDF has to
 be rendered; the shared `plantuml.zip` works by unzipping it anywhere and either
 adding it to `PATH` or setting `PLANTUML_JAR` to the jar inside it.
-
-## Diagrams
-
-### Class diagram
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/class-diagram-dark.svg">
-  <img alt="Class diagram" src="docs/class-diagram-light.svg">
-</picture>
-
-### Activity diagram
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/attack-flowchart-dark.svg">
-  <img alt="Attack flowchart" src="docs/attack-flowchart-light.svg">
-</picture>
-
-### Room layout
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/room-diagram-dark.svg">
-  <img alt="Room layout" src="docs/room-diagram-light.svg">
-</picture>
-
-The diagrams are generated from source files in [`docs/`](docs): the class
-diagram from PlantUML and the room layout from Graphviz. Each diagram has a
-light and a dark variant that are identical apart from their theme colours.
-
-Edit the `.puml` or `.dot` source to match the code, then re-render:
-
-```bash
-plantuml -tsvg docs/class-diagram-light.puml docs/class-diagram-dark.puml
-dot -Tsvg docs/room-diagram-light.dot -o docs/room-diagram-light.svg
-dot -Tsvg docs/room-diagram-dark.dot  -o docs/room-diagram-dark.svg
-```
