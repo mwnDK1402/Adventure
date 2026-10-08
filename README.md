@@ -29,13 +29,15 @@ bundled into it.
 | `go south` | `south`, `s` | Move to the room to the south |
 | `go east` | `east`, `e` | Move to the room to the east |
 | `go west` | `west`, `w` | Move to the room to the west |
-| `look` | | Describe the current room and the items in it |
+| `look` | | Describe the current room, its items and any enemies |
 | `inventory` | | List the items you are carrying |
 | `take <item>` | | Pick up an item from the current room |
 | `drop <item>` | | Put down an item from your inventory |
 | `eat <item>` | | Eat an item, either from the current room or from your inventory |
-| `equip <item>` | | Equip an item, either from the current room or from your inventory |
+| `equip <weapon>` | | Equip a weapon from your current room or your inventory |
+| `attack [enemy]` | | Attack with your equipped weapon; omit the enemy name to hit the first one here |
 | `health` | | Show your current health and how you are feeling |
+| `help` | | Show the list of commands |
 | `exit` | | Quit the game |
 
 You start out with 100 health. Only food can be eaten, and eating it changes your
@@ -98,6 +100,10 @@ adding it to `PATH` or setting `PLANTUML_JAR` to the jar inside it.
   <source media="(prefers-color-scheme: dark)" srcset="docs/class-diagram-dark.svg">
   <img alt="Class diagram" src="docs/class-diagram-light.svg">
 </picture>
+
+### Activity diagram
+
+![[docs/attack-flowchart.svg]]
 
 ### Room layout
 
