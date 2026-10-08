@@ -146,7 +146,10 @@ public class UserInterface {
         }
         if (outcome.getEnemyOutcome() != null) {
             printEnemyAttack(outcome.getEnemyOutcome());
-            checkGameOver(outcome.getEnemyOutcome());
+        }
+
+        if (!outcome.isPlayerAlive()) {
+            handleGameOver();
         }
     }
 
@@ -166,17 +169,20 @@ public class UserInterface {
             case NO_WEAPON -> {
                 System.out.println("You have no weapon equipped");
                 printEnemyAttack(eOutcome);
-                checkGameOver(eOutcome);
+                if (!eOutcome.isPlayerAlive()) {
+                    handleGameOver();
+                }
             }
             case CANNOT_USE -> {
                 System.out.println(pOutcome.getMessage());
                 printEnemyAttack(eOutcome);
-                checkGameOver(eOutcome);
+                if (!eOutcome.isPlayerAlive()) {
+                    handleGameOver();
+                }
             }
             case ATTACKED -> {
-                System.out.println();
                 System.out.println("You " + pOutcome.getAttackVerb() + " the enemy for " + pOutcome.getPlayerDamageDealt() + " damage");
-                if (pOutcome.getEnemyHealthOutcome() > 0) {
+                if (pOutcome.isEnemyAlive()) {
                     System.out.println("The enemy now has " + pOutcome.getEnemyHealthOutcome() + " HP");
                     printEnemyAttack(eOutcome);
                 } else {
@@ -184,15 +190,15 @@ public class UserInterface {
                 }
 
                 int usesLeft = pOutcome.getUsesLeft();
-                if (usesLeft > 0){
+                if (usesLeft > 0) {
                     System.out.println("Uses left: " + usesLeft);
                 }
                 else if (usesLeft == 0) {
                     System.out.println("Your weapon is out of uses");
                 }
 
-                if (eOutcome != null) {
-                    checkGameOver(eOutcome);
+                if (eOutcome != null && !eOutcome.isPlayerAlive()) {
+                    handleGameOver();
                 }
             }
         }
@@ -242,11 +248,9 @@ public class UserInterface {
         }
     }
 
-    private void checkGameOver(EnemyAttackOutcome outcome) {
-        if (outcome.getPlayerHealth() < 0) {
-            System.out.println("Game over");
-            running = false;
-        }
+    private void handleGameOver() {
+        System.out.println("Game over");
+        running = false;
     }
 
     private static void printEnemyAttack(EnemyAttackOutcome outcome) {

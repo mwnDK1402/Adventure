@@ -46,4 +46,8 @@ public class PlayerAttackOutcome {
     public int getPlayerDamageDealt() {
         return playerDamageDealt;
     }
+
+    public boolean isEnemyAlive() {
+        return enemyHealth > 0;
+    }
 }

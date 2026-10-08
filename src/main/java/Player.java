@@ -90,10 +90,10 @@ public class Player {
             item = currentRoom.findItem(shortName);
         }
         if (item == null) {
-            return new EatOutcome(EatResult.NOT_FOUND, shortName, 0, null, -1);
+            return new EatOutcome(EatResult.NOT_FOUND, 0, null, health);
         }
         if (!(item instanceof Food food)) {
-            return new EatOutcome(EatResult.NOT_FOOD, shortName, 0, null, -1);
+            return new EatOutcome(EatResult.NOT_FOOD, 0, null, health);
         }
 
         health += food.getHealthPoints();
@@ -110,7 +110,7 @@ public class Player {
             enemyOutcome = enemy.attack(this);
         }
 
-        return new EatOutcome(EatResult.EATEN, shortName, food.getHealthPoints(), enemyOutcome, healthPostFood);
+        return new EatOutcome(EatResult.EATEN, food.getHealthPoints(), enemyOutcome, healthPostFood);
     }
 
     public EquipResult equip(String shortName) {

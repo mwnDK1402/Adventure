@@ -1,13 +1,11 @@
 public class EatOutcome {
     private final EatResult result;
-    private final String foodName;
     private final int healthChange;
     private final int healthPostFood;
     private final EnemyAttackOutcome enemyOutcome;
 
-    public EatOutcome(EatResult result, String foodName, int healthChange, EnemyAttackOutcome enemyOutcome, int healthPostFood) {
+    public EatOutcome(EatResult result, int healthChange, EnemyAttackOutcome enemyOutcome, int healthPostFood) {
         this.result = result;
-        this.foodName = foodName;
         this.healthChange = healthChange;
         this.enemyOutcome = enemyOutcome;
         this.healthPostFood = healthPostFood;
@@ -27,5 +25,9 @@ public class EatOutcome {
 
     public int getHealthPostFood() {
         return healthPostFood;
+    }
+
+    public boolean isPlayerAlive() {
+        return !(healthPostFood <= 0 || (enemyOutcome != null && !enemyOutcome.isPlayerAlive()));
     }
 }
