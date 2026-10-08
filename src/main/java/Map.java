@@ -120,7 +120,7 @@ public class Map {
         // Weapons for room
         Weapon woodenSword = new MeleeWeapon("Wooden sword", "A mossy wooden sword", 5);
         Weapon slingshot = new RangedWeapon("Slingshot", "A wooden slingshot with a worn leather pouch", 8, 3);
-        Weapon bowNarrow = new RangedWeapon("Bow & Arrow", "An old bow with rusty but sharp arrows", 10, 10);
+        Weapon bowNarrow = new RangedWeapon("Bow", "An old bow with rusty but sharp arrows", 10, 10);
         Weapon rustyDagger = new MeleeWeapon("Rusty dagger", "A crude dagger covered in rust and scratches", 5);
         Weapon tailSpike = new MeleeWeapon("Tail spike", "A jagged spike taken from a stone scorpion's tail", 2);
         Weapon boneClub = new MeleeWeapon("Bone club", "A club made from a large animal bone", 3);
