@@ -4,6 +4,8 @@ Our implementation of the [course project assignment](https://github.com/EK-DAT-
 
 For reference, the original game's [C source code](https://github.com/vattam/BSDGames/tree/master/adventure) is bundled with a Linux port of BSD Games.
 
+The repository is hosted on GitHub at [https://github.com/mwnDK1402/Adventure](https://github.com/mwnDK1402/Adventure).
+
 ## Contributors
 
 | Name | GitHub |
