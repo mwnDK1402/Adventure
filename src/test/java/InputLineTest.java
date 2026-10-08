@@ -17,31 +17,14 @@ class InputLineTest {
 
     public static Stream<Arguments> commandCases() {
         return Stream.of(
-                Arguments.of(
-                        "",
-                        "",
-                        ""
-                ),
-                Arguments.of(
-                        "drop",
-                        "drop",
-                        ""
-                ),
-                Arguments.of(
-                        "eat burger",
-                        "eat",
-                        "burger"
-                ),
-                Arguments.of(
-                        " take    bow & arrow   ",
-                        "take",
-                        "bow & arrow"
-                ),
-                Arguments.of(
-                        "DROP WOODEN SWORD",
-                        "drop",
-                        "wooden sword"
-                )
+                Arguments.of("", "", ""),
+                Arguments.of("drop", "drop", ""),
+                Arguments.of("eat burger", "eat", "burger"),
+                Arguments.of(" take    bow & arrow   ", "take", "bow & arrow"),
+                Arguments.of("DROP WOODEN SWORD", "drop", "wooden sword"),
+                Arguments.of("go north", "go", "north"),
+                Arguments.of("north", "go", "north"),
+                Arguments.of("n", "go", "n")
         );
     }
 }

@@ -30,10 +30,6 @@ public class UserInterface {
                         handleInvalid();
                     }
                 }
-                case North, N -> handleGo(Direction.North);
-                case South, S -> handleGo(Direction.South);
-                case East, E -> handleGo(Direction.East);
-                case West, W -> handleGo(Direction.West);
                 case Look -> handleLook();
                 case Help -> handleHelp();
                 case Exit -> handleExit();

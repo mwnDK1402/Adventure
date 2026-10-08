@@ -12,12 +12,20 @@ class InputLine {
                 .map(String::trim)
                 .toArray(String[]::new);
 
-        command = parts.length > 0
+        String first = parts.length > 0
                 ? parts[0]
                 : "";
-        arg = parts.length > 1
+        String rest = parts.length > 1
                 ? parts[1]
                 : "";
+
+        if (rest.isBlank() && Direction.validate(first) != null) {
+            command = "go";
+            arg = first;
+        } else {
+            command = first;
+            arg = rest;
+        }
     }
 
     public String getCommand() {
