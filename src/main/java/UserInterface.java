@@ -14,12 +14,13 @@ public class UserInterface {
 
         System.out.println("You are in " + adventure.getRoomName());
         System.out.println(adventure.look());
-        System.out.println();
 
         while (running) {
             System.out.print("Input (use 'help' for commands): ");
             InputLine input = new InputLine(scanner.nextLine());
             Command command = Command.validate(input.getCommand());
+
+            System.out.println();
 
             switch (command) {
                 case Go -> {
@@ -42,6 +43,8 @@ public class UserInterface {
                 case Equip -> handleEquip(input.getArg());
                 case Invalid -> handleInvalid();
             }
+
+            System.out.println();
         }
 
         System.out.println("You are now exiting the maze... Goodbye.");
@@ -52,7 +55,7 @@ public class UserInterface {
     }
 
     private void handleHelp() {
-        System.out.println("""
+        System.out.print("""
                 Commands:
                  go <direction>   - move north, south, east, or west (also: n, s, e, w)
                  look             - describe the current room
@@ -73,7 +76,7 @@ public class UserInterface {
     }
 
     private void handleInventory() {
-        System.out.println(adventure.inventory());
+        System.out.print(adventure.inventory());
     }
 
     private void handleHealth() {
@@ -118,6 +121,11 @@ public class UserInterface {
     }
 
     private void handleEat(String intendedFood) {
+        if (intendedFood.isBlank()) {
+            System.out.println("You can't eat nothing!");
+            return;
+        }
+
         EatOutcome outcome = adventure.eat(intendedFood);
 
         switch (outcome.getResult()) {
@@ -144,18 +152,10 @@ public class UserInterface {
 
     private void handleAttack(String intendedEnemy) {
         CombatOutcome outcome = adventure.attack(intendedEnemy);
+        PlayerAttackOutcome pOutcome = outcome.getPlayer();
+        EnemyAttackOutcome eOutcome = outcome.getEnemy();
 
-        switch (outcome.getPlayer().getResult()) {
-            case NO_WEAPON -> {
-                System.out.println("You have no weapon equipped");
-                printEnemyAttack(outcome.getEnemy());
-                checkGameOver(outcome.getEnemy());
-            }
-            case CANNOT_USE -> {
-                System.out.println(outcome.getPlayer().getMessage());
-                printEnemyAttack(outcome.getEnemy());
-                checkGameOver(outcome.getEnemy());
-            }
+        switch (pOutcome.getResult()) {
             case NO_ENEMY -> {
                 if (!intendedEnemy.isBlank()) {
                     System.out.println("There is no " + intendedEnemy + " in this room");
@@ -163,46 +163,50 @@ public class UserInterface {
                     System.out.println("There is no enemy in this room");
                 }
             }
+            case NO_WEAPON -> {
+                System.out.println("You have no weapon equipped");
+                printEnemyAttack(eOutcome);
+                checkGameOver(eOutcome);
+            }
+            case CANNOT_USE -> {
+                System.out.println(pOutcome.getMessage());
+                printEnemyAttack(eOutcome);
+                checkGameOver(eOutcome);
+            }
             case ATTACKED -> {
-                if (outcome.getPlayer().getEnemyHealthOutcome() > 0) {
-                    System.out.println();
-                    System.out.println("You " + outcome.getPlayer().getAttackVerb() + " the enemy for " + outcome.getPlayer().getPlayerDamageDealt() + " damage");
-                    System.out.println("The enemy now has " + outcome.getPlayer().getEnemyHealthOutcome() + " HP");
-                    System.out.println();
-                    if (outcome.getPlayer().getEnemyHealthOutcome() > 0) {
-                        printEnemyAttack(outcome.getEnemy());
-                    }
-                    else {
-                        System.out.println("You killed the " + outcome.getPlayer().getEnemyLongName());
-                        System.out.println();
-                    }
-
-                } else if (outcome.getPlayer().getEnemyHealthOutcome() <= 0) {
-                    System.out.println(outcome.getPlayer().getEnemyLongName() + " has been slain.");
+                System.out.println();
+                System.out.println("You " + pOutcome.getAttackVerb() + " the enemy for " + pOutcome.getPlayerDamageDealt() + " damage");
+                if (pOutcome.getEnemyHealthOutcome() > 0) {
+                    System.out.println("The enemy now has " + pOutcome.getEnemyHealthOutcome() + " HP");
+                    printEnemyAttack(eOutcome);
+                } else {
+                    System.out.println("You killed the " + pOutcome.getEnemyLongName());
                 }
 
-                int usesLeft = outcome.getPlayer().getUsesLeft();
+                int usesLeft = pOutcome.getUsesLeft();
                 if (usesLeft > 0){
-                    System.out.println("Uses left: " + outcome.getPlayer().getUsesLeft());
+                    System.out.println("Uses left: " + usesLeft);
                 }
                 else if (usesLeft == 0) {
                     System.out.println("Your weapon is out of uses");
                 }
-                if (outcome.getEnemy() != null) checkGameOver(outcome.getEnemy());
+
+                if (eOutcome != null) {
+                    checkGameOver(eOutcome);
+                }
             }
         }
     }
 
     private void handleLook() {
-        System.out.println(adventure.look());
+        System.out.print(adventure.look());
     }
 
     private void handleGo(Direction direction) {
         String dirString = direction.name().toLowerCase(Locale.ROOT);
         if (adventure.go(dirString)) {
             System.out.println("You are in " + adventure.getRoomName());
-            System.out.println(adventure.look());
-            System.out.println();
+            System.out.print(adventure.look());
         } else {
             if (adventure.roomIsLocked()) {
                 System.out.println();
@@ -219,7 +223,6 @@ public class UserInterface {
                     System.out.println("The door is locked. You need a key!");
                 }
             } else {
-                System.out.println();
                 System.out.println("You can't go that way!");
             }
         }
@@ -250,6 +253,5 @@ public class UserInterface {
         System.out.println();
         System.out.println(outcome.getEnemyLongName() + " " + outcome.getEnemyAttackVerb() + " you for " + outcome.getEnemyDamageDealt() + " HP");
         System.out.println("You now have " + outcome.getPlayerHealth() + " HP");
-        System.out.println();
     }
 }

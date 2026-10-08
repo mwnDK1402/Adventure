@@ -31,7 +31,7 @@ public class Adventure {
         String items = "Inventory: " + System.lineSeparator();
 
         if (inventory.isEmpty()) {
-            return "Your inventory is empty";
+            return "Your inventory is empty" + System.lineSeparator();
         }
 
         for (Item item : inventory) {
@@ -45,25 +45,27 @@ public class Adventure {
     }
 
     private String enemiesInRoom() {
-        String enemiesString = "Here lurks: ";
         Room room = player.getCurrentRoom();
         ArrayList<Enemy> enemies = room.getEnemies();
 
-        if (!enemies.isEmpty()) {
-            for (int i = 0; i < room.getEnemySize(); i++) {
-                enemiesString += enemies.get(i).getLongName().toLowerCase();
-
-                if (i < enemies.size() - 1) {
-                    enemiesString += ", ";
-                }
-            }
-            for (Enemy enemy : enemies) {
-                enemiesString += System.lineSeparator() + enemy.getDescription();
-            }
-            return enemiesString;
-        } else {
+        if (enemies.isEmpty()) {
             return "";
         }
+
+        String enemiesString = "Here lurks: ";
+        for (int i = 0; i < room.getEnemySize(); i++) {
+            enemiesString += enemies.get(i).getLongName().toLowerCase();
+
+            if (i < enemies.size() - 1) {
+                enemiesString += ", ";
+            }
+        }
+
+        for (Enemy enemy : enemies) {
+            enemiesString += System.lineSeparator() + enemy.getDescription();
+        }
+
+        return enemiesString + System.lineSeparator();
     }
 
     private String itemsInRoom() {
@@ -80,7 +82,7 @@ public class Adventure {
                     items += ", ";
                 }
             }
-            return items;
+            return items + System.lineSeparator();
         } else {
             return "";
         }
