@@ -105,6 +105,11 @@ The `.dot` file is a 1:1 picture of `Map.buildMap()`:
 - The room assigned in `initialRoom = ...` is the highlighted starting room.
 - A room's item caption lists what `roomN.addItem(...)` puts there, comma
   separated, in source order.
+- A room that has an enemy gets a second caption line
+  `Enemy: <long name>`, from `roomN.addEnemy(...)`. Use `Enemy`'s long name,
+  the one `look` prints, not the short name: `Cursed Beast`, not `Beast`.
+  Rooms without `addEnemy(...)` keep only the item line, so a room may be
+  items only, enemy only, or both.
 - Keep the comment block that maps each connection call to its edge, and update
   it so it still matches the edges below it.
 - Keep the three `rank = same` groups and the trailing invisible edges. They hold
