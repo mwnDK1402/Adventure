@@ -53,7 +53,18 @@ public class UserInterface {
 
     private void handleHelp() {
         System.out.println("""
-                instructions
+                Commands:
+                 go <direction>   - move north, south, east, or west (also: n, s, e, w)
+                 look             - describe the current room
+                 inventory        - list what you are carrying
+                 health           - show your current HP
+                 take <item>      - pick up an item from the room
+                 drop <item>      - put an item down
+                 equip <weapon>   - equip a weapon from your inventory or the room
+                 attack [enemy]   - attack an enemy with equipped weapon (omit the name to hit the first enemy here)
+                 eat <item>       - eat something
+                 help             - show this list
+                 exit             - quit the game
                 """);
     }
 
