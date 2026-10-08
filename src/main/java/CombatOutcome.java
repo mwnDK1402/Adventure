@@ -1,6 +1,6 @@
 public class CombatOutcome {
-    public EnemyAttackOutcome enemyAttackOutcome;
-    public PlayerAttackOutcome playerAttackOutcome;
+    private final EnemyAttackOutcome enemyAttackOutcome;
+    private final PlayerAttackOutcome playerAttackOutcome;
 
     public CombatOutcome(PlayerAttackOutcome playerAttackOutcome, EnemyAttackOutcome enemyAttackOutcome) {
         this.playerAttackOutcome = playerAttackOutcome;

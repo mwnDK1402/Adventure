@@ -1,12 +1,10 @@
 public class Enemy {
-
-    private String shortName;
-    private String longName;
-    private String description;
+    private final String shortName;
+    private final String longName;
+    private final String description;
+    private final Weapon weapon;
+    private final Room room;
     private int health;
-    private Weapon weapon;
-    private Room room;
-    //private boolean isAlive;
 
     public Enemy(String shortName, String longName, String description, int health, Weapon weapon, Room room) {
         this.shortName = shortName;
@@ -52,10 +50,6 @@ public class Enemy {
 
     public int getEnemyHealth() {
         return health;
-    }
-
-    public Room getEnemyRoom() {
-        return room;
     }
 
     public Weapon getWeapon() {
