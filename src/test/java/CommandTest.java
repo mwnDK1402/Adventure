@@ -4,29 +4,43 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CommandTest {
     @ParameterizedTest
     @MethodSource("commandCases")
-    void testCommand(String input, String expectedCommand, String[] expectedArgs) {
+    void testCommand(String input, String expectedCommand, String expectedArg) {
         var cmd = new Command(input);
         assertEquals(expectedCommand, cmd.getCommand());
-        assertArrayEquals(expectedArgs, cmd.getArgs());
+        assertEquals(expectedArg, cmd.getArg());
     }
 
     public static Stream<Arguments> commandCases() {
         return Stream.of(
                 Arguments.of(
-                        " remove    these spaces   ",
-                        "remove",
-                        new String[] {"these", "spaces"}
+                        "",
+                        "",
+                        ""
                 ),
                 Arguments.of(
-                        "onearg",
-                        "onearg",
-                        new String[] {}
+                        "drop",
+                        "drop",
+                        ""
+                ),
+                Arguments.of(
+                        "eat burger",
+                        "eat",
+                        "burger"
+                ),
+                Arguments.of(
+                        " take    bow & arrow   ",
+                        "take",
+                        "bow & arrow"
+                ),
+                Arguments.of(
+                        "DROP WOODEN SWORD",
+                        "drop",
+                        "wooden sword"
                 )
         );
     }
