@@ -215,7 +215,6 @@ public class UserInterface {
             System.out.print(adventure.look());
         } else {
             if (adventure.roomIsLocked()) {
-                System.out.println();
                 if (adventure.playerHasKey()) {
                     System.out.println("The door is locked, but you have a key.");
                     if (askYesNo("Do you want to unlock this door? (Y/N)")) {
