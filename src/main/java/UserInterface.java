@@ -157,7 +157,7 @@ public class UserInterface {
                                     System.out.println("You ate the " + intendedItem + ". You feel no different.");
                                 }
 
-                                System.out.println("Health: " + outcome.getHealthPostFood());
+                                System.out.println("You now have " + outcome.getHealthPostFood() + " HP");
                             }
                         }
                         if (outcome.getEnemyOutcome() != null) {
@@ -194,6 +194,7 @@ public class UserInterface {
     }
 
     private static void printEnemyAttack(EnemyAttackOutcome outcome) {
+        System.out.println();
         System.out.println(outcome.getEnemyLongName() + " " + outcome.getEnemyAttackVerb() + " you for " + outcome.getEnemyDamageDealt() + " HP");
         System.out.println("You now have " + outcome.getPlayerHealth() + " HP");
         System.out.println();
