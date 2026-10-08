@@ -103,7 +103,10 @@ adding it to `PATH` or setting `PLANTUML_JAR` to the jar inside it.
 
 ### Activity diagram
 
-![[docs/attack-flowchart.svg]]
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/attack-flowchart-dark.svg">
+  <img alt="Attack flowchart" src="docs/attack-flowchart-light.svg">
+</picture>
 
 ### Room layout
 
