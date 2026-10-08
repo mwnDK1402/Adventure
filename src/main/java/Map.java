@@ -48,7 +48,7 @@ public class Map {
         // Sværere enemies? (Bone chamber)
         Room room7 = new Room("Room 7", """
                 The floor is covered in old bones.
-                While some are small, others are far to large to be human.
+                While some are small, others are far too large to be human.
                 Deep marks scar the stone floor, as if something heavy has been dragged through the chamber.
                 A low growl echoes somewhere beyond the darkness.""");
 
@@ -61,7 +61,7 @@ public class Map {
 
         // Vigtigt item, måske nødvendigt for at komme ind i room 5? (Forgotten passage)
         Room room9 = new Room("Room 9", """
-                The passage ends in a small chamber hidden deep withing the cave.
+                The passage ends in a small chamber hidden deep within the cave.
                 At the far end stands an ancient stone door covered in strange symbols.
                 In front of it, you find a heavy object resting on a stone pedestal.
                 Whatever this item is, it seems to have been placed here for a reason.
@@ -103,7 +103,7 @@ public class Map {
 
         // Food for rooms
         Food beans = new Food("Canned beans", "A dusty can of preserved beans", 15);
-        Food mushroom = new Food("Mushroom", "A glowing mushrooom", -20);
+        Food mushroom = new Food("Mushroom", "A glowing mushroom", -20);
         Food trailMix = new Food("Trail mix", "A small bag of old trail mix", 5);
         Food fish = new Food("Fish", "An old, rotten fish", -15);
         Food driedMeat = new Food("Dried meat", "A strip of dried meat left among old bones", 10);
@@ -150,7 +150,6 @@ public class Map {
         room6.addEnemy(serpent);
         room7.addEnemy(skeleton);
         room8.addEnemy(stoneGuardian);
-
     }
 
     public Room getInitialRoom() {
