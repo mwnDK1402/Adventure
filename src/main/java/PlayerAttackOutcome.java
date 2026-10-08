@@ -1,4 +1,4 @@
-public class AttackOutcome {
+public class PlayerAttackOutcome {
     private AttackResult result;
     private int playerDamageDealt;
     private String message;
@@ -6,12 +6,10 @@ public class AttackOutcome {
     private int usesLeft;
     private int enemyHealth;
     private String enemyLongName;
-    private int enemyDamageDealt;
-    private int playerHealth;
-    private String enemyAttackVerb;
 
 
-    public AttackOutcome(AttackResult result, int playerDamageDealt, String message, String attackVerb, int usesLeft, int enemyHealth, String enemyLongName, int playerHealth) {
+
+    public PlayerAttackOutcome(AttackResult result, int playerDamageDealt, String message, String attackVerb, int usesLeft, int enemyHealth, String enemyLongName) {
         this.result = result;
         this.playerDamageDealt = playerDamageDealt;
         this.message = message;
@@ -19,7 +17,6 @@ public class AttackOutcome {
         this.usesLeft = usesLeft;
         this.enemyHealth = enemyHealth;
         this.enemyLongName = enemyLongName;
-        this.playerHealth = playerHealth;
     }
 
     public AttackResult getResult() {
@@ -44,30 +41,6 @@ public class AttackOutcome {
 
     public String getEnemyLongName() {
         return enemyLongName;
-    }
-
-    public void setEnemyAttackVerb(String enemyAttackVerb) {
-        this.enemyAttackVerb = enemyAttackVerb;
-    }
-
-    public String getEnemyAttackVerb() {
-        return enemyAttackVerb;
-    }
-
-    public void setEnemyDamageDealt(int enemyDamageDealt) {
-        this.enemyDamageDealt = enemyDamageDealt;
-    }
-
-    public int getEnemyDamageDealt() {
-        return enemyDamageDealt;
-    }
-
-    public void setPlayerHealth(int playerHealth) {
-        this.playerHealth = playerHealth;
-    }
-
-    public int getPlayerHealth() {
-        return playerHealth;
     }
 
     public int getPlayerDamageDealt() {

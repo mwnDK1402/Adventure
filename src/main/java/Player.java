@@ -90,10 +90,10 @@ public class Player {
             item = currentRoom.findItem(shortName);
         }
         if (item == null) {
-            return new EatOutcome(EatResult.NOT_FOUND, shortName, 0);
+            return new EatOutcome(EatResult.NOT_FOUND, shortName, 0, null, -1);
         }
         if (!(item instanceof Food food)) {
-            return new EatOutcome(EatResult.NOT_FOOD, shortName, 0);
+            return new EatOutcome(EatResult.NOT_FOOD, shortName, 0, null, -1);
         }
 
         health += food.getHealthPoints();
@@ -102,7 +102,15 @@ public class Player {
             currentRoom.removeItem(food);
         }
 
-        return new EatOutcome(EatResult.EATEN, shortName, food.getHealthPoints());
+        Enemy enemy = currentRoom.getAnyEnemy();
+        EnemyAttackOutcome enemyOutcome = null;
+        int healthPostFood = health;
+
+        if (enemy != null) {
+            enemyOutcome = enemy.attack(this);
+        }
+
+        return new EatOutcome(EatResult.EATEN, shortName, food.getHealthPoints(), enemyOutcome, healthPostFood);
     }
 
     public EquipResult equip(String shortName) {
@@ -131,18 +139,18 @@ public class Player {
         return equipped;
     }
 
-    public AttackOutcome attack(Enemy enemy) {
+    public PlayerAttackOutcome attack(Enemy enemy) {
         if (equipped == null) {
-           return new AttackOutcome(AttackResult.NO_WEAPON, 0, null, null, -1, -1, enemy.getLongName(), getHealth());
+           return new PlayerAttackOutcome(AttackResult.NO_WEAPON, 0, null, null, -1, -1, enemy.getLongName());
         }
 
         if (!equipped.canUse()) {
-            return new AttackOutcome(AttackResult.CANNOT_USE, 0, equipped.getCannotUseMessage(), null, equipped.getUsesLeft(), -1, enemy.getLongName(), getHealth());
+            return new PlayerAttackOutcome(AttackResult.CANNOT_USE, 0, equipped.getCannotUseMessage(), null, equipped.getUsesLeft(), -1, enemy.getLongName());
         }
 
         equipped.use();
         enemy.hit(getEquipped().getDamage());
-        return new AttackOutcome(AttackResult.ATTACKED, equipped.getDamage(), null, equipped.getAttackVerb(), equipped.getUsesLeft(), enemy.getEnemyHealth(), enemy.getLongName(), getHealth());
+        return new PlayerAttackOutcome(AttackResult.ATTACKED, equipped.getDamage(), null, equipped.getAttackVerb(), equipped.getUsesLeft(), enemy.getEnemyHealth(), enemy.getLongName());
     }
 
     public void hit(int damage) {

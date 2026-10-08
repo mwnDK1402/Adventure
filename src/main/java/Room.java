@@ -125,6 +125,11 @@ public class Room {
         return enemies.size();
     }
 
-
+    public Enemy getAnyEnemy() {
+        if (enemies.isEmpty()) {
+            return null;
+        }
+        return enemies.getFirst();
+    }
 
 }

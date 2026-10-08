@@ -17,11 +17,9 @@ public class Enemy {
         this.room = room;
     }
 
-    public void attack(Player player, AttackOutcome outcome) {
-        outcome.setEnemyAttackVerb(weapon.getAttackVerb());
-        outcome.setEnemyDamageDealt(weapon.getDamage());
+    public EnemyAttackOutcome attack(Player player) {
         player.hit(weapon.getDamage());
-        outcome.setPlayerHealth(player.getHealth());
+        return new EnemyAttackOutcome(weapon.getDamage(), player.getHealth(), weapon.getAttackVerb(), longName);
     }
 
     public void hit(int damage) {

@@ -112,18 +112,19 @@ public class Adventure {
         return player.equip(shortName);
     }
 
-    public AttackOutcome attack(String shortName) {
+    public CombatOutcome attack(String shortName) {
         Enemy enemy = player.getCurrentRoom().findEnemy(shortName);
         if (enemy == null) {
-            return new AttackOutcome(AttackResult.NO_ENEMY, 0, null, null, -1, -1, null, -1);
+            return new CombatOutcome(new PlayerAttackOutcome(AttackResult.NO_ENEMY, 0, null, null, -1, -1, null), null);
         }
-        AttackOutcome outcome = player.attack(enemy);
+        PlayerAttackOutcome outcome = player.attack(enemy);
+        EnemyAttackOutcome enemyOutcome = null;
 
         if (enemy.isAlive()) {
-            enemy.attack(player, outcome);
+            enemyOutcome = enemy.attack(player);
         }
 
-        return outcome;
+        return new CombatOutcome(outcome, enemyOutcome);
     }
 
     /*

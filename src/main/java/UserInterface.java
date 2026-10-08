@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class UserInterface {
     private Scanner scanner;
     private Adventure adventure;
+    private boolean running;
 
     private void confirmDirection(String direction) {
         if (adventure.go(direction)) {
@@ -26,7 +27,7 @@ public class UserInterface {
         this.scanner = new Scanner(System.in);
         this.adventure = new Adventure();
 
-        boolean running = true;
+        running = true;
 
         System.out.println("You are in " + adventure.getRoomName());
         System.out.println(adventure.look());
@@ -84,43 +85,45 @@ public class UserInterface {
                 default -> {
                     if (choice.startsWith("attack ")) {
                         String intendedEnemy = choice.substring(7);
-                        AttackOutcome outcome = adventure.attack(intendedEnemy);
+                        CombatOutcome outcome = adventure.attack(intendedEnemy);
 
-                        switch (outcome.getResult()) {
+                        switch (outcome.getPlayer().getResult()) {
                             case NO_WEAPON -> {
                                 System.out.println("You have no weapon equipped");
-                                printEnemyAttack(outcome);
+                                printEnemyAttack(outcome.getEnemy());
+                                checkGameOver(outcome.getEnemy());
                             }
                             case CANNOT_USE -> {
-                                System.out.println(outcome.getMessage());
-                                printEnemyAttack(outcome);
+                                System.out.println(outcome.getPlayer().getMessage());
+                                printEnemyAttack(outcome.getEnemy());
+                                checkGameOver(outcome.getEnemy());
                             }
                             case NO_ENEMY -> System.out.println("There is no " + intendedEnemy + " in this room");
                             case ATTACKED -> {
-                                if (outcome.getEnemyHealthOutcome() >= 0) {
+                                if (outcome.getPlayer().getEnemyHealthOutcome() > 0) {
                                     System.out.println();
-                                    System.out.println("You " + outcome.getAttackVerb() + " the enemy for " + outcome.getPlayerDamageDealt() + " damage");
-                                    System.out.println("The enemy now has " + outcome.getEnemyHealthOutcome() + " HP");
+                                    System.out.println("You " + outcome.getPlayer().getAttackVerb() + " the enemy for " + outcome.getPlayer().getPlayerDamageDealt() + " damage");
+                                    System.out.println("The enemy now has " + outcome.getPlayer().getEnemyHealthOutcome() + " HP");
                                     System.out.println();
-                                    if (outcome.getEnemyHealthOutcome() > 0) {
-                                        printEnemyAttack(outcome);
+                                    if (outcome.getPlayer().getEnemyHealthOutcome() > 0) {
+                                        printEnemyAttack(outcome.getEnemy());
                                     }
                                     else {
-                                        System.out.println("You killed the " + outcome.getEnemyLongName());
+                                        System.out.println("You killed the " + outcome.getPlayer().getEnemyLongName());
                                         System.out.println();
                                     }
 
-                                } else if (outcome.getEnemyHealthOutcome() <= 0) {
-                                    System.out.println(outcome.getEnemyLongName() + " has been slain.");
+                                } else if (outcome.getPlayer().getEnemyHealthOutcome() <= 0) {
+                                    System.out.println(outcome.getPlayer().getEnemyLongName() + " has been slain.");
                                 }
 
-                                if (outcome.getUsesLeft() >= 0){
-                                    System.out.println("Uses left: " + outcome.getUsesLeft());
+                                if (outcome.getPlayer().getUsesLeft() > 0){
+                                    System.out.println("Uses left: " + outcome.getPlayer().getUsesLeft());
                                 }
-                                if (outcome.getPlayerHealth() <= 0) {
-                                    System.out.println("Game over");
-                                    running = false;
+                                else {
+                                    System.out.println("Your weapon is out of uses");
                                 }
+                                checkGameOver(outcome.getEnemy());
                             }
                         }
                     } else if (choice.startsWith("take ")) {
@@ -154,9 +157,14 @@ public class UserInterface {
                                     System.out.println("You ate the " + intendedItem + ". You feel no different.");
                                 }
 
-                                System.out.println("Health: " + adventure.health());
+                                System.out.println("Health: " + outcome.getHealthPostFood());
                             }
                         }
+                        if (outcome.getEnemyOutcome() != null) {
+                            printEnemyAttack(outcome.getEnemyOutcome());
+                            checkGameOver(outcome.getEnemyOutcome());
+                        }
+
                     } else if (choice.startsWith("equip ")) {
                         String intendedWeapon = choice.substring(6);
                         EquipResult result = adventure.equip(intendedWeapon);
@@ -178,7 +186,14 @@ public class UserInterface {
         System.out.println("You are now exiting the maze... Goodbye.");
     }
 
-    private static void printEnemyAttack(AttackOutcome outcome) {
+    private void checkGameOver(EnemyAttackOutcome outcome) {
+        if (outcome.getPlayerHealth() < 0) {
+            System.out.println("Game over");
+            running = false;
+        }
+    }
+
+    private static void printEnemyAttack(EnemyAttackOutcome outcome) {
         System.out.println(outcome.getEnemyLongName() + " " + outcome.getEnemyAttackVerb() + " you for " + outcome.getEnemyDamageDealt() + " HP");
         System.out.println("You now have " + outcome.getPlayerHealth() + " HP");
         System.out.println();
