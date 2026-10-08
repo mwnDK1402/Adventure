@@ -120,4 +120,12 @@ public class Adventure {
 
         return new CombatOutcome(outcome, enemyOutcome);
     }
+
+    public boolean playerHasKey() {
+        return player.hasKey();
+    }
+
+    public boolean unlock(String direction) {
+        return player.unlock(direction);
+    }
 }

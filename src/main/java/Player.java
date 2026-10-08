@@ -157,4 +157,25 @@ public class Player {
         this.health -= damage;
     }
 
+    public boolean hasKey() {
+        return findItem("key") != null;
+    }
+
+    public boolean unlock(String direction) {
+        Room desiredRoom = switch (direction) {
+            case "north" -> currentRoom.getNorth();
+            case "south" -> currentRoom.getSouth();
+            case "east" -> currentRoom.getEast();
+            case "west" -> currentRoom.getWest();
+            default -> null;
+        };
+
+        if (desiredRoom == null || !desiredRoom.getLock() || !hasKey()) {
+            return false;
+        }
+
+        desiredRoom.setLock(false);
+        return true;
+    }
+
 }

@@ -13,13 +13,40 @@ public class UserInterface {
         } else {
             if (adventure.roomIsLocked()) {
                 System.out.println();
-                System.out.println("The door is locked. You need a key!");
-                System.out.println();
+                if (adventure.playerHasKey()) {
+                    System.out.println("The door is locked, but you have a key.");
+                    if (askYesNo("Do you want to unlock this door? (Y/N)")) {
+                        adventure.unlock(direction);
+                        System.out.println("You unlock the door.");
+                        System.out.println();
+                        confirmDirection(direction);
+                    } else {
+                        System.out.println("You leave the door locked.");
+                        System.out.println();
+                    }
+                } else {
+                    System.out.println("The door is locked. You need a key!");
+                    System.out.println();
+                }
             } else {
                 System.out.println();
                 System.out.println("You can't go that way!");
                 System.out.println();
             }
+        }
+    }
+
+    private boolean askYesNo(String question) {
+        while (true) {
+            System.out.print(question + " ");
+            String answer = scanner.nextLine().trim().toLowerCase();
+            if (answer.equals("y") || answer.equals("yes")) {
+                return true;
+            }
+            if (answer.equals("n") || answer.equals("no")) {
+                return false;
+            }
+            System.out.println("Please answer Y or N.");
         }
     }
 
