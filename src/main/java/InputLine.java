@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -8,9 +9,10 @@ class InputLine {
     public InputLine(String inputLine) {
         var sanitized = inputLine.toLowerCase(Locale.ROOT).trim();
 
-        String[] parts = Arrays.stream(sanitized.split(" ", 2))
-                .map(String::trim)
-                .toArray(String[]::new);
+        String[] parts = sanitized.split(" ", 2);
+        for (int i = 0; i < parts.length; i++) {
+            parts[i] = parts[i].trim();
+        }
 
         String first = parts.length > 0
                 ? parts[0]

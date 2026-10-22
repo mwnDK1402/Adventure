@@ -94,10 +94,10 @@ public class Map {
 
         // Add items to room
         room1.addItem(backpack);
-        room2.addItem(key);
         room2.addItem(lamp);
         room3.addItem(rope);
         room4.addItem(torch);
+        room5.addItem(key);
         room6.addItem(hook);
         room8.addItem(ancientKey);
 

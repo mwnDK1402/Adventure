@@ -1,3 +1,4 @@
+// DTO: Data Transfer Object
 public class PlayerAttackOutcome {
     private AttackResult result;
     private int playerDamageDealt;

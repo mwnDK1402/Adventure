@@ -16,9 +16,24 @@ public class UserInterface {
         System.out.println(adventure.look());
 
         while (running) {
+            // Step 1: Read input
+            // "attack scorpion"
+            //
+            // Step 2: Separate command from argument
+            // "attack"
+            // "scorpion"
+            //
+            // Step 3: Check if command is recognized (and handle abbreviations)
+            // Command.Attack
+
             System.out.print("Input (use 'help' for commands): ");
-            InputLine input = new InputLine(scanner.nextLine());
+            String rawInput = scanner.nextLine();
+            // "attack scorpion"
+            InputLine input = new InputLine(rawInput);
+            // getCommand(): "attack"
+            // getArg(): "scorpion"
             Command command = Command.validate(input.getCommand());
+            // Command.Attack
 
             System.out.println();
 
